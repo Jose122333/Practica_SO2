@@ -30,6 +30,7 @@ if(lseek(descriptor,nbloque*BLOCKSIZE,SEEK_SET)==-1){
 bytesWritten=write(descriptor,buf,BLOCKSIZE);
 if(bytesWritten==-1){
  printf("Error in write function");
+
  return -1;
 }
  return bytesWritten;

@@ -1,8 +1,7 @@
 #include <time.h>
 #include "bloques.h"
-//dsfdfsg
 #define posSB 0 //el superbloque se escribe en el primer bloque de nuestro FS
-#define T_INODO 128 //tamaño en bytes de un inodo
+#define TAM_INODO 128 //tamaño en bytes de un inodo
 
 struct superbloque{
 unsigned int posPrimerBloqueMB; //Posición del primer bloque del mapa de bits 
@@ -42,7 +41,7 @@ unsigned int punterosDirectos[12]; //12 punteros a bloques directos
 unsigned int punterosIndirectos[3]; /*3 punteros a bloques indirectos:1 puntero indirecto simple, 1 puntero indirecto doble, 1 puntero indirecto triple */
 /* Utilizar una variable de alineación si es necesario para vuestra plataforma/compilador; 
 */
-char padding[T_INODO-2*sizeof(unsigned char)-3*sizeof(time_t)-18*sizeof(unsigned int)-6*sizeof(unsigned char)]; //Last substract correspond to reservado_alineacion [6]
+char padding[TAM_INODO-2*sizeof(unsigned char)-3*sizeof(time_t)-18*sizeof(unsigned int)-6*sizeof(unsigned char)]; //Last substract correspond to reservado_alineacion [6]
 };
 
 

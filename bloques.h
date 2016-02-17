@@ -3,7 +3,7 @@
 #include <sys/stat.h>
 #include <fcntl.h> /* Uses the system functions open(), read() and write()*/
 #include <stdlib.h>
-
+#include <stdio.h>
 #define BLOCKSIZE 1024 //bytes
 
 int bmount(const char *camino);

@@ -39,7 +39,7 @@ int initSB(unsigned int nbloques, unsigned int ninodos){
 int PadLenght = BLOCKSIZE - 12*sizeof(unsigned int);
 struct superbloque sb;
 //We initilize every node of the superblock structure
-sb.posPrimerBloqueMB = posSB + sizeof(sb);
+sb.posPrimerBloqueMB = posSB + 1; //Tamaño SB = 1
 sb.posUltimoBloqueMB = sb.posPrimerBloqueMB + tamMB(nbloques) - 1;
 sb.posPrimerBloqueAI = sb.posUltimoBloqueMB + 1;
 sb.posUltimoBloqueAI = sb.posPrimerBloqueMB + tamAI(nbloques) - 1; 
@@ -55,6 +55,34 @@ int i;
 for (i=0;i<PadLenght;i++;){
 sb.padding[i] = '0'; 
 }
+//Write the structure in a block
+if(bwrite(posSB,&sb)==-1){
+printf("Error en fichero_basico.c en initSB");
+return -1;
+}else{
+return 0;
+}
+}
+
+//This function initalizes the bit map of the file system
+int initMB(usigned int nbloques){
+unsigned char buf[BLOCKSIZE];
+struct superbloque sb;
+if(bread(posSb,&sb)){
+printf("Error in initMB, while reading SB. file fichero_basico.c");
+return -1;
+}
+//Memory space reserved for bit maps
+memset(buf,0, BLOCKSIZE);
+int i;
+//Write all the blocks requiered
+for(i=sb.posPrimerBloqueMB; i<sb.posUltimoBloqueMB; i++){
+if(bwrite(i,buf)==-1){
+printf("Error in initMB, while writing block number %a. file fichero_basico.c", i);
+return -1;
+}
+}
+return 0;
 }
 
 

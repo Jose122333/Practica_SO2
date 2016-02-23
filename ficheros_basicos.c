@@ -5,39 +5,39 @@
 
 int main(){
 
-struct inodo ex;
-struct superbloque sb;
-printf("El tamaño del fichero es: %lu", sizeof(sb));
-printf("El tamaño del fichero es: %lu", sizeof(ex));
-printf ("sizeof time_t is: %d\n", sizeof(time_t));
-return 0;
+    struct inodo ex;
+    struct superbloque sb;
+    printf("El tamaño del fichero es: %lu", sizeof(sb));
+    printf("El tamaño del fichero es: %lu", sizeof(ex));
+    printf ("sizeof time_t is: %d\n", sizeof(time_t));
+    return 0;
 }
 //Returns the value(in blocks) of the bit map
 int tamMB(unsigned int nbloques){
     int auxMB = nbloques/8;
     //We have to check if the value is a integer
     if(auxMB % BLOCKSIZE != 0){
-       auxMB = auxMB/BLOCKSIZE;
-    }else{
-       auxMB = (auxMB/BLOCKSIZE)+1;
-    }
-    return auxMB;
+     auxMB = auxMB/BLOCKSIZE;
+ }else{
+     auxMB = (auxMB/BLOCKSIZE)+1;
+ }
+ return auxMB;
 }
 //Returns the value(in blocks) of inode array
 int tamAI(unsigned int ninodos){
     int auxAI = ninodos*TAM_INODO;
     //We have to check if the value is a integer
     if(auxAI % BLOCKSIZE !=0){
-    auxAI = auxAI/BLOCKSIZE;
+        auxAI = auxAI/BLOCKSIZE;
     }else{
-    auxAI = (auxAI/BLOCKSIZE)+1;
+        auxAI = (auxAI/BLOCKSIZE)+1;
     }
     return auxAI;
 }
 //This function initializes the superblock structure
 int initSB(unsigned int nbloques, unsigned int ninodos){
-int PadLenght = BLOCKSIZE - 12*sizeof(unsigned int);
-struct superbloque sb;
+    int PadLenght = BLOCKSIZE - 12*sizeof(unsigned int);
+    struct superbloque sb;
 //We initilize every node of the superblock structure
 sb.posPrimerBloqueMB = posSB + 1; //Tamaño SB = 1
 sb.posUltimoBloqueMB = sb.posPrimerBloqueMB + tamMB(nbloques) - 1;
@@ -49,41 +49,72 @@ sb.posInodoRaiz = 0;
 sb.posPrimerInodoLibre = 0;
 sb.cantBloquesLibres = nbloques;
 sb.cantInodosLibres = ninodos;
-sb.totBlouqes = nbloques;
+sb.totBloques = nbloques;
 sb.totInodos = ninodos;
 int i;
 for (i=0;i<PadLenght;i++;){
-sb.padding[i] = '0'; 
+    sb.padding[i] = '0'; 
 }
 //Write the structure in a block
 if(bwrite(posSB,&sb)==-1){
-printf("Error en fichero_basico.c en initSB");
-return -1;
+    printf("Error en fichero_basico.c en initSB");
+    return -1;
 }else{
-return 0;
+    return 0;
 }
 }
 
 //This function initalizes the bit map of the file system
 int initMB(usigned int nbloques){
-unsigned char buf[BLOCKSIZE];
-struct superbloque sb;
-if(bread(posSb,&sb)){
-printf("Error in initMB, while reading SB. file fichero_basico.c");
-return -1;
-}
+    unsigned char buf[BLOCKSIZE];
+    struct superbloque sb;
+    if(bread(posSb,&sb)){
+        printf("Error in initMB, while reading SB. file fichero_basico.c");
+        return -1;
+    }
 //Memory space reserved for bit maps
-memset(buf,0, BLOCKSIZE);
-int i;
+    memset(buf,0, BLOCKSIZE);
+    int i;
 //Write all the blocks requiered
-for(i=sb.posPrimerBloqueMB; i<sb.posUltimoBloqueMB; i++){
-if(bwrite(i,buf)==-1){
-printf("Error in initMB, while writing block number %a. file fichero_basico.c", i);
-return -1;
+    for(i=sb.posPrimerBloqueMB; i<sb.posUltimoBloqueMB; i++){
+        if(bwrite(i,buf)==-1){
+            printf("Error in initMB, while writing block number %a. file fichero_basico.c", i);
+            return -1;
+        }
+    }
+    return 0;
 }
-}
-return 0;
-}
+int initAI() {
+    int i,j;
+    int x =1;
+    unsigned inodo ai[BLOCKSIZE];
+    struct superbloque sb;
+    if(bread(posSb,&sb)){
+        printf("Error in initAI, while reading SB. file fichero_basico.c");
+        return -1;
+    }
+    //Memory space reserved for bit maps
+    memset(ai,0, BLOCKSIZE);
+    //Set all inodes to free in a linked list for each block of AI
+    for (i =sb.posPrimerBloqueAI; i <= sb.posUltimoBloqueAI; i++){
+        for(j=0; j< BLOCKSIZE/tamAI(sb.totInodos); j++){
+            ai[j].tipo= "l"; //type free inode
+            if(x< sb.totInodos){
+                ai[j].punterosDirectos[0]= x;
+            } else {
+                ai[j].punterosDirectos[0]= UNIT_MAX;
+            }
+        }
+        
+        if(bwrite(i,ai)==-1){
+            printf("Error in initMB, while writing block number %a. file fichero_basico.c", i);
+            return -1;
+        }
 
+    }
+    return 0;
+
+
+}
 
 

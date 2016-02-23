@@ -59,7 +59,7 @@ if(bwrite(posSB,&sb)==-1){
 int initMB(){
     unsigned char buf[BLOCKSIZE];
     struct superbloque sb;
-    if(bread(posSB,&sb)==-1){
+    if(bread(posSB,&sb)){
         printf("Error in initMB, while reading SB. file fichero_basico.c");
         return -1;
     }
@@ -80,7 +80,7 @@ int initAI() {
     int x =1;
     struct inodo ai[BLOCKSIZE];
     struct superbloque sb;
-    if(bread(posSB,&sb)==-1){
+    if(bread(posSB,&sb)){
         printf("Error in initAI, while reading SB. file fichero_basico.c");
         return -1;
     }

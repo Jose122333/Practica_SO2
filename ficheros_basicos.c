@@ -1,7 +1,6 @@
 #include "ficheros_basicos.h"
 #include "bloques.h"
-#include <stdio.h>
-#include <stdlib.h>
+
 
 //Returns the value(in blocks) of the bit map
 int tamMB(unsigned int nbloques){
@@ -89,7 +88,7 @@ int initAI() {
     //Set all inodes to free in a linked list for each block of AI
     for (i =sb.posPrimerBloqueAI; i <= sb.posUltimoBloqueAI; i++){
         for(j=0; j< BLOCKSIZE/TAM_INODO; j++){
-            ai[j].tipo= "l"; //type free inode
+            ai[j].tipo= 'l'; //type free inode
             if(x< sb.totInodos){
                 ai[j].punterosDirectos[0]= x;
                 x++;
@@ -106,8 +105,8 @@ int initAI() {
 
     }
     return 0;
-
-
 }
-
+void leer_sf(){
+    printf("El primer bloque del MB es: \n", );
+}
 

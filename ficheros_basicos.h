@@ -1,6 +1,11 @@
 #include <time.h>
 #include <limits.h>
 #include "bloques.h"
+#include <string.h>
+#include <unistd.h>
+#include <stdio.h>
+#include <stdlib.h>
+
 #define posSB 0 //el superbloque se escribe en el primer bloque de nuestro FS
 #define TAM_INODO 128 //tamaño en bytes de un inodo
 
@@ -53,6 +58,7 @@ int tamAI(unsigned int ninodos);
 int initSB(unsigned int nbloques, unsigned int ninodos);
 int initMB();
 int initAI();
+void leer_sf();
 
 
 

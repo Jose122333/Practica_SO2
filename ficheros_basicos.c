@@ -97,12 +97,13 @@ int initAI() {
     memset(ai,0, BLOCKSIZE);
     //Set all inodes to free in a linked list for each block of AI
     for (i =sb.posPrimerBloqueAI; i <= sb.posUltimoBloqueAI; i++){
-        for(j=0; j< BLOCKSIZE/tamAI(sb.totInodos); j++){
+        for(j=0; j< BLOCKSIZE/TAM_INODO; j++){
             ai[j].tipo= "l"; //type free inode
             if(x< sb.totInodos){
                 ai[j].punterosDirectos[0]= x;
             } else {
                 ai[j].punterosDirectos[0]= UNIT_MAX;
+                j = BLOCKSIZE/TAM_INODO; //Condition to exit for
             }
         }
         

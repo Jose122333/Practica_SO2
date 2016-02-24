@@ -1,4 +1,4 @@
-#include "ficheros_basicos.h"
+/#include "ficheros_basicos.h"
 #include "bloques.h"
 
 
@@ -77,7 +77,7 @@ int initMB(){
 int initAI() {
     int i,j;
     int x =1;
-    struct inodo ai[BLOCKSIZE];
+    struct inodo ai[BLOCKSIZE/TAM_INODO];
     struct superbloque sb;
     if(bread(posSB,&sb)==-1){
         printf("Error in initAI, while reading SB. file fichero_basico.c");

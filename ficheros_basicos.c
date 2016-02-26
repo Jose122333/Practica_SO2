@@ -1,4 +1,4 @@
-/#include "ficheros_basicos.h"
+#include "ficheros_basicos.h"
 #include "bloques.h"
 
 

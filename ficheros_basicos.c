@@ -111,7 +111,7 @@
 		int escribir_bit(unsigned int nbloque, unsigned int bit){
                 int posbyte;
                 int posbit;
-                int posBlock
+                int posBlock;
                 unsigned char bufferMB[BLOCKSIZE];    
                 unsigned char mascara = 128;     
                 struct superbloque sb;
@@ -152,7 +152,7 @@
 		unsigned char leer_bit(unsigned int nbloque){
                 int posbyte;
                 int posbit;
-                int posBlock
+                int posBlock;
                 unsigned char bufferMB[BLOCKSIZE];    
                 unsigned char mascara = 128;     
                 struct superbloque sb;

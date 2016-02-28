@@ -223,8 +223,8 @@
                         WARNING: HAY COSAS QUE FALTAN.
                         */
                         //We find the real block number in the system
-                        numbloque = ((bloqueMB - SB.posPrimerBloqueMB) * BLOCKSIZE+ posbyte) * 8 + posbit;
-                        if(escribit_bit(numbloque,1)){
+                        numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE+ posbyte) * 8 + posbit;
+                        if(escribir_bit(numbloque,1)){
                            //We update the super block, with the new info	
                            sb.cantBloquesLibres = sb.cantBloquesLibres-1;
                            if(bread(posSB,&sb)==-1){
@@ -262,6 +262,7 @@
 				}	                
                 return nbloque;
 			}
+			
 			int escribir_inodo(struct inodo inodo, unsigned int ninodo){
 				//Read the Sb
 				struct superbloque sb;
@@ -271,10 +272,80 @@
 				        printf("Error in liberar_bloque, while reading SB. file fichero_basico.c");
 				        return -1;
 				}
-               //We calculate the block where the inodo is located
-				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI())/ninodo;
-				//FALTA ACABAN
-
-
+               //We calculate the block where the inode is located
+				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI(sb.totInodos))/ninodo;
+				//We read the correspondent block
+				if(bread(nbloque,ai)==-1){
+				        printf("Error in liberar_bloque, while reading inode in IA. file fichero_basico.c");
+				        return -1;
+				}
+				//We assign the inode the new value of the inode to the previous
+				ai[(ninodo%(BLOCKSIZE/TAM_INODO))] = inodo;
+				//Finally we write the new value of the block
+				if(bwrite(nbloque,ai)==-1){
+				        printf("Error in liberar_bloque, while writing inode in IA. file fichero_basico.c");
+				        return -1;
+				}
+				return nbloque;								
+			}
+			struct inodo leer_inodo(unsigned int ninodo){
+				struct superbloque sb;
+				int nbloque;
+				struct inodo ai[BLOCKSIZE/TAM_INODO];
+				//Read the Sb
+				if(bread(posSB,&sb)==-1){
+				        printf("Error in liberar_bloque, while reading SB. file fichero_basico.c");
+                        //Revisar como se tiene que controlar la exception
+				}
+                //We calculate the block where the inode is located
+				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI(sb.totInodos))/ninodo;
+				//We read the correspondent block
+				if(bread(nbloque,ai)==-1){
+				        printf("Error in liberar_bloque, while reading inode in IA. file fichero_basico.c");	        
+                        //Revisar como se tiene que controlar la exception
+				}
+				return ai[(ninodo%(BLOCKSIZE/TAM_INODO))];
+			}
+			int reservar_inodo(unsigned char tipo, unsigned char permisos){
+				struct superbloque sb;
+				struct inodo inodoAux;
+				int ninodo;
+				//Read the sb
+				if(bread(posSB,&sb)==-1){
+				        printf("Error in reservar_inodo, while reading SB. file fichero_basico.c");
+				        return -1;
+				}
+				if(sb.cantInodosLibres>0){
+					 //Initialize the inode, with all the requiered variables
+                     inodoAux.tipo = tipo;
+                     inodoAux.permisos = permisos;
+                     inodoAux.atime = (time_t)NULL;
+                     inodoAux.mtime = (time_t)NULL;
+                     inodoAux.ctime = (time_t)NULL;
+                     inodoAux.nlinks = 1; 
+                     inodoAux.tamEnBytesLog = 0; 
+                     inodoAux.numBloquesOcupados = 0;
+                     int i;
+                     for (i = 0; i<12;i++){
+                     	inodoAux.punterosDirectos[i] = 0;
+                     }
+                     int j;
+                     for (j = 0; i<3;i++){
+                     	inodoAux.punterosDirectos[i] = 0;
+                     }
+                     inodoAux = leer_inodo(sb.posPrimerInodoLibre);
+                     ninodo = sb.posPrimerInodoLibre;
+                     escribir_inodo(inodoAux, ninodo);
+                     sb.posPrimerInodoLibre = inodoAux.punterosDirectos[0];
+                     sb.cantInodosLibres=sb.cantInodosLibres-1;
+				     if(bwrite(posSB,&sb)==-1){
+				        printf("Error in reservar_inodo, while reading SB. file fichero_basico.c");
+				        return -1;
+				      } 
+				      return ninodo;                    
+				}else{
+					printf("Error in reservar_inodo, there are no free inodes");
+					return -1;
+				}				
 			}
 

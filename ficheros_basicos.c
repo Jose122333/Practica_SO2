@@ -191,7 +191,8 @@
 				    int bloqueMB;
 				    int numbloque;
 				    int posbyte;
-				    int posbit; 				    
+				    int posbit; 
+				    unsigned char mascara = 128; 			    
 					//Read from the sb to obtain the location of the BM 
 				    if(bread(posSB,&sb)==-1){
 				        printf("Error in reservar_bloque, while reading SB. file fichero_basico.c");
@@ -218,10 +219,18 @@
                            	  return -1;
                            }
 	                    }
-	                    //Now we have located the free block, if there is any.
-                        /*
-                        WARNING: HAY COSAS QUE FALTAN.
-                        */
+	                    //We locate the position of the first free byte
+	                    posbyte = 0;
+	                    while(bufferLec[posbyte]==255){
+							posbyte++;
+	                    }
+	                    //We locate the position of the first free bit
+	                    posbit = 0;
+                        if (posbyte < 255) {
+                           while (posbyte & mascara) {
+                             posbit++;
+                             posbyte <<= 1;
+                        }
                         //We find the real block number in the system
                         numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE+ posbyte) * 8 + posbit;
                         if(escribir_bit(numbloque,1)){

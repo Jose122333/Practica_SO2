@@ -230,6 +230,7 @@
                            while (posbyte & mascara) {
                              posbit++;
                              posbyte <<= 1;
+                            }
                         }
                         //We find the real block number in the system
                         numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE+ posbyte) * 8 + posbit;

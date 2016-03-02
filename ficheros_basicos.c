@@ -107,7 +107,7 @@
 			void leer_sf(){
 			    printf("El primer bloque del MB es: \n");
 			}
-			//Function in charge of writing a value to a certain bit in the BM
+			//Function in charge of writing a specific value of a certain bit in the BM
 			int escribir_bit(unsigned int nbloque, unsigned int bit){
 	                int posbyte;
 	                int posbit;
@@ -149,6 +149,7 @@
 	                }
 	                return 0;               
 			}
+			//Function in charge of reading the value value of a certain bit in the BM
 			unsigned char leer_bit(unsigned int nbloque){
 	                int posbyte;
 	                int posbit;
@@ -184,6 +185,7 @@
 	                //If there was a 1 in the bit, the result will be 00000001
 	                return mascara;
 			}
+			//Reserves a free block, writing a 1 in the correspondent bit in the BM
 			int reservar_bloque(){
 				    struct superbloque sb;
 				    unsigned char bufferLec[BLOCKSIZE];
@@ -233,7 +235,7 @@
                             }
                         }
                         //We find the real block number in the system
-                        numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE+ posbyte) * 8 + posbit;
+                        numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE + posbyte) * 8 + posbit;
                         if(escribir_bit(numbloque,1)){
                            //We update the super block, with the new info	
                            sb.cantBloquesLibres = sb.cantBloquesLibres-1;
@@ -252,6 +254,7 @@
 	                	return -1;
 	                }
 			}
+			//Frees a certain block, by writing a 0 in the correspondent bit in the BM
 			int liberar_bloque(unsigned int nbloque){
 				struct superbloque sb;
 				//Read the sb
@@ -272,7 +275,7 @@
 				}	                
                 return nbloque;
 			}
-			
+			//Writes a new inode structure and adds it to the IA
 			int escribir_inodo(struct inodo inodo, unsigned int ninodo){
 				//Read the Sb
 				struct superbloque sb;
@@ -298,27 +301,30 @@
 				}
 				return nbloque;								
 			}
+			//Reads a ninode from the IA
 			struct inodo leer_inodo(unsigned int ninodo){
 				struct superbloque sb;
 				int nbloque;
 				struct inodo ai[BLOCKSIZE/TAM_INODO];
 				//Read the Sb
 				if(bread(posSB,&sb)==-1){
-				        printf("Error in liberar_bloque, while reading SB. file fichero_basico.c");
-                        //Revisar como se tiene que controlar la exception
+				    printf("Error in liberar_bloque, while reading SB. file fichero_basico.c");
+                    //Revisar como se tiene que controlar la exception
 				}
                 //We calculate the block where the inode is located
 				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI(sb.totInodos))/ninodo;
 				//We read the correspondent block
 				if(bread(nbloque,ai)==-1){
-				        printf("Error in liberar_bloque, while reading inode in IA. file fichero_basico.c");	        
-                        //Revisar como se tiene que controlar la exception
+				    printf("Error in liberar_bloque, while reading inode in IA. file fichero_basico.c");	        
+                    //Revisar como se tiene que controlar la exception
 				}
 				return ai[(ninodo%(BLOCKSIZE/TAM_INODO))];
 			}
+			//Reserves a Inode from the IA
 			int reservar_inodo(unsigned char tipo, unsigned char permisos){
 				struct superbloque sb;
 				struct inodo inodoAux;
+				struct inodo inodo;
 				int ninodo;
 				//Read the sb
 				if(bread(posSB,&sb)==-1){
@@ -327,25 +333,26 @@
 				}
 				if(sb.cantInodosLibres>0){
 					 //Initialize the inode, with all the requiered variables
-                     inodoAux.tipo = tipo;
-                     inodoAux.permisos = permisos;
-                     inodoAux.atime = (time_t)NULL;
-                     inodoAux.mtime = (time_t)NULL;
-                     inodoAux.ctime = (time_t)NULL;
-                     inodoAux.nlinks = 1; 
-                     inodoAux.tamEnBytesLog = 0; 
-                     inodoAux.numBloquesOcupados = 0;
+                     inodo.tipo = tipo;
+                     inodo.permisos = permisos;
+                     inodo.atime = (time_t)NULL;
+                     inodo.mtime = (time_t)NULL;
+                     inodo.ctime = (time_t)NULL;
+                     inodo.nlinks = 1; 
+                     inodo.tamEnBytesLog = 0; 
+                     inodo.numBloquesOcupados = 0;
                      int i;
                      for (i = 0; i<12;i++){
-                     	inodoAux.punterosDirectos[i] = 0;
+                     	inodo.punterosDirectos[i] = 0;
                      }
                      int j;
                      for (j = 0; i<3;i++){
-                     	inodoAux.punterosDirectos[i] = 0;
+                     	inodo.punterosDirectos[i] = 0;
                      }
+                     inodoAux=inodo;
                      inodoAux = leer_inodo(sb.posPrimerInodoLibre);
                      ninodo = sb.posPrimerInodoLibre;
-                     escribir_inodo(inodoAux, ninodo);
+                     escribir_inodo(inodo, ninodo);
                      sb.posPrimerInodoLibre = inodoAux.punterosDirectos[0];
                      sb.cantInodosLibres=sb.cantInodosLibres-1;
 				     if(bwrite(posSB,&sb)==-1){
@@ -358,4 +365,88 @@
 					return -1;
 				}				
 			}
+			int obtener_rangoBL(struct inodo inodo, int nblogico, int *ptr){
+				//We calculate how many pointer are allowed
+				int numPunteros = BLOCKSIZE/sizeof(unsigned int);
+				//For each level of pointers, a limit variables is created 
+				int punterosDirectos = 12;
+				int punterosIndirectos1 = 12 + numPunteros;
+				int punterosIndirectos2 = numPunteros*numPunteros + punterosIndirectos1;
+				int punterosIndirectos3 = numPunteros*numPunteros*numPunteros + punterosIndirectos2;
+				int rangoBL;
+				//Now we check in which level is located our pointer
+				if (nblogico<punterosDirectos){
+				    //The logical block is located in the direct pointers	
+				    *ptr = inodo.punterosDirectos[nblogico];	
+				    rangoBL = 0;	
+				}else if (nblogico<punterosIndirectos1){
+				    //The logical block is located in the 1st level of indirect pointers						
+				    *ptr = inodo.punterosIndirectos[0];
+				    rangoBL = 1;	
+				}else if (nblogico<punterosIndirectos2){
+					//The logical block is located in the 2nd level of indirect pointers		
+					*ptr = inodo.punterosIndirectos[1];
+					rangoBL = 2;					 
+				}else if (nblogico<punterosIndirectos3){
+					//The logical block is located in the 3rd level of indirect pointers
+					*ptr = inodo.punterosIndirectos[2];
+					rangoBL = 3;
+				}else{
+					printf("Error in obtener_rangoBL, the logic block introduced is incorrect. file fichero_basico.c");
+					rangoBL = -1;
+				}							
+            return rangoBL;
+			}
+			int obtener_indice (int nblogico, int nivel_punteros){
+				//We calculate how many pointer are allowed
+				int numPunteros = BLOCKSIZE/sizeof(unsigned int);
+				//For each level of pointers, a limit variables is created 
+				int punterosDirectos = 12;
+				int punterosIndirectos0 = 12 + numPunteros;
+				int punterosIndirectos1 = numPunteros*numPunteros + punterosIndirectos1;
+				int punterosIndirectos2 = numPunteros*numPunteros*numPunteros + punterosIndirectos2;
+				int index;
+				if (nblogico<punterosDirectos){
+					// We are currently located in the direct pointers list
+					index = nblogico;
+				}else{
+					if(nblogico<punterosIndirectos0){
+						// Returns the index of the 1st level of indirect pointers
+						index = nblogico-punterosDirectos;
+					}else{
+						if (nblogico<punterosIndirectos1){
+							if (nivel_punteros == 2){
+								// Returns the index of the 2nd level of indirect pointers
+								index = (nblogico - punterosIndirectos0) / numPunteros;
+							}else if (nivel_punteros == 1){
+								// Returns the index of the 1st level of indirect pointers
+								index = (nblogico - punterosIndirectos0) % numPunteros;
+							}else{
+							printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+					        index = -1;
+							}
+						}else{
+							if (nblogico<punterosIndirectos2){
+								if (nivel_punteros == 3){
+									// Returns the index of the 3rd level of indirect pointers
+									index = (nblogico - punterosIndirectos1)/(numPunteros*numPunteros);									
+								}else if (nivel_punteros == 2){
+									// Returns the index of the 2nd level of indirect pointers
+									index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))/numPunteros;	
+								}else if (nivel_punteros == 1){
+									// Returns the index of the 1st level of indirect pointers
+                                    index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))%numPunteros;
+								}else{
+							        printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+					                index = -1;									
+								}
+							}else{
+							    printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+					            index = -1;									
+					        }
+						}
+					}
+				}
+                return index;
+			} 
 

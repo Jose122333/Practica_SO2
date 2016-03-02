@@ -66,7 +66,9 @@ int liberar_bloque(unsigned int nbloque);
 int escribir_inodo(struct inodo inodo, unsigned int ninodo);
 struct inodo leer_inodo(unsigned int ninodo);
 int reservar_inodo(unsigned char tipo, unsigned char permisos);
-
+int traducir_bloque_inodo(unsigned int ninodo, unsigned int nblogico, char reservar);
+int obtener_rangoBL(struct inodo inodo, int nblogico, int *ptr);
+int obtener_indice (int nblogico, int nivel_punteros);
 void leer_sf();
 
 

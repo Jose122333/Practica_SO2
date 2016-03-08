@@ -32,7 +32,7 @@
 			sb.posPrimerBloqueMB = posSB + 1; //Tamaño SB = 1
 			sb.posUltimoBloqueMB = sb.posPrimerBloqueMB + tamMB(nbloques) - 1;
 			sb.posPrimerBloqueAI = sb.posUltimoBloqueMB + 1;
-			sb.posUltimoBloqueAI = sb.posPrimerBloqueMB + tamAI(nbloques) - 1; 
+			sb.posUltimoBloqueAI = sb.posPrimerBloqueAI + tamAI(ninodos) - 1; 
 			sb.posPrimerBloqueDatos = sb.posUltimoBloqueAI + 1;
 			sb.posUltimoBloqueDatos = nbloques - 1;
 			sb.posInodoRaiz = 0;
@@ -347,7 +347,7 @@
                      }
                      int j;
                      for (j = 0; i<3;i++){
-                     	inodo.punterosDirectos[i] = 0;
+                     	inodo.punterosIndirectos[i] = 0;
                      }
                      inodoAux=inodo;
                      inodoAux = leer_inodo(sb.posPrimerInodoLibre);
@@ -448,5 +448,97 @@
 					}
 				}
                 return index;
-			} 
+			}
+			int traducir_bloque_inodo(unsigned int ninodo, unsigned int nblogico, char reservar){
+				struct inodo ind;
+				int ptr,ptr_ant,salvar_inodo = 0;
+				int nivel_punteros;
+				int rangoBL;
+				int index;
+				int bufferAux[BLOCKSIZE/sizeof(int)];
+				//First we read the selected inode
+				ind = leer_inodo(ninodo);
+				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
+				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
+				nivel_punteros=rangoBL;
+				while(nivel_punteros>0){
+					if (ptr==0){
+						if (reservar=='0'){
+							printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), file ficheros_basicos.c");
+							return -1;
+						}else{
+							salvar_inodo = 1;
+							//Reserve the seleccted block
+							ptr = reservar_bloque();
+							//Fill a buffer with 0
+							memset (bufferAux, 0, BLOCKSIZE);
+							//Now we write the value of the buffer in the file system.
+							if(bwrite(ptr,bufferAux)==-1){
+							printf("Error in traducir_bloque_inodo while writing a block(while), file ficheros_basicos.c");
+							return -1;								
+							}
+							ind.numBloquesOcupados++;
+							ind.ctime = time(NULL);
+						    if (nivel_punteros == rangoBL){
+								ind.punterosIndirectos[rangoBL-1]=ptr;
+							}else{
+							   if(bread(ptr_ant,bufferAux)==-1){
+							        printf("Error in traducir_bloque_inodo while reading a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
+							        return -1;								
+								}
+                                bufferAux[index] = ptr_ant;
+								if(bwrite(ptr_ant,bufferAux)==-1){
+							        printf("Error in traducir_bloque_inodo while writing a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
+							        return -1;	
+								}																							
+							}
+						}						
+					}
+					if(bread(ptr,bufferAux)==-1){
+						printf("Error in traducir_bloque_inodo while writing a block, file ficheros_basicos.c");
+						return -1;								
+					}
+					index = obtener_indice(nblogico,nivel_punteros);
+					if(index==-1){
+						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						return -1;									
+					}
+					ptr_ant=ptr;
+					ind.punterosDirectos[index] = ptr;
+					nivel_punteros--;                
+			}
+			if(ptr==0){
+				if(reservar == 0){
+						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						return -1;						
+					}else{
+						salvar_inodo = 1;
+					    ptr = reservar_bloque();
+					    ind.numBloquesOcupados++;
+					    ind.ctime = time(NULL);
+					    if (rangoBL=0){
+					    	ind.punterosDirectos[nblogico] = ptr;
+					    }else{
+					    	if(bread(ptr_ant,bufferAux)==-1){
+							    printf("Error in traducir_bloque_inodo while reading a block(ptr==0), file ficheros_basicos.c");
+							    return -1;								
+							}
+                            bufferAux[index]=ptr_ant;
+							if(bwrite(ptr_ant,bufferAux)==-1){
+							    printf("Error in traducir_bloque_inodo while writing a block(ptr==0), file ficheros_basicos.c");
+							    return -1;	
+							}	
+
+					    }
+					}
+			}
+			if (salvar_inodo==1){
+				if(escribir_inodo(ind,ninodo)==-1){
+						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						return -1;						
+				}
+			}
+			return ptr;
+		}	 
+			
 

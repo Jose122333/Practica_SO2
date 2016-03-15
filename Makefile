@@ -1,6 +1,6 @@
-SOURCES=bloques.c ficheros_basicos.c my_mkfs.c leer_SF.c
-LIBRARIES=bloques.o ficheros_basicos.o
-INCLUDES=bloques.h ficheros_basicos.h
+SOURCES=bloques.c ficheros_basicos.c my_mkfs.c leer_SF.c ficheros.c
+LIBRARIES=bloques.o ficheros_basicos.o ficheros.o
+INCLUDES=bloques.h ficheros_basicos.h ficheros.h
 PROGRAMS=my_mkfs leer_SF
 OBJS=$(SOURCES:.c=.o)
 

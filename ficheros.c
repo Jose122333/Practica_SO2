@@ -8,52 +8,81 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 	int ultimoBloque;
 	int bf;
 	int total;
+	int desp1 = setBottomLimit(offset);
+	int desp2 = setTopLimit(offset,nbytes);
 	//First we have to read the inode, to check if we can use the function
 	inode = leer_inodo(ninodo);
 	if((inode.permisos & 2) == 2){
-	   //We calculate the first and the last block to be written to
+	   //We calculate the first and the last logical block to be written to
        primerBloque = offset/BLOCKSIZE;
        ultimoBloque = (offset+nbytes-1)/BLOCKSIZE;
+       if(primerBloque == ultimoBloque){
+            bf = traducir_bloque_inodo(ninodo,primerBloque,1);
+            if(bread(bf,buf_aux)==-1){
+				printf("Error in mi_write_f while reading(first=last) the block, file ficheros.c");
+	    		return -1;                	
+            }
+            memcpy (buf_aux + desp1, buf_original, nbytes);
+            if(bwrite(bf,buf_aux)==-1){
+				printf("Error in mi_write_f while writing(first) the block, file ficheros.c");
+	    		return -1;                 	
+            }
+       }else{       	
        int i;
        //loop that checks all the blocks to be written into
-       for (i=primerBloque;i<ultimoBloque;i++){
+       for (i=primerBloque;i<=ultimoBloque;i++){
        	    //Translate the logical value of the block
        	    bf = traducir_bloque_inodo(ninodo,i,1);
        	    if(bf==-1){
 				printf("Error in mi_write_f translating the block into phisical value, file ficheros.c");
 	    		return -1;    			
     		}
-       	    //calculate the limits of where are we going to write
-       		int start = setBottomLimit(offset);
-       		int end = setTopLimit(offset,nbytes);
-       		//Check if the limits contain a complete block
-       		if(start || end < BLOCKSIZE){
-       			if(bread(bf,buf_aux)==-1){
-    				printf("Error in mi_write_f while reading phisical block, file ficheros.c");
-	    			return -1;   
-    			}
-       		}            
-    		total +=nbytes;
-    		memcpy(buf_aux+offset,buf_original+total,nbytes);
-    		if(bwrite(bf,buf_aux)){
-    			printf("Error in mi_write_f while writing phisical block, file ficheros.c");
-	    		return -1;   
+    		//If the block to be written into is the first
+    		if(i==primerBloque){
+              if(bread(bf,buf_aux)==-1){
+				printf("Error in mi_write_f while reading(first) the block, file ficheros.c");
+	    		return -1;                	
+              }
+              memcpy (buf_aux + desp1, buf_original, BLOCKSIZE - desp1);
+              if(bwrite(bf,buf_aux)==-1){
+				printf("Error in mi_write_f while writing(first) the block, file ficheros.c");
+	    		return -1;                 	
+              }
+            //If the block to be written into is the last
+    		}else if (i==ultimoBloque){
+              	if(bread(bf,buf_aux)==-1){
+					printf("Error in mi_write_f while reading(last) the block, file ficheros.c");
+	    			return -1;                	
+                }
+                memcpy (buf_aux, buf_original + (nbytes - desp2 - 1), desp2 + 1);
+                if(bwrite(bf,buf_aux)==-1){
+					printf("Error in mi_write_f while writing(last) the block, file ficheros.c");
+	    			return -1;                 	
+                }                    			
+            //If the block to be written is in between
+    		}else{
+        	     if(bwrite (bf, buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE) == -1){
+ 					printf("Error in mi_write_f while writing(in between) the block, file ficheros.c");
+	    			return -1;           
+               }
     		}
-          
        }
-       inode = leer_inodo(ninodo);
-       //FALTA ACTUALIZAR EL VALOR DEL INODO, SI HEMOS ESCRITO MÁS DE LO QUE TENEMOS EN EL FICHERO
-       inode.mtime = time(NULL);
-       inode.ctime = time(NULL);
-       if(escribir_inodo(inode,ninodo)==-1){
-		printf("Error in mi_write_f while writing updated inode, file ficheros.c");
-	    return -1;
-       }
-       return nbytes;
+   }
 	}else{
 		printf("Error in mi_write_f, file does not have the correct permissions, file ficheros.c");
 	    return -1;
 	}
+	inode = leer_inodo(ninodo);
+    if(inode.tamEnBytesLog<offset+nbytes){
+       		inode.tamEnBytesLog = offset+nbytes;	
+    }
+       inode.mtime = time(NULL);
+       inode.ctime = time(NULL);
+       if(escribir_inodo(inode,ninodo)==-1){
+			printf("Error in mi_write_f while writing updated inode, file ficheros.c");
+	    	return -1;
+    	}
+    return nbytes;
 }
 int setBottomLimit(int offset){
   return (offset%BLOCKSIZE);

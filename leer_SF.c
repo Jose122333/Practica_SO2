@@ -1,57 +1,60 @@
 #include "bloques.h"
-#include <string.h>
 #include "ficheros_basicos.h"
-
 int main(int argc, char **argv){
-int numBlocks = atoi(argv[2]);
-int descriptor = bmount(argv[1]);
-int numInodos = atoi(argv[3]);
-struct superbloque sb;
-if (descriptor==-1)
-{
-	printf("Error in bmount function, file leer_SF.c");
-}
-//First we intialize all the different fields
-initSB(numBlocks,numInodos);
-initMB();
-initAI();
-//We show how many blocks are required for the BM and the IA
-printf("The number of blocks requiered for the bit map is: %d",tamMB(numBlocks));
-printf("\n");
-printf("The number of blocks requiered for the inode array is: %d",tamAI(numInodos));
-printf("\n");
-//We read the value of the superblock and we show each element
-if (bread(posSB,&sb)==-1)
-{
-	printf("Error in bread function, file leer_SF.c");
-}
-printf("The value of the position of the first block of the BM is: %d",sb.posPrimerBloqueMB);
-printf("\n");
-printf("The value of the position of the last block of the BM is: %d",sb.posUltimoBloqueMB);
-printf("\n");
-printf("The value of the position of the first block of the IA is: %d",sb.posPrimerBloqueAI);
-printf("\n");
-printf("The value of the position of the last block of the IA is: %d",sb.posUltimoBloqueAI);
-printf("\n");
-printf("The value of the position of the first block of data is: %d",sb.posPrimerBloqueDatos);
-printf("\n");
-printf("The value of the position of the last block of data is: %d",sb.posUltimoBloqueDatos);
-printf("\n");
-printf("The value of the position of the root inode is: %d",sb.posInodoRaiz);
-printf("\n");
-printf("The value of the position of the first free block is: %d",sb.posPrimerInodoLibre);
-printf("\n");
-printf("The number of free block is: %d",sb.cantBloquesLibres);
-printf("\n");
-printf("The number of free inodes is: %d",sb.cantInodosLibres);
-printf("\n");
-printf("The total number of blocks is: %d",sb.totBloques);
-printf("\n");
-printf("The total number of inodes is: %d",sb.totInodos);
-printf("\n");
-//We close the file
-if(bumount(descriptor)==-1){
-	printf("Error in umount function, file leer_SF.c");
-}
-return 0;
+	struct superbloque SB;
+	struct tm *ts;
+	char atime[80], mtime[80], ctime[80],*tipo,perm[3];
+	struct inodo in;
+	struct inodo ar_in[BLOCKSIZE/TAM_INODO];
+	int ninodo,i,j;
+	if(argc<2) return -1;
+	if(bmount(argv[1])<0){
+		exit(1);
+	}
+	if(bread(posSB,&SB)<0) return -1;
+	printf("-----Información del fichero %s-----\n", argv[1]);
+	printf("\t*****Tamaños*****\n");
+	printf("#Cantidad total de bloques para el mapa de bits son: %d \n",tamMB(SB.totBloques));
+	printf("#Cantidad total de bloques para el array de inodos son: %d \n",tamAI(SB.totInodos));
+	printf("\t*****Superbloque*****\n");
+	printf("#Posición del primer bloque del mapa de bits: %d \n",SB.posPrimerBloqueMB);
+	printf("#Posición del último bloque del mapa de bits: %d \n",SB.posUltimoBloqueMB);
+	printf("#Posición del primer bloque del array de inodos: %d \n",SB.posPrimerBloqueAI);
+	printf("#Posición del último bloque del array de inodos: %d \n",SB.posUltimoBloqueAI);
+	printf("#Posición del primer bloque de datos: %d \n",SB.posPrimerBloqueDatos);
+	printf("#Posición del último bloque de datos: %d \n",SB.posUltimoBloqueDatos);
+	printf("#Posición del inodo del directorio raíz: %d \n",SB.posInodoRaiz);
+	printf("#Posición del primer inodo libre: %d \n",SB.posPrimerInodoLibre);
+	printf("#Cantidad de bloques libres: %d \n",SB.cantBloquesLibres);
+	printf("#Cantidad de inodos libres: %d \n",SB.cantInodosLibres);
+	printf("#Cantidad total de bloques: %d \n",SB.totBloques);
+	printf("#Cantidad total de inodos: %d \n",SB.totInodos);
+	printf("\n\t*****Bloques Ocupados*****\n");
+	/*j=0;
+	for(ninodo=0;ninodo<SB.totBloques;ninodo++){
+		i=leer_bit(ninodo);
+		if(i==1) {
+			if(j%6==0) printf("\n");
+			printf("%d\t",ninodo);
+			j++;
+		}
+	}
+	printf("\n\n \t*****Array de Inodos*****\n");
+	printf("#Tamaño Inodo: %d\n",TAM_INODO);
+	int m;
+	for (m=SB.posPrimerBloqueAI;m<=SB.posUltimoBloqueAI;m++) {
+	    bread(m,ar_in);
+	    int k;
+	   for(k=0;k<BLOCKSIZE/TAM_INODO;k++){
+	   		in = leer_inodo(k);
+			if(in.tipo!='l'){
+			perm[0]= ((unsigned char)in.permisos&(unsigned char)1)==0 ?'-':'X'; 
+			perm[1]=((unsigned char)in.permisos&(unsigned char)2)==0?'-':'W';
+			perm[2]=((unsigned char)in.permisos&(unsigned char)4)==0?'-':'R';
+			tipo=in.tipo=='d'? "Directorio" : "Fichero";
+			printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,in.nlinks,in.tamEnBytesLog,in.numBloquesOcupados);
+			printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,ctime);
+		}
+	   } 	
+	}*/
 }

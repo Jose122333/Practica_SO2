@@ -4,25 +4,19 @@
 
 			//Returns the value(in blocks) of the bit map
 			int tamMB(unsigned int nbloques){
-			    int auxMB = nbloques/8;
-			    //We have to check if the value is a integer
-			    if(auxMB % BLOCKSIZE != 0){
-			     auxMB = auxMB/BLOCKSIZE;
-			 }else{
-			     auxMB = (auxMB/BLOCKSIZE)+1;
-			 }
-			 return auxMB;
+			int MB= (nbloques/8)/BLOCKSIZE;
+				if(nbloques%(BLOCKSIZE)!=0){
+					MB++;
+				}
+			return MB;
 			}
 			//Returns the value(in blocks) of inode array
 			int tamAI(unsigned int ninodos){
-			    int auxAI = ninodos*TAM_INODO;
-			    //We have to check if the value is a integer
-			    if(auxAI % BLOCKSIZE !=0){
-			        auxAI = auxAI/BLOCKSIZE;
-			    }else{
-			        auxAI = (auxAI/BLOCKSIZE)+1;
-			    }
-			    return auxAI;
+				int AI=(ninodos * TAM_INODO) / BLOCKSIZE;
+				if((ninodos * TAM_INODO) % BLOCKSIZE!=0){
+					AI++;
+				}
+			return AI;
 			}
 			//This function initializes the superblock structure
 			int initSB(unsigned int nbloques, unsigned int ninodos){
@@ -71,7 +65,7 @@
 			    memset(buf,0, BLOCKSIZE);
 			    int i;
 			    //Write all the blocks requiered
-			    for(i=sb.posPrimerBloqueMB; i<sb.posUltimoBloqueMB; i++){
+			    for(i=sb.posPrimerBloqueMB; i<=sb.posUltimoBloqueMB; i++){
 			        if(bwrite(i,buf)==-1){
 			            printf("Error in initMB, while writing block number %d. file fichero_basico.c", i);
 			            return -1;
@@ -82,7 +76,7 @@
 			    	}
 			    	sb.cantBloquesLibres--;
 			    }
-			    for(i=sb.posPrimerBloqueAI; i<sb.posUltimoBloqueAI; i++){
+			    for(i=sb.posPrimerBloqueAI; i<=sb.posUltimoBloqueAI; i++){
 			        if(escribir_bit(i,1)==-1){
 			        printf("Error in initMB, while wrtiting bit in MB refering to MB. file fichero_basico.c");
 			        return -1;			    	
@@ -96,7 +90,7 @@
                 
 			    return 0;
 			}
-			int initAI() {
+			int initAI(unsigned int ninodos) {
 			    int i,j;
 			    int x =1;
 			    struct inodo ai[BLOCKSIZE/TAM_INODO];
@@ -118,12 +112,13 @@
 			                ai[j].punterosDirectos[0]= UINT_MAX;
 			                j = BLOCKSIZE/TAM_INODO; //Condition to exit for
 			            }
-			        }      
+			        }     
 			        if(bwrite(i,ai)==-1){
 			            printf("Error in initMB, while writing block number %d. file fichero_basico.c", i);
 			            return -1;
 			        }
 			    }
+
 			    return 0;
 			}
 			void leer_sf(){
@@ -312,7 +307,7 @@
 				        return -1;
 				}
                //We calculate the block where the inode is located
-				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI(sb.totInodos))/ninodo;
+				nbloque = sb.posPrimerBloqueAI+(ninodo/(BLOCKSIZE/TAM_INODO));
 				//We read the correspondent block
 				if(bread(nbloque,ai)==-1){
 				        printf("Error in escribir_inodo, while reading inode in IA. file fichero_basico.c");
@@ -338,7 +333,7 @@
                     //Revisar como se tiene que controlar la exception
 				}
                 //We calculate the block where the inode is located
-				nbloque = ((BLOCKSIZE/TAM_INODO)*tamAI(sb.totInodos))/ninodo;
+				nbloque = sb.posPrimerBloqueAI+(ninodo/(BLOCKSIZE/TAM_INODO));
 				//We read the correspondent block
 				if(bread(nbloque,ai)==-1){
 				    printf("Error in leer_inodo, while reading inode in IA. file fichero_basico.c");	        
@@ -349,7 +344,6 @@
 			//Reserves a Inode from the IA
 			int reservar_inodo(unsigned char tipo, unsigned char permisos){
 				struct superbloque sb;
-				struct inodo inodoAux;
 				struct inodo inodo;
 				int ninodo;
 				//Read the sb
@@ -358,6 +352,10 @@
 				        return -1;
 				}
 				if(sb.cantInodosLibres>0){
+					 //Read the corresponding inode					 
+					 inodo = leer_inodo(sb.posPrimerInodoLibre);
+					 ninodo = sb.posPrimerInodoLibre;
+					 sb.posPrimerInodoLibre = inodo.punterosDirectos[0];
 					 //Initialize the inode, with all the requiered variables
                      inodo.tipo = tipo;
                      inodo.permisos = permisos;
@@ -375,11 +373,7 @@
                      for (j = 0; i<3;i++){
                      	inodo.punterosIndirectos[i] = 0;
                      }
-                     inodoAux=inodo;
-                     inodoAux = leer_inodo(sb.posPrimerInodoLibre);
-                     ninodo = sb.posPrimerInodoLibre;
                      escribir_inodo(inodo, ninodo);
-                     sb.posPrimerInodoLibre = inodoAux.punterosDirectos[0];
                      sb.cantInodosLibres=sb.cantInodosLibres-1;
 				     if(bwrite(posSB,&sb)==-1){
 				        printf("Error in reservar_inodo, while reading SB. file fichero_basico.c");

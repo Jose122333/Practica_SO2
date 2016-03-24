@@ -57,7 +57,7 @@ int tamMB(unsigned int nbloques);
 int tamAI(unsigned int ninodos);
 int initSB(unsigned int nbloques, unsigned int ninodos);
 int initMB();
-int initAI();
+int initAI(unsigned int ninodos);
 //Functions that belong to stage 3
 int escribir_bit(unsigned int nbloque, unsigned int bit);
 unsigned char leer_bit(unsigned int nbloque);

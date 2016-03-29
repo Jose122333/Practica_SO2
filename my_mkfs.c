@@ -21,6 +21,7 @@ initMB();
 initAI(numInodos);
 
 reservar_inodo('d','7');
+reservar_inodo('f','6');
 
 umount(argv[1]);
 return 0;

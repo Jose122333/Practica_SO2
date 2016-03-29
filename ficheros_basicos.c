@@ -56,11 +56,6 @@
 			        printf("Error in initMB, while reading SB. file fichero_basico.c");
 			        return -1;
 			    }
-			    if(escribir_bit(posSB,1)==-1){
-			        printf("Error in initMB, while wrtiting bit in MB refering to SB. file fichero_basico.c");
-			        return -1;			    	
-			    }
-			    sb.cantBloquesLibres--;
 			    //Memory space reserved for bit maps
 			    memset(buf,0, BLOCKSIZE);
 			    int i;
@@ -82,7 +77,12 @@
 			        return -1;			    	
 			    	}
 			    	sb.cantBloquesLibres--;
-			    }			    
+			    }
+			    if(escribir_bit(posSB,1)==-1){
+			        printf("Error in initMB, while wrtiting bit in MB refering to SB. file fichero_basico.c");
+			        return -1;			    	
+			    }
+			    sb.cantBloquesLibres--;			    
 			    if(bwrite(posSB,&sb)==-1){
 			        printf("Error in initMB, while writng SB. file fichero_basico.c");
 			        return -1;
@@ -147,7 +147,7 @@
 	                if(bread(posBlock,bufferMB)==-1){
 				        printf("Error in escribir_bit, while reading block in BM. file fichero_basico.c");
 				        return -1;
-	                }
+	                }	               
 	                //We assign the value of the mask
 	                mascara >>= posbit;
 	                //Now, we calculate the precise byte of the block
@@ -155,10 +155,9 @@
 	                //Regarding the value of the bit to write, we do the respective calculation
 	                if (bit == 1){
 	                  bufferMB[posbyte] |= mascara;
-	                  //printf("%u\n",bufferMB[posbyte]);
 	                }else if (bit == 0)
 	                {
-	                	bufferMB[posbyte] &= ~mascara; 
+	                	bufferMB[posbyte] &= ~mascara;
 	                }
 	                //Finally, we write the new value of the block
 	                if(bwrite(posBlock,bufferMB)==-1){
@@ -181,7 +180,7 @@
 				        return -1;
 				    }
 	                posbyte = nbloque/8;
-	                posbit = posbyte%8;
+	                posbit = nbloque%8;
 	                //Calculte the block position where the bit will be replaced
 	                posBlock = (posbyte/BLOCKSIZE)+sb.posPrimerBloqueMB;
 	                //Memory space reserved for inode array
@@ -191,6 +190,7 @@
 				        printf("Error in leer_bit, while reading block in BM. file fichero_basico.c");
 				        return -1;
 	                }
+	                //printf("%u", bufferMB[posbyte]);
 	                //Now, we calculate the precise byte of the block
 	                posbyte = posbyte % BLOCKSIZE;
 	                //We allocate to the desired bit

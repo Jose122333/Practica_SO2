@@ -6,13 +6,13 @@ then
    rm $FILE
    make clean
    make
-   ./my_mkfs $FILE 10000
+   ./my_mkfs $FILE 100000
    ./leer_SF $FILE
    make clean
 else
    make clean
    make
-   ./my_mkfs $FILE 10000
+   ./my_mkfs $FILE 100000
    ./leer_SF $FILE
    make clean
 fi

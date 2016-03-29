@@ -1,18 +1,34 @@
 #include "bloques.h"
 #include "ficheros_basicos.h"
+
+void mostrarSB(struct superbloque SB);
+void mostrarBM(struct superbloque SB);
+void mostrarIA(struct superbloque SB);
+
 int main(int argc, char **argv){
 	struct superbloque SB;
 	struct tm *ts;
-	char atime[80], mtime[80], ctime[80],*tipo,perm[3];
 	struct inodo in;
-	struct inodo ar_in[BLOCKSIZE/TAM_INODO];
-	int ninodo,i,j;
+	unsigned char buf[BLOCKSIZE];
+	int nbloque,i,j;
 	if(argc<2) return -1;
 	if(bmount(argv[1])<0){
 		exit(1);
 	}
 	if(bread(posSB,&SB)<0) return -1;
 	printf("-----Información del fichero %s-----\n", argv[1]);
+	mostrarSB(SB);
+	//printf("\n\t*****Bloques Ocupados*****\n");
+	/*if(bread(SB.posPrimerBloqueMB,buf)<0) return -1;
+	for (i = 0; i < 1024; i++){
+    	if (i > 0) printf(":");
+    	printf("%u", buf[i]);
+	}*/
+	mostrarBM(SB);
+	mostrarIA(SB);
+}
+
+void mostrarSB(struct superbloque SB){
 	printf("\t*****Tamaños*****\n");
 	printf("#Cantidad total de bloques para el mapa de bits son: %d \n",tamMB(SB.totBloques));
 	printf("#Cantidad total de bloques para el array de inodos son: %d \n",tamAI(SB.totInodos));
@@ -29,32 +45,38 @@ int main(int argc, char **argv){
 	printf("#Cantidad de inodos libres: %d \n",SB.cantInodosLibres);
 	printf("#Cantidad total de bloques: %d \n",SB.totBloques);
 	printf("#Cantidad total de inodos: %d \n",SB.totInodos);
-	printf("\n\t*****Bloques Ocupados*****\n");
-	/*j=0;
-	for(ninodo=0;ninodo<SB.totBloques;ninodo++){
-		i=leer_bit(ninodo);
-		if(i==1) {
-			if(j%6==0) printf("\n");
-			printf("%d\t",ninodo);
-			j++;
-		}
-	}
+}
+
+void mostrarIA(struct superbloque SB){
+	char atime[80], mtime[80], ctime[80],*tipo,perm[3];
+	struct inodo in;
+	int ninodo;
 	printf("\n\n \t*****Array de Inodos*****\n");
 	printf("#Tamaño Inodo: %d\n",TAM_INODO);
-	int m;
-	for (m=SB.posPrimerBloqueAI;m<=SB.posUltimoBloqueAI;m++) {
-	    bread(m,ar_in);
-	    int k;
-	   for(k=0;k<BLOCKSIZE/TAM_INODO;k++){
-	   		in = leer_inodo(k);
+	for(ninodo=0;ninodo<SB.totInodos;ninodo++){
+	   		in = leer_inodo(ninodo);
 			if(in.tipo!='l'){
 			perm[0]= ((unsigned char)in.permisos&(unsigned char)1)==0 ?'-':'X'; 
 			perm[1]=((unsigned char)in.permisos&(unsigned char)2)==0?'-':'W';
 			perm[2]=((unsigned char)in.permisos&(unsigned char)4)==0?'-':'R';
 			tipo=in.tipo=='d'? "Directorio" : "Fichero";
 			printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,in.nlinks,in.tamEnBytesLog,in.numBloquesOcupados);
-			printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,ctime);
 		}
-	   } 	
-	}*/
+	   } 
+}
+
+void mostrarBM(struct superbloque SB){
+	int nbloque,i,j;
+	printf("\n\t*****Bloques Ocupados*****\n");
+	j=0;
+	for(nbloque=0;nbloque<SB.totBloques;nbloque++){
+		i=leer_bit(nbloque);
+		if(i==1) {
+			if(j%6==0) printf("\n");
+			printf("%d\t",nbloque);
+			j++;
+		}
+	}
+	printf("\n");
+	printf("Numero de Bloques Ocupados totales es: %d\n",j);
 }

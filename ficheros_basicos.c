@@ -352,6 +352,7 @@
 				        return -1;
 				}
 				if(sb.cantInodosLibres>0){
+					 time_t now;
 					 //Read the corresponding inode					 
 					 inodo = leer_inodo(sb.posPrimerInodoLibre);
 					 ninodo = sb.posPrimerInodoLibre;
@@ -359,7 +360,8 @@
 					 //Initialize the inode, with all the requiered variables
                      inodo.tipo = tipo;
                      inodo.permisos = permisos;
-                     inodo.atime = (time_t)NULL;
+                     //inodo.atime = (time_t)NULL;
+                     inodo.atime = time(&now);
                      inodo.mtime = (time_t)NULL;
                      inodo.ctime = (time_t)NULL;
                      inodo.nlinks = 1; 
@@ -481,6 +483,8 @@
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
 				nivel_punteros=rangoBL;
+				printf("El nivel de puntero es %d\n",nivel_punteros);
+				printf("El puntero es: %d\n",ptr);
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar=='0'){

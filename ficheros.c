@@ -148,7 +148,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
     		}
        	}       		
        }
-       	inode = leer_inodo(ninodo);
+      inode = leer_inodo(ninodo);
     	inode.atime = time(NULL);
     	if(escribir_inodo(inode,ninodo)==-1){
 			printf("Error in mi_write_f while writing updated inode, file ficheros.c");

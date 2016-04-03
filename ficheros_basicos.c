@@ -530,7 +530,7 @@
 						return -1;									
 					}
 					ptr_ant=ptr;
-					ind.punterosDirectos[index] = ptr;
+					ptr = ind.punterosDirectos[index];
 					nivel_punteros--;                
 			}
 			if(ptr==0){
@@ -543,7 +543,7 @@
 					    printf("El valor de ptr es %d\n",ptr);
 					    ind.numBloquesOcupados++;
 					    ind.ctime = time(NULL);
-					    if (rangoBL=0){
+					    if (rangoBL==0){
 					    	ind.punterosDirectos[nblogico] = ptr;
 					    }else{
 					    	if(bread(ptr_ant,bufferAux)==-1){

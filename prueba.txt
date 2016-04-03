@@ -35,18 +35,19 @@ Numero de Bloques Ocupados totales es: 3
  	*****Array de Inodos*****
 #Tamaño Inodo: 128
 #ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
- ATIME: Sat 2016-04-02 18:11:18 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+ ATIME: Sun 2016-04-03 12:25:35 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
 
 #El inodo creado es: 1
-#El offset es 5120
-El valor del ptr en rango es:0
+#El offset es 0
 El valor de ptr es 3
-blablablablablablablablablablablablablablablablablablablablablablablablablablabla...blablablablablabla....-----Información del fichero RocioAprueba-----
+El el desplazamiento es: 0
+El contenido del fichero es: 
+blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla....-----Información del fichero RocioAprueba-----
 	*****Tamaños*****
 #Cantidad total de bloques para el mapa de bits son: 1 
 #Cantidad total de bloques para el array de inodos son: 1 
 	*****Superbloque*****
-#Posición del primer bloque del mapa de bits: 0 
+#Posición del primer bloque del mapa de bits: 1 
 #Posición del último bloque del mapa de bits: 1 
 #Posición del primer bloque del array de inodos: 2 
 #Posición del último bloque del array de inodos: 2 
@@ -61,15 +62,16 @@ blablablablablablablablablablablablablablablablablablablablablablablablablablabl
 
 	*****Bloques Ocupados*****
 
-Numero de Bloques Ocupados totales es: 0
+0	1	2	3	
+Numero de Bloques Ocupados totales es: 4
 
 
  	*****Array de Inodos*****
 #Tamaño Inodo: 128
 #ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
- ATIME: Sat 2016-04-02 18:11:18 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+ ATIME: Sun 2016-04-03 12:25:35 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
 
-#ID: 1 TIPO: Fichero PERMISOS: -WR000000000 NLINKS: 1 TAMAÑO: 6144 BLOQUES OCUPADOS: 1 
- ATIME: Sat 2016-04-02 18:11:18 MTIME: Sat 2016-04-02 18:11:18 CTIME: Sat 2016-04-02 18:11:18
+#ID: 1 TIPO: Fichero PERMISOS: -WR000000000 NLINKS: 1 TAMAÑO: 1024 BLOQUES OCUPADOS: 1 
+ ATIME: Sun 2016-04-03 12:25:35 MTIME: Sun 2016-04-03 12:25:35 CTIME: Sun 2016-04-03 12:25:35
 
-Error in close functionrm -rf *.o *~ my_mkfs leer_SF escribir
+rm -rf *.o *~ my_mkfs leer_SF escribir

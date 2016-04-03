@@ -17,13 +17,13 @@ int main(int argc, char **argv){
 	//offset = argv[1];
 	ninodo=reservar_inodo('f',6);
 	printf("#El inodo creado es: %d\n",ninodo);
-    offset = 0;
+    offset = 5120;
 	printf("#El offset es %d\n",offset);
     strcpy(input, "blablablablablablablablablablablablablablablablablablablablablablablablablablabla...blablablablablabla....");
-    /*if(mi_write_f(ninodo,input,offset,BLOCKSIZE)<0){
+    if(mi_write_f(ninodo,input,offset,BLOCKSIZE)<0){
     	printf("Error al escribir en el fichero");
     }
-    memset(input,0, BLOCKSIZE);
+	/*memset(input,0, BLOCKSIZE);
     if(mi_read_f(ninodo,input,offset,BLOCKSIZE)<0){
     	printf("Error al leer en el fichero");
     }*/

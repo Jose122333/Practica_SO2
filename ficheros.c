@@ -19,6 +19,7 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
        //If the first and last block to be written into are the same
        if(primerBloque == ultimoBloque){
             bf = traducir_bloque_inodo(ninodo,primerBloque,1);
+            //printf("El bloque fisico es:%d\n",bf);
             if(bread(bf,buf_aux)==-1){
 				printf("Error in mi_write_f while reading(first=last) the block, file ficheros.c");
 	    		return -1;                	
@@ -76,13 +77,13 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 	}
 	inode = leer_inodo(ninodo);
     if(inode.tamEnBytesLog<offset+nbytes){
-       		inode.tamEnBytesLog = offset+nbytes;	
+       	inode.tamEnBytesLog = offset+nbytes;	
     }
     inode.mtime = time(NULL);
     inode.ctime = time(NULL);
     if(escribir_inodo(inode,ninodo)==-1){
-			printf("Error in mi_write_f while writing updated inode, file ficheros.c");
-	    	return -1;
+		printf("Error in mi_write_f while writing updated inode, file ficheros.c");
+	    return -1;
     }
     return nbytes;
 }

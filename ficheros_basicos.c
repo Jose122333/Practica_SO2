@@ -228,7 +228,7 @@
 				        return -1;
 	                    }
 	                    while(memcmp(bufferAux,bufferLec,BLOCKSIZE)==0){
-                           if(bloqueMB<sb.posUltimoBloqueMB){
+                           if(bloqueMB<=sb.posUltimoBloqueMB){
                               bloqueMB++;
 	                          if(bread(bloqueMB,bufferLec)==-1){
 				              printf("Error in reservar_bloque, while reading block in BM(loop). file fichero_basico.c");
@@ -243,20 +243,17 @@
 	                    posbyte = 0;
 	                    while(bufferLec[posbyte]==255){
 							posbyte++;
-	                    }
+	                    }                    
 	                    //We locate the position of the first free bit
 	                    posbit = 0;
-                        if (posbyte < 255) {
-                           while (posbyte & mascara) {
+                        if (bufferLec[posbyte] < 255) {
+                           while (bufferLec[posbyte] & mascara) {
+                             bufferLec[posbyte] <<= 1;
                              posbit++;
-                             posbyte <<= 1;
                             }
-                        }
+                        }	 
                         //We find the real block number in the system
                         numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE + posbyte) * 8 + posbit;
-                        //printf("%d \n", posbit);
-                        //printf("%d \n", bloqueMB);
-                        //printf("%d \n", numbloque);
                         if(escribir_bit(numbloque,1)!=-1){
                            //We update the super block, with the new info	
                            sb.cantBloquesLibres = sb.cantBloquesLibres-1;
@@ -399,23 +396,30 @@
 				//Now we check in which level is located our pointer
 				if (nblogico<punterosDirectos){
 				    //The logical block is located in the direct pointers	
-				    *ptr = inodo.punterosDirectos[nblogico];	
+				    *ptr = inodo.punterosDirectos[nblogico];
 				    rangoBL = 0;	
-				}else if (nblogico<punterosIndirectos1){
+				}else{
+					if(nblogico<punterosIndirectos1){
 				    //The logical block is located in the 1st level of indirect pointers						
 				    *ptr = inodo.punterosIndirectos[0];
 				    rangoBL = 1;	
-				}else if (nblogico<punterosIndirectos2){
-					//The logical block is located in the 2nd level of indirect pointers		
-					*ptr = inodo.punterosIndirectos[1];
-					rangoBL = 2;					 
-				}else if (nblogico<punterosIndirectos3){
-					//The logical block is located in the 3rd level of indirect pointers
-					*ptr = inodo.punterosIndirectos[2];
-					rangoBL = 3;
-				}else{
-					printf("Error in obtener_rangoBL, the logic block introduced is incorrect. file fichero_basico.c");
-					rangoBL = -1;
+					}else{
+						if (nblogico<punterosIndirectos2){
+						//The logical block is located in the 2nd level of indirect pointers		
+						*ptr = inodo.punterosIndirectos[1];
+						rangoBL = 2;					 
+						}else{
+							 if (nblogico<punterosIndirectos3){
+								//The logical block is located in the 3rd level of indirect pointers
+								*ptr = inodo.punterosIndirectos[2];
+								rangoBL = 3;
+							}else{
+								printf("Error in obtener_rangoBL, the logic block introduced is incorrect. file fichero_basico.c");
+								rangoBL = -1;
+							}
+						}
+					}
+
 				}							
             return rangoBL;
 			}
@@ -483,8 +487,6 @@
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
 				nivel_punteros=rangoBL;
-				printf("El nivel de puntero es %d\n",nivel_punteros);
-				printf("El puntero es: %d\n",ptr);
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar=='0'){
@@ -538,6 +540,7 @@
 					}else{
 						salvar_inodo = 1;
 					    ptr = reservar_bloque();
+					    printf("El valor de ptr es %d\n",ptr);
 					    ind.numBloquesOcupados++;
 					    ind.ctime = time(NULL);
 					    if (rangoBL=0){
@@ -563,6 +566,7 @@
 				}
 			}
 			return ptr;
+
 		}
 		int liberar_inodo(unsigned int ninodo){
 			struct inodo inodo;

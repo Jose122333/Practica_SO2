@@ -1,0 +1,75 @@
+rm -rf *.o *~ my_mkfs leer_SF escribir
+cc  -o bloques.o -c bloques.c
+cc  -o ficheros_basicos.o -c ficheros_basicos.c
+cc  -o my_mkfs.o -c my_mkfs.c
+cc  -o leer_SF.o -c leer_SF.c
+cc  -o ficheros.o -c ficheros.c
+cc  -o escribir.o -c escribir.c
+cc  bloques.o ficheros_basicos.o ficheros.o my_mkfs.o -o my_mkfs
+cc  bloques.o ficheros_basicos.o ficheros.o leer_SF.o -o leer_SF	
+cc  bloques.o ficheros_basicos.o ficheros.o escribir.o -o escribir		
+-----Información del fichero RocioAprueba-----
+	*****Tamaños*****
+#Cantidad total de bloques para el mapa de bits son: 1 
+#Cantidad total de bloques para el array de inodos son: 1 
+	*****Superbloque*****
+#Posición del primer bloque del mapa de bits: 1 
+#Posición del último bloque del mapa de bits: 1 
+#Posición del primer bloque del array de inodos: 2 
+#Posición del último bloque del array de inodos: 2 
+#Posición del primer bloque de datos: 3 
+#Posición del último bloque de datos: 9 
+#Posición del inodo del directorio raíz: 0 
+#Posición del primer inodo libre: 1 
+#Cantidad de bloques libres: 7 
+#Cantidad de inodos libres: 1 
+#Cantidad total de bloques: 10 
+#Cantidad total de inodos: 2 
+
+	*****Bloques Ocupados*****
+
+0	1	2	
+Numero de Bloques Ocupados totales es: 3
+
+
+ 	*****Array de Inodos*****
+#Tamaño Inodo: 128
+#ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
+ ATIME: Sat 2016-04-02 18:11:18 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+
+#El inodo creado es: 1
+#El offset es 5120
+El valor del ptr en rango es:0
+El valor de ptr es 3
+blablablablablablablablablablablablablablablablablablablablablablablablablablabla...blablablablablabla....-----Información del fichero RocioAprueba-----
+	*****Tamaños*****
+#Cantidad total de bloques para el mapa de bits son: 1 
+#Cantidad total de bloques para el array de inodos son: 1 
+	*****Superbloque*****
+#Posición del primer bloque del mapa de bits: 0 
+#Posición del último bloque del mapa de bits: 1 
+#Posición del primer bloque del array de inodos: 2 
+#Posición del último bloque del array de inodos: 2 
+#Posición del primer bloque de datos: 3 
+#Posición del último bloque de datos: 9 
+#Posición del inodo del directorio raíz: 0 
+#Posición del primer inodo libre: -1 
+#Cantidad de bloques libres: 6 
+#Cantidad de inodos libres: 0 
+#Cantidad total de bloques: 10 
+#Cantidad total de inodos: 2 
+
+	*****Bloques Ocupados*****
+
+Numero de Bloques Ocupados totales es: 0
+
+
+ 	*****Array de Inodos*****
+#Tamaño Inodo: 128
+#ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
+ ATIME: Sat 2016-04-02 18:11:18 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+
+#ID: 1 TIPO: Fichero PERMISOS: -WR000000000 NLINKS: 1 TAMAÑO: 6144 BLOQUES OCUPADOS: 1 
+ ATIME: Sat 2016-04-02 18:11:18 MTIME: Sat 2016-04-02 18:11:18 CTIME: Sat 2016-04-02 18:11:18
+
+Error in close functionrm -rf *.o *~ my_mkfs leer_SF escribir

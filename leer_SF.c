@@ -22,7 +22,7 @@ int main(int argc, char **argv){
 	mostrarBM(SB);
 	mostrarIA(SB);
 
-	if(bumount(descriptor)<0){
+	if(bumount()<0){
 		exit(1);
 	}
 }

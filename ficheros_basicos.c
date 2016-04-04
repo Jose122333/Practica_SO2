@@ -428,8 +428,8 @@
 				//For each level of pointers, a limit variables is created 
 				int punterosDirectos = 12;
 				int punterosIndirectos0 = 12 + numPunteros;
-				int punterosIndirectos1 = numPunteros*numPunteros + punterosIndirectos1;
-				int punterosIndirectos2 = numPunteros*numPunteros*numPunteros + punterosIndirectos2;
+				int punterosIndirectos1 = numPunteros*numPunteros + punterosIndirectos0;
+				int punterosIndirectos2 = numPunteros*numPunteros*numPunteros + punterosIndirectos1;
 				int index;
 				if (nblogico<punterosDirectos){
 					// We are currently located in the direct pointers list
@@ -439,32 +439,38 @@
 						// Returns the index of the 1st level of indirect pointers
 						index = nblogico-punterosDirectos;
 					}else{
-						if (nblogico<punterosIndirectos1){
+						if(nblogico<punterosIndirectos1){
 							if (nivel_punteros == 2){
 								// Returns the index of the 2nd level of indirect pointers
 								index = (nblogico - punterosIndirectos0) / numPunteros;
-							}else if (nivel_punteros == 1){
+							}else{ 
+								if (nivel_punteros == 1){
 								// Returns the index of the 1st level of indirect pointers
 								index = (nblogico - punterosIndirectos0) % numPunteros;
-							}else{
-							printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
-					        index = -1;
+								}else{
+									printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+					        		index = -1;
+								}
 							}
 						}else{
 							if (nblogico<punterosIndirectos2){
 								if (nivel_punteros == 3){
 									// Returns the index of the 3rd level of indirect pointers
 									index = (nblogico - punterosIndirectos1)/(numPunteros*numPunteros);									
-								}else if (nivel_punteros == 2){
-									// Returns the index of the 2nd level of indirect pointers
-									index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))/numPunteros;	
-								}else if (nivel_punteros == 1){
-									// Returns the index of the 1st level of indirect pointers
-                                    index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))%numPunteros;
 								}else{
-							        printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
-					                index = -1;									
-								}
+									if (nivel_punteros == 2){
+										// Returns the index of the 2nd level of indirect pointers
+										index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))/numPunteros;	
+									}else {
+										if (nivel_punteros == 1){
+											// Returns the index of the 1st level of indirect pointers
+                                    		index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))%numPunteros;
+										}else{
+							        		printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+					                		index = -1;									
+										}
+									}
+								} 
 							}else{
 							    printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
 					            index = -1;									
@@ -486,8 +492,9 @@
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
 				nivel_punteros=rangoBL;
-				//printf("El valor inicial de ptr es: %d\n",ptr);
-				//printf("El nivel de punteros es: %d\n",nivel_punteros);				
+				printf("El bloque logico vale: %d\n", nblogico);
+				printf("El valor inicial de ptr es: %d\n",ptr);
+				printf("El nivel de punteros es: %d\n",nivel_punteros);				
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar==0){
@@ -497,7 +504,7 @@
 							salvar_inodo = 1;
 							//Reserve the seleccted block
 							ptr = reservar_bloque();
-							//printf("El nuevo valor de ptr es: %d \n",ptr);
+							printf("El nuevo valor de ptr en el nivel %d es: %d \n",nivel_punteros,ptr);
 							//Fill a buffer with 0
 							memset (bufferAux, 0, BLOCKSIZE);
 							//Now we write the value of the buffer in the file system.
@@ -513,7 +520,7 @@
 							        printf("Error in traducir_bloque_inodo while reading a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
 							        return -1;								
 								}
-                                bufferAux[index] = ptr_ant;
+                                bufferAux[index] = ptr;
 								if(bwrite(ptr_ant,bufferAux)==-1){
 							        printf("Error in traducir_bloque_inodo while writing a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
 							        return -1;	
@@ -527,7 +534,7 @@
 					}
 					index = obtener_indice(nblogico,nivel_punteros);
 					//printf("El bloque logico es: %d\n", nblogico);
-					//printf("El indice del puntero es %d\n",index);
+					printf("El indice del puntero es %d\n",index);
 					if(index==-1){
 						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
 						return -1;									

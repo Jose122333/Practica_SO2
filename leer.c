@@ -4,21 +4,23 @@
 int main(int argc, char **argv){
 	struct superbloque SB;
 	struct inodo in;
-	int descriptor,i.ninodo;
+	int descriptor,i.ninodo,offset;
 	char perm[3];
-	unsigned char input[insize];
+	unsigned char buf[BLOCKSIZE];
 	if(argc<3) exit(1);
 	descriptor = argv[0];
 	ninodo = argv[0];
-	if(bmount(argv[0])<0) exit(1);
-	if(bread(posSB,&SB)<0) {
-		printf("Ha ocurrido algun error");
-		return -1;
-	}
-    in = leer_inodo(ninodo);
-	//scanf("%d",&offset);
-	
-	//i=mi_write_f(inode,argv[2],offset,insize);
-	if(bumount()<0) exit(1);
+	if(descriptor<0) exit(1);
+    offset = 0;
+    while(offset>=0){
+    	if(mi_read_f(ninodo,buf,offset,BLOCKSIZE)<0){
+    		printf("Error in my leer.c while reading with my_read_f");
+    		offset += BLOCKSIZE;
+    		//FALTA ESCRIBIR LA INFORMACIÓN DE BUF ANTES DE CONTINUAR
+    		//limpiamos el bucle si hay menos de 1024 bytes de informacion
+    		memset(buf,0, BLOCKSIZE);
+    	}
+    }
+	if(bumount(descriptor)<0) exit(1);
 	return 0;
 }

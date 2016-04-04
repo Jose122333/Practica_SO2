@@ -15,11 +15,11 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 	if((inode.permisos & 2) == 2){
 	   //We calculate the first and the last logical block to be written to
        primerBloque = offset/BLOCKSIZE;
-       ultimoBloque = (offset+nbytes-1)/BLOCKSIZE;     
+       ultimoBloque = (offset+nbytes-1)/BLOCKSIZE;  
        //If the first and last block to be written into are the same
        if(primerBloque == ultimoBloque){
             bf = traducir_bloque_inodo(ninodo,primerBloque,1);
-            //printf("El bloque fisico es:%d\n",bf);
+            printf("El bloque fisico donde vamos a escribir es: %d\n", bf);
             if(bread(bf,buf_aux)==-1){
 				printf("Error in mi_write_f while reading(first=last) the block, file ficheros.c");
 	    		return -1;                	
@@ -77,6 +77,7 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 	    return -1;
 	}
 	inode = leer_inodo(ninodo);
+	printf("El tamEnBytesLog del inodo es: %d \n",inode.tamEnBytesLog);
     if(inode.tamEnBytesLog<offset+nbytes){
        	inode.tamEnBytesLog = offset+nbytes;	
     }
@@ -133,7 +134,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
 				printf("Error in mi_read_f while reading(first) the block, file ficheros.c");
 	    		return -1;                	
               }
-              memcpy (buf_original, buf_aux + desp1, BLOCKSIZE - desp1);
+            memcpy (buf_original, buf_aux + desp1, BLOCKSIZE - desp1);
             //If the block to be written into is the last
     		}else if (i==ultimoBloque){
               	if(bread(bf,buf_aux)==-1){
@@ -143,14 +144,14 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
                 memcpy (buf_original + (nbytes - desp2 - 1),buf_aux, desp2 + 1);                 			
             //If the block to be written is in between
     		}else{
-        	    if(memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE)){
+        	    if(memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE)<0){
  						printf("Error in mi_read_f while reading(in between) the block, file ficheros.c");
 	    				return -1;           
                	}
     		}
        	}       		
        }
-      inode = leer_inodo(ninodo);
+      	inode = leer_inodo(ninodo);
     	inode.atime = time(NULL);
     	if(escribir_inodo(inode,ninodo)==-1){
 			printf("Error in mi_read_f while writing updated inode, file ficheros.c");
@@ -167,5 +168,5 @@ int setBottomLimit(int offset){
   return (offset%BLOCKSIZE);
 }
 int setTopLimit(int offset, int nbytes){
-	return ((offset+nbytes-1)/BLOCKSIZE);
+	return ((offset+nbytes-1)%BLOCKSIZE);
 }

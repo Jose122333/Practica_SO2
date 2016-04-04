@@ -4,11 +4,11 @@
 
 			//Returns the value(in blocks) of the bit map
 			int tamMB(unsigned int nbloques){
-			int MB= (nbloques/8)/BLOCKSIZE;
+				int MB= (nbloques/8)/BLOCKSIZE;
 				if(nbloques%(BLOCKSIZE)!=0){
 					MB++;
 				}
-			return MB;
+				return MB;
 			}
 			//Returns the value(in blocks) of inode array
 			int tamAI(unsigned int ninodos){
@@ -16,38 +16,37 @@
 				if((ninodos * TAM_INODO) % BLOCKSIZE!=0){
 					AI++;
 				}
-			return AI;
+				return AI;
 			}
 			//This function initializes the superblock structure
 			int initSB(unsigned int nbloques, unsigned int ninodos){
-			int PadLenght = BLOCKSIZE - 12*sizeof(unsigned int);
-			struct superbloque sb;
-			//We initilize every node of the superblock structure
-			sb.posPrimerBloqueMB = posSB + 1; //Tamaño SB = 1
-			sb.posUltimoBloqueMB = sb.posPrimerBloqueMB + tamMB(nbloques) - 1;
-			sb.posPrimerBloqueAI = sb.posUltimoBloqueMB + 1;
-			sb.posUltimoBloqueAI = sb.posPrimerBloqueAI + tamAI(ninodos) - 1; 
-			sb.posPrimerBloqueDatos = sb.posUltimoBloqueAI + 1;
-			sb.posUltimoBloqueDatos = nbloques - 1;
-			sb.posInodoRaiz = 0;
-			sb.posPrimerInodoLibre = 0;
-			sb.cantBloquesLibres = nbloques;
-			sb.cantInodosLibres = ninodos;
-			sb.totBloques = nbloques;
-			sb.totInodos = ninodos;
-			int i;
-			for (i=0;i<PadLenght;i++){
-			    sb.padding[i] = '0'; 
-			}
-			//Write the structure in a block
-			if(bwrite(posSB,&sb)==-1){
+				int PadLenght = BLOCKSIZE - 12*sizeof(unsigned int);
+				struct superbloque sb;
+				//We initilize every node of the superblock structure
+				sb.posPrimerBloqueMB = posSB + 1; //Tamaño SB = 1
+				sb.posUltimoBloqueMB = sb.posPrimerBloqueMB + tamMB(nbloques) - 1;
+				sb.posPrimerBloqueAI = sb.posUltimoBloqueMB + 1;
+				sb.posUltimoBloqueAI = sb.posPrimerBloqueAI + tamAI(ninodos) - 1; 
+				sb.posPrimerBloqueDatos = sb.posUltimoBloqueAI + 1;
+				sb.posUltimoBloqueDatos = nbloques - 1;
+				sb.posInodoRaiz = 0;
+				sb.posPrimerInodoLibre = 0;
+				sb.cantBloquesLibres = nbloques;
+				sb.cantInodosLibres = ninodos;
+				sb.totBloques = nbloques;
+				sb.totInodos = ninodos;
+				int i;
+				for (i=0;i<PadLenght;i++){
+			    	sb.padding[i] = '0'; 
+				}
+				//Write the structure in a block
+				if(bwrite(posSB,&sb)==-1){
 			    printf("Error en fichero_basico.c en initSB");
-			    return -1;
-			}else{
-			    return 0;
+			    	return -1;
+				}else{
+			    	return 0;
+				}
 			}
-			}
-
 			//This function initalizes the bit map of the file system
 			int initMB(){
 			    unsigned char buf[BLOCKSIZE];
@@ -421,7 +420,7 @@
 					}
 
 				}							
-            return rangoBL;
+            	return rangoBL;
 			}
 			int obtener_indice (int nblogico, int nivel_punteros){
 				//We calculate how many pointer are allowed
@@ -477,7 +476,7 @@
 			}
 			int traducir_bloque_inodo(unsigned int ninodo, unsigned int nblogico, char reservar){
 				struct inodo ind;
-				int ptr,ptr_ant,salvar_inodo = 0;
+				int ptr,ptr_ant,salvar_inodo,bloques_reservados = 0;
 				int nivel_punteros;
 				int rangoBL;
 				int index;
@@ -487,15 +486,18 @@
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
 				nivel_punteros=rangoBL;
+				//printf("El valor inicial de ptr es: %d\n",ptr);
+				//printf("El nivel de punteros es: %d\n",nivel_punteros);				
 				while(nivel_punteros>0){
 					if (ptr==0){
-						if (reservar=='0'){
+						if (reservar==0){
 							printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), file ficheros_basicos.c");
 							return -1;
 						}else{
 							salvar_inodo = 1;
 							//Reserve the seleccted block
 							ptr = reservar_bloque();
+							//printf("El nuevo valor de ptr es: %d \n",ptr);
 							//Fill a buffer with 0
 							memset (bufferAux, 0, BLOCKSIZE);
 							//Now we write the value of the buffer in the file system.
@@ -503,8 +505,7 @@
 							printf("Error in traducir_bloque_inodo while writing a block(while), file ficheros_basicos.c");
 							return -1;								
 							}
-							ind.numBloquesOcupados++;
-							ind.ctime = time(NULL);
+							bloques_reservados++;
 						    if (nivel_punteros == rangoBL){
 								ind.punterosIndirectos[rangoBL-1]=ptr;
 							}else{
@@ -525,12 +526,15 @@
 						return -1;								
 					}
 					index = obtener_indice(nblogico,nivel_punteros);
+					//printf("El bloque logico es: %d\n", nblogico);
+					//printf("El indice del puntero es %d\n",index);
 					if(index==-1){
 						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
 						return -1;									
 					}
 					ptr_ant=ptr;
-					ptr = ind.punterosDirectos[index];
+					ptr = bufferAux[index];
+					//printf("El final valor de ptr es: %d \n",ptr);
 					nivel_punteros--;                
 			}
 			if(ptr==0){
@@ -540,9 +544,8 @@
 					}else{
 						salvar_inodo = 1;
 					    ptr = reservar_bloque();
-					    printf("El valor de ptr es %d\n",ptr);
-					    ind.numBloquesOcupados++;
-					    ind.ctime = time(NULL);
+					    //printf("El bloque para reservar datos es: %d\n", ptr);
+					    bloques_reservados++;
 					    if (rangoBL==0){
 					    	ind.punterosDirectos[nblogico] = ptr;
 					    }else{
@@ -550,7 +553,8 @@
 							    printf("Error in traducir_bloque_inodo while reading a block(ptr==0), file ficheros_basicos.c");
 							    return -1;								
 							}
-                            bufferAux[index]=ptr_ant;
+                            bufferAux[index]=ptr;
+					    	//printf("El buffer para reservar datos es: %d\n", bufferAux[index]);                            
 							if(bwrite(ptr_ant,bufferAux)==-1){
 							    printf("Error in traducir_bloque_inodo while writing a block(ptr==0), file ficheros_basicos.c");
 							    return -1;	
@@ -560,13 +564,14 @@
 					}
 			}
 			if (salvar_inodo==1){
+				ind.numBloquesOcupados = bloques_reservados;
+				ind.ctime = time(NULL);
 				if(escribir_inodo(ind,ninodo)==-1){
 						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
 						return -1;						
 				}
 			}
 			return ptr;
-
 		}
 		int liberar_inodo(unsigned int ninodo){
 			struct inodo inodo;
@@ -658,7 +663,6 @@
 
 
 			}
-
 		return 0;
 		}	 
 			

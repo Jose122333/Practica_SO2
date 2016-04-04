@@ -11,67 +11,78 @@ cc  bloques.o ficheros_basicos.o ficheros.o escribir.o -o escribir
 -----Información del fichero RocioAprueba-----
 	*****Tamaños*****
 #Cantidad total de bloques para el mapa de bits son: 1 
-#Cantidad total de bloques para el array de inodos son: 1 
+#Cantidad total de bloques para el array de inodos son: 32 
 	*****Superbloque*****
 #Posición del primer bloque del mapa de bits: 1 
 #Posición del último bloque del mapa de bits: 1 
 #Posición del primer bloque del array de inodos: 2 
-#Posición del último bloque del array de inodos: 2 
-#Posición del primer bloque de datos: 3 
-#Posición del último bloque de datos: 9 
+#Posición del último bloque del array de inodos: 33 
+#Posición del primer bloque de datos: 34 
+#Posición del último bloque de datos: 999 
 #Posición del inodo del directorio raíz: 0 
 #Posición del primer inodo libre: 1 
-#Cantidad de bloques libres: 7 
-#Cantidad de inodos libres: 1 
-#Cantidad total de bloques: 10 
-#Cantidad total de inodos: 2 
+#Cantidad de bloques libres: 966 
+#Cantidad de inodos libres: 249 
+#Cantidad total de bloques: 1000 
+#Cantidad total de inodos: 250 
 
 	*****Bloques Ocupados*****
 
-0	1	2	
-Numero de Bloques Ocupados totales es: 3
+0	1	2	3	4	5	
+6	7	8	9	10	11	
+12	13	14	15	16	17	
+18	19	20	21	22	23	
+24	25	26	27	28	29	
+30	31	32	33	
+Numero de Bloques Ocupados totales es: 34
 
 
  	*****Array de Inodos*****
 #Tamaño Inodo: 128
 #ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
- ATIME: Sun 2016-04-03 12:25:35 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+ ATIME: Mon 2016-04-04 13:32:20 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
 
 #El inodo creado es: 1
-#El offset es 0
-El valor de ptr es 3
+#El offset es 256000
+El bloque fisico donde vamos a escribir es: 35
 El el desplazamiento es: 0
+El tamEnBytesLog del inodo es: 0 
 El contenido del fichero es: 
-blablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablablabla....-----Información del fichero RocioAprueba-----
+-----Información del fichero RocioAprueba-----
 	*****Tamaños*****
 #Cantidad total de bloques para el mapa de bits son: 1 
-#Cantidad total de bloques para el array de inodos son: 1 
+#Cantidad total de bloques para el array de inodos son: 32 
 	*****Superbloque*****
 #Posición del primer bloque del mapa de bits: 1 
 #Posición del último bloque del mapa de bits: 1 
 #Posición del primer bloque del array de inodos: 2 
-#Posición del último bloque del array de inodos: 2 
-#Posición del primer bloque de datos: 3 
-#Posición del último bloque de datos: 9 
+#Posición del último bloque del array de inodos: 33 
+#Posición del primer bloque de datos: 34 
+#Posición del último bloque de datos: 999 
 #Posición del inodo del directorio raíz: 0 
-#Posición del primer inodo libre: -1 
-#Cantidad de bloques libres: 6 
-#Cantidad de inodos libres: 0 
-#Cantidad total de bloques: 10 
-#Cantidad total de inodos: 2 
+#Posición del primer inodo libre: 2 
+#Cantidad de bloques libres: 964 
+#Cantidad de inodos libres: 248 
+#Cantidad total de bloques: 1000 
+#Cantidad total de inodos: 250 
 
 	*****Bloques Ocupados*****
 
-0	1	2	3	
-Numero de Bloques Ocupados totales es: 4
+0	1	2	3	4	5	
+6	7	8	9	10	11	
+12	13	14	15	16	17	
+18	19	20	21	22	23	
+24	25	26	27	28	29	
+30	31	32	33	34	35	
+Numero de Bloques Ocupados totales es: 36
 
 
  	*****Array de Inodos*****
 #Tamaño Inodo: 128
 #ID: 0 TIPO: Directorio PERMISOS: XWR000000000 NLINKS: 1 TAMAÑO: 0 BLOQUES OCUPADOS: 0 
- ATIME: Sun 2016-04-03 12:25:35 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
+ ATIME: Mon 2016-04-04 13:32:20 MTIME: Thu 1970-01-01 01:00:00 CTIME: Thu 1970-01-01 01:00:00
 
-#ID: 1 TIPO: Fichero PERMISOS: -WR000000000 NLINKS: 1 TAMAÑO: 1024 BLOQUES OCUPADOS: 1 
- ATIME: Sun 2016-04-03 12:25:35 MTIME: Sun 2016-04-03 12:25:35 CTIME: Sun 2016-04-03 12:25:35
+#ID: 1 TIPO: Fichero PERMISOS: -WR000000000 NLINKS: 1 TAMAÑO: 257024 BLOQUES OCUPADOS: 2 
+ ATIME: Mon 2016-04-04 13:32:20 MTIME: Mon 2016-04-04 13:32:20 CTIME: Mon 2016-04-04 13:32:20
 
 rm -rf *.o *~ my_mkfs leer_SF escribir

@@ -6,7 +6,7 @@ then
    rm $FILE
    make clean
    make
-   ./my_mkfs $FILE 1000
+   ./my_mkfs $FILE 100000
    ./leer_SF $FILE
    ./escribir $FILE
    ./leer_SF $FILE      
@@ -14,7 +14,7 @@ then
 else
    make clean
    make
-   ./my_mkfs $FILE 1000
+   ./my_mkfs $FILE 100000
    ./leer_SF $FILE
    ./escribir $FILE
    ./leer_SF $FILE 

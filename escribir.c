@@ -28,19 +28,14 @@ int main(int argc, char **argv){
     	printf("Error al escribir en el fichero");
     }
     //printf("El numero bytes escritos es: %d\n", bytesWritten);
-	memset(input,0, sizeof(input));
-	o = 0;
-	//bytesWritten = mi_read_f(ninodo,input,offset,bytesEscribir);
+	printf("El contenido del fichero es: \n");
     while((bytesLeidos=mi_read_f(ninodo,input+bytesEscritos,offset,BLOCKSIZE))>0){
     	offset=offset+ bytesLeidos;
     	bytesEscritos = bytesLeidos + bytesEscritos;
-    	o++;
-    	printf("Has entrado vez: %d\n",o );
-    	printf("El contenido del fichero es: \n");
-    	printf("Bytes leídos: %d\n",bytesLeidos );
+    	   	printf("%s\n", input);
+    	   		memset(input,0, sizeof(input));
 
     }
-    	printf("%s\n", input);
 
     //printf("El numero bytes leidos es: %d\n", bytesWritten);
     //printf("El contenido del fichero es: \n");

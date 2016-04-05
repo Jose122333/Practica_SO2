@@ -75,7 +75,6 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 	    return -1;
 	}
 	inode = leer_inodo(ninodo);
-	printf("El tamEnBytesLog del inodo es: %d \n",inode.tamEnBytesLog);
     if(inode.tamEnBytesLog<offset+nbytes){
        	inode.tamEnBytesLog = offset+nbytes;	
     }

@@ -491,10 +491,7 @@
 				ind = leer_inodo(ninodo);
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
-				nivel_punteros=rangoBL;
-				printf("El bloque logico vale: %d\n", nblogico);
-				printf("El valor inicial de ptr es: %d\n",ptr);
-				printf("El nivel de punteros es: %d\n",nivel_punteros);				
+				nivel_punteros=rangoBL;			
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar==0){
@@ -504,7 +501,6 @@
 							salvar_inodo = 1;
 							//Reserve the seleccted block
 							ptr = reservar_bloque();
-							printf("El nuevo valor de ptr en el nivel %d es: %d \n",nivel_punteros,ptr);
 							//Fill a buffer with 0
 							memset (bufferAux, 0, BLOCKSIZE);
 							//Now we write the value of the buffer in the file system.
@@ -534,7 +530,6 @@
 					}
 					index = obtener_indice(nblogico,nivel_punteros);
 					//printf("El bloque logico es: %d\n", nblogico);
-					printf("El indice del puntero es %d\n",index);
 					if(index==-1){
 						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
 						return -1;									

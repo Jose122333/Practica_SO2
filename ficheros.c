@@ -19,12 +19,10 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
        //If the first and last block to be written into are the same
        if(primerBloque == ultimoBloque){
             bf = traducir_bloque_inodo(ninodo,primerBloque,1);
-            printf("El bloque fisico donde vamos a escribir es: %d\n", bf);
             if(bread(bf,buf_aux)==-1){
 				printf("Error in mi_write_f while reading(first=last) the block, file ficheros.c");
 	    		return -1;                	
             }
-            printf("El el desplazamiento es: %d\n", desp1);
             memcpy (buf_aux + desp1, buf_original, nbytes);
             if(bwrite(bf,buf_aux)==-1){
 				printf("Error in mi_write_f while writing(first=last) the block, file ficheros.c");

@@ -2,23 +2,23 @@
 #include "ficheros_basicos.h"
 
 int main(int argc, char **argv){
-	struct superbloque SB;
-	int descriptor,i,ninodo,offset,bytesLeidos,bytesEscritos;
-	char perm[3];
+	int descriptor,ninodo,offset,bytesLeidos,totalBytes;
 	unsigned char input[BLOCKSIZE];
-	if(argc<3) exit(1);
+	//if(argc<3) exit(1);
+	char string[128];
 	descriptor = bmount(argv[1]);
 	ninodo = atoi(argv[2]);
   	if(descriptor<0) exit(1);
-    offset = atoi(argv[3]);
-    printf("El contenido del fichero es: \n");
-    while((bytesLeidos=mi_read_f(ninodo,input+bytesEscritos,offset,BLOCKSIZE))>0){
-    	offset=offset+ bytesLeidos;
-    	bytesEscritos = bytesLeidos + bytesEscritos;
-    	   	printf("%s\n", input);
-    	   		memset(input,0, sizeof(input));
-
+    offset = 0;
+    totalBytes = 0;
+    //memset(input,0, sizeof(input));
+    while((bytesLeidos=mi_read_f(ninodo,input,offset,BLOCKSIZE))>0){
+    	offset=offset + bytesLeidos;
+    	write(1,input,bytesLeidos);
+    	totalBytes += bytesLeidos;
     }
+    sprintf(string,"El número de bytes leídos es: %d \n", totalBytes);
+    write(2,string, strlen(string));
 	if(bumount(descriptor)<0) exit(1);
 	return 0;
 }

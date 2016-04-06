@@ -11,6 +11,7 @@ int main(int argc, char **argv){
 	descriptor = bmount(argv[1]);
 	bytesEscritos = 0;
 	ninodo=reservar_inodo('f',6);
+	//ninodo = 1;
 	printf("#El inodo creado es: %d\n",ninodo);
     offset = atoi(argv[2]);
     if ((fptr=fopen(argv[3],"r"))==NULL){

@@ -95,13 +95,18 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
 	int total;
 	int desp1 = setBottomLimit(offset);
 	int desp2 = setTopLimit(offset,nbytes);
+	char string[128];
+
+
     //First we have to read the inode, to check if we can use the function
 	inode = leer_inodo(ninodo);
 	if((inode.permisos & 4) == 4){
 		if (offset + nbytes >= inode.tamEnBytesLog){
 			nbytes = inode.tamEnBytesLog - offset; 
 		}
-		if (offset >= inode.tamEnBytesLog){
+sprintf(string,"Tamño: %d \n", inode.tamEnBytesLog);
+    	write(2,string, strlen(string));		
+    	if (offset >= inode.tamEnBytesLog){
 			return 0;
 		}
 		//We calculate the first and the last logical block to be written to
@@ -138,7 +143,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
 					printf("Error in mi_read_f while reading(last) the block, file ficheros.c");
 	    			return -1;                	
                 }
-                memcpy (buf_original + (nbytes - desp2 - 1),buf_aux, desp2 + 1);                 			
+                memcpy (buf_original+(BLOCKSIZE-desp1)+(ultimoBloque-primerBloque-1)*BLOCKSIZE,buf_aux,desp2+1);                 			
             //If the block to be written is in between
     		}else{
         	    if(memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE)<0){

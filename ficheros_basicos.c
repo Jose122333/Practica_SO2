@@ -489,6 +489,7 @@
 				int bufferAux[BLOCKSIZE/sizeof(int)];
 				//First we read the selected inode
 				ind = leer_inodo(ninodo);
+				bloques_reservados = ind.numBloquesOcupados;
 				//Now we get the level that belongs to the logical block requested(Preguntar si el puntero se queda modificado al salir de la funcion)
 				rangoBL = obtener_rangoBL(ind,nblogico,&ptr);
 				nivel_punteros=rangoBL;			

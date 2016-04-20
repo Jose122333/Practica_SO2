@@ -148,10 +148,11 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
                 memcpy (buf_original+(BLOCKSIZE-desp1)+(ultimoBloque-primerBloque-1)*BLOCKSIZE,buf_aux,desp2+1);                 			
             //If the block to be written is in between
     		}else{
-        	    if(memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE)<0){
- 						printf("Error in mi_read_f while reading(in between) the block, line 148, file ficheros.c\n");
-	    				return -1;           
+				if(bread(bf,buf_aux)==-1){
+ 						     printf("Error in mi_read_f while reading(in between) the block, file ficheros.c");
+	    				   return -1;           
                	}
+                memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE);
     		}
        	}       		
        }

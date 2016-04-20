@@ -12,13 +12,11 @@ int main(int argc, char **argv){
     offset = 0;
     totalBytes = 0;
     memset(input,0, sizeof(input));
-    while((bytesLeidos=mi_read_f(ninodo,input,offset,1500))>0){
+    while((bytesLeidos=mi_read_f(ninodo,input,offset,sizeof(input)))>0){
     	offset=offset + bytesLeidos;
     	write(1,input,bytesLeidos);
     	totalBytes += bytesLeidos;
     	memset(input,0, sizeof(input));
-    	sprintf(string,"El número de bytes leídos es: %d \n", totalBytes);
-    	write(2,string, strlen(string));
     }
     sprintf(string,"El número total de bytes leídos es: %d \n", totalBytes);
     write(2,string, strlen(string));

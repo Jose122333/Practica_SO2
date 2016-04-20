@@ -41,7 +41,7 @@
 				}
 				//Write the structure in a block
 				if(bwrite(posSB,&sb)==-1){
-			    printf("Error en fichero_basico.c en initSB");
+			    printf("Error in initSB, while writing superblock, line 43, file ficheros_basicos.c\n");
 			    	return -1;
 				}else{
 			    	return 0;
@@ -52,7 +52,7 @@
 			    unsigned char buf[BLOCKSIZE];
 			    struct superbloque sb;
 			    if(bread(posSB,&sb)==-1){
-			        printf("Error in initMB, while reading SB. file fichero_basico.c");
+			        printf("Error in initMB, while reading SB, line 54, file fichero_basico.c\n");
 			        return -1;
 			    }
 			    //Memory space reserved for bit maps
@@ -61,29 +61,29 @@
 			    //Write all the blocks requiered
 			    for(i=sb.posPrimerBloqueMB; i<=sb.posUltimoBloqueMB; i++){
 			        if(bwrite(i,buf)==-1){
-			            printf("Error in initMB, while writing block number %d. file fichero_basico.c", i);
+			            printf("Error in initMB, while writing block number %d, line 63, file fichero_basico.c\n", i);
 			            return -1;
 			        }
 			        if(escribir_bit(i,1)==-1){
-			        printf("Error in initMB, while wrtiting bit in MB refering to MB. file fichero_basico.c");
+			        printf("Error in initMB, while wrtiting bit in MB refering to MB, line 67, file fichero_basico.c\n");
 			        return -1;			    	
 			    	}
 			    	sb.cantBloquesLibres--;
 			    }
 			    for(i=sb.posPrimerBloqueAI; i<=sb.posUltimoBloqueAI; i++){
 			        if(escribir_bit(i,1)==-1){
-			        printf("Error in initMB, while wrtiting bit in MB refering to MB. file fichero_basico.c");
+			        printf("Error in initMB, while wrtiting bit in MB refering to MB, line 74, file fichero_basico.c\n");
 			        return -1;			    	
 			    	}
 			    	sb.cantBloquesLibres--;
 			    }
 			    if(escribir_bit(posSB,1)==-1){
-			        printf("Error in initMB, while wrtiting bit in MB refering to SB. file fichero_basico.c");
+			        printf("Error in initMB, while wrtiting bit in MB refering to SB, line 80, file fichero_basico.c\n");
 			        return -1;			    	
 			    }
 			    sb.cantBloquesLibres--;			    
 			    if(bwrite(posSB,&sb)==-1){
-			        printf("Error in initMB, while writng SB. file fichero_basico.c");
+			        printf("Error in initMB, while writng SB, line 85, file fichero_basico.c\n");
 			        return -1;
 			    }	
                 
@@ -95,7 +95,7 @@
 			    struct inodo ai[BLOCKSIZE/TAM_INODO];
 			    struct superbloque sb;
 			    if(bread(posSB,&sb)==-1){
-			        printf("Error in initAI, while reading SB. file fichero_basico.c");
+			        printf("Error in initAI, while reading SB, line 97, file fichero_basico.c\n");
 			        return -1;
 			    }
 			    //Memory space reserved for inode array
@@ -113,7 +113,7 @@
 			            }
 			        }     
 			        if(bwrite(i,ai)==-1){
-			            printf("Error in initMB, while writing block number %d. file fichero_basico.c", i);
+			            printf("Error in initMB, while writing block number %d, line 115, file fichero_basico.c\n", i);
 			            return -1;
 			        }
 			    }
@@ -133,7 +133,7 @@
 	                struct superbloque sb;
 					//Read from the sb to obtain the location of the BM 
 				    if(bread(posSB,&sb)==-1){
-				        printf("Error in escribir_bit, while reading SB. file fichero_basico.c");
+				        printf("Error in escribir_bit, while reading SB, line 135, file fichero_basico.c\n");
 				        return -1;
 				    }
 	                posbyte = nbloque/8;
@@ -144,7 +144,7 @@
 			        memset(bufferMB,0, BLOCKSIZE);
 			        //Read the 
 	                if(bread(posBlock,bufferMB)==-1){
-				        printf("Error in escribir_bit, while reading block in BM. file fichero_basico.c");
+				        printf("Error in escribir_bit, while reading block in BM, line 146, file fichero_basico.c\n");
 				        return -1;
 	                }	               
 	                //We assign the value of the mask
@@ -160,7 +160,7 @@
 	                }
 	                //Finally, we write the new value of the block
 	                if(bwrite(posBlock,bufferMB)==-1){
-			        printf("Error in escribir_bit, while writing block in BM. file fichero_basico.c");
+			        	printf("Error in escribir_bit, while writing block in BM, line 162, file fichero_basico.c\n");
 				        return -1;
 	                }
 	                return 0;               
@@ -175,7 +175,7 @@
 	                struct superbloque sb;
 					//Read from the sb to obtain the location of the BM 
 				    if(bread(posSB,&sb)==-1){
-				        printf("Error in leer_bit, while reading SB. file fichero_basico.c");
+				        printf("Error in leer_bit, while reading SB, line 177, file fichero_basico.c\n");
 				        return -1;
 				    }
 	                posbyte = nbloque/8;
@@ -186,7 +186,7 @@
 			        memset(bufferMB,0, BLOCKSIZE);
 			        //Read the 
 	                if(bread(posBlock,bufferMB)==-1){
-				        printf("Error in leer_bit, while reading block in BM. file fichero_basico.c");
+				        printf("Error in leer_bit, while reading block in BM, line 188, file fichero_basico.c\n");
 				        return -1;
 	                }
 	                //printf("%u", bufferMB[posbyte]);
@@ -214,7 +214,7 @@
 				    unsigned char mascara = 128; 			    
 					//Read from the sb to obtain the location of the BM 
 				    if(bread(posSB,&sb)==-1){
-				        printf("Error in reservar_bloque, while reading SB. file fichero_basico.c");
+				        printf("Error in reservar_bloque, while reading SB, line 216, file fichero_basico.c\n");
 				        return -1;
 				    }
 	                if (sb.cantBloquesLibres>0)
@@ -223,18 +223,18 @@
 	                    memset (bufferAux, 255, BLOCKSIZE);
 	                    bloqueMB = sb.posPrimerBloqueMB;
 	                    if(bread(bloqueMB,bufferLec)==-1){
-				        printf("Error in reservar_bloque, while reading block in BM. file fichero_basico.c");
-				        return -1;
+				        	printf("Error in reservar_bloque, while reading block in BM, line 225, file fichero_basico.c\n");
+				        	return -1;
 	                    }
 	                    while(memcmp(bufferAux,bufferLec,BLOCKSIZE)==0){
                            if(bloqueMB<=sb.posUltimoBloqueMB){
                               bloqueMB++;
 	                          if(bread(bloqueMB,bufferLec)==-1){
-				              printf("Error in reservar_bloque, while reading block in BM(loop). file fichero_basico.c");
-				              return -1;
+				              	printf("Error in reservar_bloque, while reading block in BM(loop), line 232, file fichero_basico.c\n");
+				              	return -1;
 	                          }                              
                            }else{
-                           	  printf("Error in reservar_bloque, there are no free blocks in BM");
+                           	  printf("Error in reservar_bloque, there are no free blocks in BM, line 220, file ficheros_basicos.c\n");
                            	  return -1;
                            }
 	                    }
@@ -254,20 +254,20 @@
                         //We find the real block number in the system
                         numbloque = ((bloqueMB - sb.posPrimerBloqueMB) * BLOCKSIZE + posbyte) * 8 + posbit;
                         if(escribir_bit(numbloque,1)!=-1){
-                           //We update the super block, with the new info	
-                           sb.cantBloquesLibres = sb.cantBloquesLibres-1;
-                           if(bwrite(posSB,&sb)==-1){
-				           printf("Error in reservar_bloque, while writing SB. file fichero_basico.c\n");
-				           return -1;
-				           }
-				           //If everithing goes well, return the correct block
-				           return numbloque;
+                           	//We update the super block, with the new info	
+                          	sb.cantBloquesLibres = sb.cantBloquesLibres-1;
+                            if(bwrite(posSB,&sb)==-1){
+				           		printf("Error in reservar_bloque, while writing SB, line 259, file fichero_basico.c\n");
+				           		return -1;
+				           	}
+				           	//If everithing goes well, return the correct block
+				           	return numbloque;
                         }else{
-                        	printf("Error in reservar_bloque, while writing a bit. file fichero_basico.c\n");
+                        	printf("Error in reservar_bloque, while writing a bit, line 256, file fichero_basico.c\n");
 				            return -1;
                         }
 	                }else{
-	                	printf("Error in reservar_bloque, There are no free blocks available\n");
+	                	printf("Error in reservar_bloque, There are no free blocks available, line 220, file ficheros_basicos.c\n");
 	                	return -1;
 	                }
 			}
@@ -276,18 +276,18 @@
 				struct superbloque sb;
 				//Read the sb
 				if(bread(posSB,&sb)==-1){
-				        printf("Error in liberar_bloque, while reading SB. file fichero_basico.c\n");
+				        printf("Error in liberar_bloque, while reading SB, line 278, file fichero_basico.c\n");
 				        return -1;
 				}
 				//Free the block in question with 				
 				if(escribir_bit(nbloque,0)==-1){
-				        printf("Error in liberar_bloque, while writng bit. file fichero_basico.c");
+				        printf("Error in liberar_bloque, while writng bit, line 283, file fichero_basico.c\n");
 				        return -1;                
 				}
                 //We update the super block, with the new info escribir_bit	
                 sb.cantBloquesLibres = sb.cantBloquesLibres+1;
 				if(bwrite(posSB,&sb)==-1){
-				        printf("Error in liberar_bloque, while updating SB. file fichero_basico.c");
+				        printf("Error in liberar_bloque, while updating SB, line 289, file fichero_basico.c\n");
 				        return -1;
 				}	                
                 return nbloque;
@@ -299,21 +299,21 @@
 				int nbloque;
 				struct inodo ai[BLOCKSIZE/TAM_INODO];
 				if(bread(posSB,&sb)==-1){
-				        printf("Error in escribir_inodo, while reading SB. file fichero_basico.c");
+				        printf("Error in escribir_inodo, while reading SB, line 301, file fichero_basico.c\n");
 				        return -1;
 				}
                //We calculate the block where the inode is located
 				nbloque = sb.posPrimerBloqueAI+(ninodo/(BLOCKSIZE/TAM_INODO));
 				//We read the correspondent block
 				if(bread(nbloque,ai)==-1){
-				        printf("Error in escribir_inodo, while reading inode in IA. file fichero_basico.c");
+				        printf("Error in escribir_inodo, while reading inode in IA, line 308, file fichero_basico.c\n");
 				        return -1;
 				}
 				//We assign the inode the new value of the inode to the previous
 				ai[(ninodo%(BLOCKSIZE/TAM_INODO))] = inodo;
 				//Finally we write the new value of the block
 				if(bwrite(nbloque,ai)==-1){
-				        printf("Error in escribir_inodo, while writing inode in IA. file fichero_basico.c");
+				        printf("Error in escribir_inodo, while writing inode in IA, line 315, file fichero_basico.c\n");
 				        return -1;
 				}
 				return nbloque;								
@@ -325,14 +325,14 @@
 				struct inodo ai[BLOCKSIZE/TAM_INODO];
 				//Read the Sb
 				if(bread(posSB,&sb)==-1){
-				    printf("Error in leer_inodo, while reading SB. file fichero_basico.c");
+				    printf("Error in leer_inodo, while reading SB, line 327, file fichero_basico.c\n");
                     //Revisar como se tiene que controlar la exception
 				}
                 //We calculate the block where the inode is located
 				nbloque = sb.posPrimerBloqueAI+(ninodo/(BLOCKSIZE/TAM_INODO));
 				//We read the correspondent block
 				if(bread(nbloque,ai)==-1){
-				    printf("Error in leer_inodo, while reading inode in IA. file fichero_basico.c");	        
+				    printf("Error in leer_inodo, while reading inode in IA, line 334, file fichero_basico.c\n");	        
                     //Revisar como se tiene que controlar la exception
 				}
 				return ai[(ninodo%(BLOCKSIZE/TAM_INODO))];
@@ -344,7 +344,7 @@
 				int ninodo;
 				//Read the sb
 				if(bread(posSB,&sb)==-1){
-				        printf("Error in reservar_inodo, while reading SB. file fichero_basico.c");
+				        printf("Error in reservar_inodo, while reading SB, line 346, file fichero_basico.c\n");
 				        return -1;
 				}
 				if(sb.cantInodosLibres>0){
@@ -374,12 +374,12 @@
                      escribir_inodo(inodo, ninodo);
                      sb.cantInodosLibres=sb.cantInodosLibres-1;
 				     if(bwrite(posSB,&sb)==-1){
-				        printf("Error in reservar_inodo, while reading SB. file fichero_basico.c");
+				        printf("Error in reservar_inodo, while reading SB, line 376, file fichero_basico.c\n");
 				        return -1;
 				      } 
 				      return ninodo;                    
 				}else{
-					printf("Error in reservar_inodo, there are no free inodes");
+					printf("Error in reservar_inodo, there are no free inodes, line 350, file ficheros_basicos.c\n");
 					return -1;
 				}				
 			}
@@ -413,7 +413,7 @@
 								*ptr = inodo.punterosIndirectos[2];
 								rangoBL = 3;
 							}else{
-								printf("Error in obtener_rangoBL, the logic block introduced is incorrect. file fichero_basico.c");
+								printf("Error in obtener_rangoBL, the logic block introduced is incorrect, line 411, file fichero_basico.c\n");
 								rangoBL = -1;
 							}
 						}
@@ -448,7 +448,7 @@
 								// Returns the index of the 1st level of indirect pointers
 								index = (nblogico - punterosIndirectos0) % numPunteros;
 								}else{
-									printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+									printf("Error in obtener_indice, the logic block introduced is incorrect, line 447, file fichero_basico.c\n");
 					        		index = -1;
 								}
 							}
@@ -466,13 +466,13 @@
 											// Returns the index of the 1st level of indirect pointers
                                     		index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))%numPunteros;
 										}else{
-							        		printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+							        		printf("Error in obtener_indice, the logic block introduced is incorrect, line 465, file fichero_basico.c\n");
 					                		index = -1;									
 										}
 									}
 								} 
 							}else{
-							    printf("Error in obtener_indice, the logic block introduced is incorrect. file fichero_basico.c");
+							    printf("Error in obtener_indice, the logic block introduced is incorrect, line 456, file fichero_basico.c\n");
 					            index = -1;									
 					        }
 						}
@@ -496,7 +496,7 @@
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar==0){
-							printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), file ficheros_basicos.c");
+							printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), line 498, file ficheros_basicos.c\n");
 							return -1;
 						}else{
 							salvar_inodo = 1;
@@ -506,33 +506,33 @@
 							memset (bufferAux, 0, BLOCKSIZE);
 							//Now we write the value of the buffer in the file system.
 							if(bwrite(ptr,bufferAux)==-1){
-							printf("Error in traducir_bloque_inodo while writing a block(while), file ficheros_basicos.c");
-							return -1;								
+								printf("Error in traducir_bloque_inodo while writing a block(while), line 508, file ficheros_basicos.c\n");
+								return -1;								
 							}
 							bloques_reservados++;
 						    if (nivel_punteros == rangoBL){
 								ind.punterosIndirectos[rangoBL-1]=ptr;
 							}else{
 							   if(bread(ptr_ant,bufferAux)==-1){
-							        printf("Error in traducir_bloque_inodo while reading a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
+							        printf("Error in traducir_bloque_inodo while reading a block(while y nivel_punteros == rangoBL), line 516, file ficheros_basicos.c\n");
 							        return -1;								
 								}
                                 bufferAux[index] = ptr;
 								if(bwrite(ptr_ant,bufferAux)==-1){
-							        printf("Error in traducir_bloque_inodo while writing a block(while y nivel_punteros == rangoBL), file ficheros_basicos.c");
+							        printf("Error in traducir_bloque_inodo while writing a block(while y nivel_punteros == rangoBL), line 521, file ficheros_basicos.c\n");
 							        return -1;	
 								}																							
 							}
 						}						
 					}
 					if(bread(ptr,bufferAux)==-1){
-						printf("Error in traducir_bloque_inodo while writing a block, file ficheros_basicos.c");
+						printf("Error in traducir_bloque_inodo while writing a block, line 528, file ficheros_basicos.c\n");
 						return -1;								
 					}
 					index = obtener_indice(nblogico,nivel_punteros);
 					//printf("El bloque logico es: %d\n", nblogico);
 					if(index==-1){
-						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						printf("Error in traducir_bloque_inodo while getting the index, line 532, file ficheros_basicos.c\n");
 						return -1;									
 					}
 					ptr_ant=ptr;
@@ -542,7 +542,7 @@
 			}
 			if(ptr==0){
 				if(reservar == 0){
-						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						printf("Error in traducir_bloque_inodo while getting the index, line 544, file ficheros_basicos.c\n");
 						return -1;						
 					}else{
 						salvar_inodo = 1;
@@ -553,13 +553,13 @@
 					    	ind.punterosDirectos[nblogico] = ptr;
 					    }else{
 					    	if(bread(ptr_ant,bufferAux)==-1){
-							    printf("Error in traducir_bloque_inodo while reading a block(ptr==0), file ficheros_basicos.c");
+							    printf("Error in traducir_bloque_inodo while reading a block(ptr==0), line 555, file ficheros_basicos.c\n");
 							    return -1;								
 							}
                             bufferAux[index]=ptr;
 					    	//printf("El buffer para reservar datos es: %d\n", bufferAux[index]);                            
 							if(bwrite(ptr_ant,bufferAux)==-1){
-							    printf("Error in traducir_bloque_inodo while writing a block(ptr==0), file ficheros_basicos.c");
+							    printf("Error in traducir_bloque_inodo while writing a block(ptr==0), line 561, file ficheros_basicos.c\n");
 							    return -1;	
 							}	
 
@@ -570,7 +570,7 @@
 				ind.numBloquesOcupados = bloques_reservados;
 				ind.ctime = time(NULL);
 				if(escribir_inodo(ind,ninodo)==-1){
-						printf("Error in traducir_bloque_inodo while getting the index, file ficheros_basicos.c");
+						printf("Error in traducir_bloque_inodo while getting the index, line 572, file ficheros_basicos.c\n");
 						return -1;						
 				}
 			}
@@ -580,14 +580,14 @@
 			struct inodo inodo;
 			struct superbloque sb;
 			if(liberar_bloques_inodo(ninodo,0)==-1){
-					printf("Error in liberar_inodo while freeing the blocks of the inode, file ficheros_basicos.c");
+					printf("Error in liberar_inodo while freeing the blocks of the inode, line 582, file ficheros_basicos.c\n");
 					return -1;	
 			}
 			inodo = leer_inodo(ninodo);
 			inodo.tipo = 'l';
 			//We read the superblock to update the free inodes
 	        if(bread(posSB,&sb)==-1){
-					printf("Error in liberar_inodo while reading superblock, file ficheros_basicos.c");
+					printf("Error in liberar_inodo while reading superblock, line 589, file ficheros_basicos.c\n");
 					return -1;		        	
 	        }
 	        //We save the value of the previos free block block
@@ -596,11 +596,11 @@
 	        sb.posPrimerInodoLibre = ninodo;
 	        sb.cantBloquesLibres++;
 	        if(escribir_inodo(inodo,ninodo)==-1){
-					printf("Error in liberar_inodo while writing inode, file ficheros_basicos.c");
+					printf("Error in liberar_inodo while writing inode, line 598, file ficheros_basicos.c\n");
 					return -1;		        	
 	        }
 	        if(bwrite(posSB,&sb)==-1){
-					printf("Error in liberar_inodo while writing superblock, file ficheros_basicos.c");
+					printf("Error in liberar_inodo while writing superblock, line 602, file ficheros_basicos.c\n");
 					return -1;		        	
 	        }
 	        return ninodo;

@@ -1,0 +1,42 @@
+Instrucciones de ejecución de la Practica
+
+- Primero se ejecutará el comando "make" para compilar todos los programas que se requiren en esta primera entrega. Se debe ejecutar el comando "make clean" cada vez, antes de ejecutar el "make" para limpiar el directorio de ficheros innecesarios y evitar problemas a la hora de actualizar los ejecutables.
+
+- Una vez generados los ficheros ejecutables, se deberán ejecutar de la siguiente forma:
+    - Para crear el sistema de ficheros, ejecutaremos el my_mkfs, indicando el nombre del sistema de ficheros y el numero de bloques.De esta manera, el formato queda de la siguiente forma:
+
+       ./my_mkfs <NombreSistema> <NumeroDeBloques>
+
+       Un ejemplo de este comando podría ser:
+     
+      ./my_mkfs SF 100000
+
+    - Para crear escribir en el fichero, ejecutaremos el programa "escribir", indicando el nombre del sistema de ficheros, el offset desde donde queremos empezar a escribir y el nombre del fichero fuente (nuestra práctica coge el texto que queremos escribir desde un fichero fuente). El comando queda de la siguiente forma:
+    
+    ./escribir <NombreSistema> <Offset> <TextoFuente>
+
+    Un ejemplo de este comando podría ser:
+
+   ./escribir SF 5120 Got.txt
+
+    - Para crear leer del sistema, ejecutaremos el programa "leer", indicando el nombre del sistema de ficheros, el numero del inodo del que queremos leer. El comando queda de la siguiente forma:
+
+   ./leer <NombreSistema> <NumeroInodo>
+
+   Podemos redireccionar la salida del programa leer a un fichero externo y comprobar si se ha escrito correctamente. Un ejemplo podría ser:
+
+  ./leer SF 1 > prueba.txt
+
+    - Finalmente, para leer la metainformación de nuestro sistema de ficheros, basta con ejecutar el programa "leer_SF", indicandole el nombre del sistema de fichero. El comando tendrá la siguiente forma:
+
+  ./leer_SF <NombreSistema>
+
+ En este caso, se recomiendo redireccionar la salida de este programa a un fichero externo debido a que la salida se hace muy extensa y no cabe en la pantalla del terminal.  Un ejemplo podría ser:
+  
+  ./leer_SF SF > Metainformacion.txt
+
+
+Algunas aclaraciones:
+
+     - Cada vez que se ejecuta el programa escribir, se reserva un nuevo inodo y se escribe en el.  
+

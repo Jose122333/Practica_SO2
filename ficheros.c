@@ -178,7 +178,7 @@ int mi_chmod_f(unsigned int ninodo, unsigned char permisos){
 	in.ctime = time(NULL);
 	//Now we write the updated inode
 	if(escribir_inodo(in,ninodo)==-1){
- 		printf("Error in mi_chmod_f while writing updated inode, line 176, file ficheros.c\n");
+ 		printf("Error in mi_chmod_f while writing updated inode, line 181, file ficheros.c\n");
 	    return -1; 
 	}
 	return 0;
@@ -194,13 +194,17 @@ int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
 		if(in.tamEnBytesLog >= nbytes){
 			nblogico = (nbytes/BLOCKSIZE) + 1;
 			//if() EMPLEAR LA FUNCION DE LIBERAR BLOQUES INODDO(HAY QUE REVISARLO)
+      if(liberar_bloques_inodo(ninodo, nblogico) == -1){
+          printf("Error in mi_truncar_f while releasing inode blocks, line 198, file ficheros.c\n");
+          return -1; 
+      }
 			//We update the required files of the inode
 			in.mtime = time(NULL);
 			in.ctime = time(NULL);
 			in.tamEnBytesLog = nbytes;
 			//Finally we write the update inode
 			if(escribir_inodo(in,ninodo)==-1){
- 				printf("Error in mi_truncar_f while writing updated inode, line 198, file ficheros.c\n");
+ 				printf("Error in mi_truncar_f while writing updated inode, line 206, file ficheros.c\n");
 	    		return -1; 
 			}
 			return 0;

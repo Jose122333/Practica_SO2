@@ -1,5 +1,4 @@
 #include "directorios.h"
-#include "ficheros_basicos.h"
 #include <string.h>
 //Function that splits the name and the location
 int extraer_camino(const char *camino, char *inicial, char *final, unsigned char *tipo){
@@ -66,24 +65,24 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 		return -2;			
 		}
 		if(mi_read_f(*p_inodo_dir,&entr,nentrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
-			printf("Error in buscar_entrada, file does not have the correct permissions, file directorios.c \n");
+			printf("Error in buscar_entrada while reading, file directorios.c \n");
  			return -3;			
 		}
 		while(nentrada<numEntr && strcmp(inicial,entr.nombre)!=0){
 			nentrada++;
 			if(mi_read_f(*p_inodo_dir,&entr,nentrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
-				printf("Error in buscar_entrada, file does not have the correct permissions, file directorios.c \n");
+				printf("Error in buscar_entrada while reading, file directorios.c \n");
  				return -3;			
 			}			
 		}
 	}
 	if(nentrada == numEntr){
 		switch(reservar) {
-		 	case '0':
+		 	case 0:
 		 		printf("Error in buscar_entrada, not the correct mode, file directorios.c \n");
  				return -4; 
  				break;
- 			case '1':
+ 			case 1:
  				strcpy(entr.nombre,inicial);
  				if(tipo == 'd'){
  					if(strcmp(final,"/") == 0){
@@ -127,5 +126,93 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 	}else{
 		*p_inodo_dir = entr.inodo;
 		return buscar_entrada (final, p_inodo_dir, p_inodo, p_entrada, reservar, permisos);
+	}
+}
+int mi_create(const char *camino, unsigned char permisos){
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
+	char reservar=0;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_create function,");
+		return ret;
+	}
+	return 0;	
+}
+int mi_dir(const char *camino, char *buffer){
+	//Not implemented yet
+	return 0;
+}
+int mi_link(const char *camino1, const char *camino2){
+	//Not implemented yet
+	return 0;
+}
+int mi_unlink(const char *camino){
+	//Not implemented yet
+	return 0;
+}
+int mi_chmod(const char *camino, unsigned char permisos){
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
+	char reservar= 0;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_chmod function,");
+		return ret;
+	}
+	if(mi_chmod_f(p_inodo,permisos)<0){
+			printf("Error in mi_chmod function, error calling mi_chmod_f function, file directorios.c \n");
+			return -1;	
+	}
+}
+int mi_stat(const char *camino, struct STAT *p_stat){
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
+	char reservar = 0;
+	char permisos = 0;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_stat function,");
+		return ret;
+	}
+	if(mi_stat_f(p_inodo,p_stat)<0){
+			printf("Error in mi_chmod function, error calling mi_chmod_f function, file directorios.c \n");
+			return -1;	
+	}
+}
+
+int getResponse(int BuscarEntradaRS){
+	switch(BuscarEntradaRS){
+		case -6: 
+			printf("The intermediate directories do not exist(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+			break;
+		case -9:
+			printf("The entrance already exists(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+			break;
+		case -2:
+			printf("File does no have the correct permissions(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -1:
+			printf("Error while using the extraer_camino function(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -3:
+			printf("Error while reading(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -4:
+			printf("Not the correct mode(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -5:
+			printf("Cannot book a inode(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -7:
+			printf("Error while liberating a inode(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		case -8:
+			printf("Error while writing(returned in buscar_entrada), file directorios.c \n");
+			return -1;
+		default:
+			return 0;																					
 	}
 }

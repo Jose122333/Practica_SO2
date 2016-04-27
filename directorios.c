@@ -130,7 +130,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 }
 int mi_create(const char *camino, unsigned char permisos){
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
-	char reservar=0;
+	char reservar=1;
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -144,7 +144,52 @@ int mi_dir(const char *camino, char *buffer){
 	return 0;
 }
 int mi_link(const char *camino1, const char *camino2){
-	//Not implemented yet
+	int p_inodo_dir1=0,p_inodo1=0,p_entrada1=0,p_inodo_dir2=0,p_inodo2=0,p_entrada2=0;
+	struct inodo ind1,ind2;
+	char reservar=0,permisos=0;
+	int BuscarEntradaRS = buscar_entrada(camino1,&p_inodo_dir1,&p_inodo1,&p_entrada1,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_link function,");
+		return ret;
+	}
+	if(ind1.tipo!='f'){
+		printf("Error in mi_link function, file does not have the correct permissions or is a directory, file directorios.c \n");
+		return -1;			
+	}
+	reservar=1,permisos=6;
+	//Now we launch the buscar_entrada call for camino2
+	BuscarEntradaRS = buscar_entrada(camino2,&p_inodo_dir2,&p_inodo2,&p_entrada2,reservar,permisos);
+	ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_link function,");
+		return ret;
+	}
+	struct entrada entr;
+	//We read the next inode
+	if(mi_read_f(p_inodo_dir2,&entr,p_entrada2*sizeof(struct entrada),sizeof(struct entrada)) < 0){
+			printf("Error in mi_link while reading struct entrada, file directorios.c \n");
+ 			return -1;			
+	}
+	if(liberar_inodo(p_inodo2)<0){
+			printf("Error in mi_link freeing the inode, file directorios.c \n");
+ 			return -1;	
+	}
+	entr.inodo = p_inodo1;
+	if(mi_write_f(p_inodo_dir2,&entr,p_entrada2*sizeof(struct entrada),sizeof(struct entrada)) < 0){
+			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
+ 			return -1;			
+	}
+	//Read the correspondent inode
+	ind1 = leer_inodo(p_inodo1);
+	//Increment the values of the inode
+	ind1.nlinks++;
+	ind1.ctime = (time_t)NULL;
+	//We write the updated inode
+	if(escribir_inodo(ind1,p_inodo1)<0){
+			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
+ 			return -1;		
+	}
 	return 0;
 }
 int mi_unlink(const char *camino){
@@ -194,25 +239,34 @@ int getResponse(int BuscarEntradaRS){
 		case -2:
 			printf("File does no have the correct permissions(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -1:
 			printf("Error while using the extraer_camino function(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -3:
 			printf("Error while reading(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -4:
 			printf("Not the correct mode(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -5:
 			printf("Cannot book a inode(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -7:
 			printf("Error while liberating a inode(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		case -8:
 			printf("Error while writing(returned in buscar_entrada), file directorios.c \n");
 			return -1;
+			break;
 		default:
-			return 0;																					
+			return 0;
+			break;
+
 	}
 }

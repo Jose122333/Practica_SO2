@@ -605,14 +605,174 @@
 	        }
 	        return ninodo;
 		}
-		int liberar_bloques_inodo(unsigned int ninodo, unsigned int nblogico){
+
+	int liberar_bloques_inodo(unsigned int ninodo, unsigned int blogico){
+		struct inodo in;
+		unsigned int prof;
+		in=leer_inodo(ninodo);
+		unsigned int last=in.tamEnBytesLog%BLOCKSIZE==0?in.tamEnBytesLog/BLOCKSIZE:in.tamEnBytesLog/BLOCKSIZE+1;
+		if(in.tamEnBytesLog==0) return 0;
+		if(blogico >last) {
+			return -1;
+		}else {
+			liberar_direct(last, blogico,in,ninodo);
+			return 0;
+		}
+	}
+
+	int liberar_direct(unsigned int last, unsigned int blogico,struct inodo in,unsigned int ninodo){
+	/* 
+	 * En este algoritmo simplemente pasamos por todos los niveles y liberamos los
+	 * bloques de datos, una vez liberados estos, si es uno de los casos de punteros
+	 * indirectos, liberamos los bloques de punteros tambien.
+	 */
+	unsigned int buf[BLOCKSIZE/sizeof(unsigned int)],buf1[BLOCKSIZE/sizeof(unsigned int)],buf2[BLOCKSIZE/sizeof(unsigned int)];
+	unsigned char check[BLOCKSIZE];
+	unsigned int i,j,k,l,tamfinal;
+	i=blogico;
+	tamfinal=in.tamEnBytesLog-(last-blogico)*BLOCKSIZE;
+	memset(check,0,BLOCKSIZE);
+	//~ if(last==blogico) return 0;
+	//!Liberamos los bloques de los punteros directos
+	while(i<12&&i<=last){
+		if(in.punterosDirectos[i]!=0){
+		liberar_bloque(in.punterosDirectos[i]);
+		in.numBloquesOcupados--;
+		in.punterosDirectos[i]=0;
+		}
+		i++;
+	}
+	
+	//!Liberamos los bloques de los bloques del primer puntero indirecto
+	if(i<last&&i<(BLOCKSIZE/sizeof(unsigned int))+12){  //Se mira si se ha llegado al ultimo elemento o no antes de leer el bloque de datos.
+		if(in.punterosIndirectos[0]!=0){
+			if(bread(in.punterosIndirectos[0],buf)<0) return -1;
+			j=(blogico)%(BLOCKSIZE/sizeof(unsigned int));
+			while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
+				if(buf[j]!=0){
+					liberar_bloque(buf[j]);  //Liberamos bloque de datos
+					in.numBloquesOcupados--; 
+					buf[j]=0;
+				}
+				j++;
+				i++;
+			}
+			if(memcmp(buf,check,BLOCKSIZE)==0){
+				liberar_bloque(in.punterosIndirectos[0]); //Liberar bloque de punteros.
+				in.punterosIndirectos[0]=0;
+			}
+		}else{
+			i+=(BLOCKSIZE/sizeof(unsigned int));
+		}
+	}
+	
+	//!Liberamos los bloques de los bloques del segundo puntero indirecto
+	if(i<last&& i< (BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))+(BLOCKSIZE/sizeof(unsigned int))+12){
+		if(in.punterosIndirectos[1]!=0){
+			if(bread(in.punterosIndirectos[1],buf)<0) return -1;
+			k=(i-((BLOCKSIZE/sizeof(unsigned int))+12))/(BLOCKSIZE/sizeof(unsigned int));
+			j=(i-((BLOCKSIZE/sizeof(unsigned int))+12))%(BLOCKSIZE/sizeof(unsigned int));
+			while(k<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
+				if(buf[k]!=0){
+					if(bread(buf[k],buf1)<0) return -1;
+					while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
+						if(buf1[j]!=0){
+							liberar_bloque(buf1[j]); //Liberaro bloque de datos.
+							in.numBloquesOcupados--;
+							buf1[j]=0;
+						}
+						j++;
+						i++;
+					}
+					if(bwrite(buf[k],buf1)<0) return -1;
+					if(memcmp(buf1,check,BLOCKSIZE)==0){
+						if(buf[k]!=0){
+							liberar_bloque(buf[k]); //Liberar bloque de punteros.
+							buf[k]=0;
+						}
+					}
+				} else {
+					i+=(BLOCKSIZE/sizeof(unsigned int));
+				}
+				j=0;
+				k++;
+			}
+			if(bwrite(in.punterosIndirectos[1],buf)<0) return -1;
+			if(memcmp(buf,check,BLOCKSIZE)==0){
+				liberar_bloque(in.punterosIndirectos[1]); //Libear bloque de punteros.
+				in.punterosIndirectos[1]=0;
+			}
+		} else {
+			i+=(BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int));
+		}
+	}
+	
+	//!Liberamos los bloques de los bloques del tercer puntero indirecto
+	if(i<last){
+		if(in.punterosIndirectos[2]!=0){
+			if(bread(in.punterosIndirectos[2],buf2)<0) return -1;
+			l=(i-((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))+((BLOCKSIZE/sizeof(unsigned int))+12)))/((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int)));   //Posicion en el primer bloque de punteros
+			k=((i-((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))+(BLOCKSIZE/sizeof(unsigned int))+12))%((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))))/(BLOCKSIZE/sizeof(unsigned int));  //Posicion en el segundo bloque de punteros 
+			j=((i-((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))+(BLOCKSIZE/sizeof(unsigned int))+12))%((BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))))%(BLOCKSIZE/sizeof(unsigned int));  //El puntero al bloque de datos en el tercer bloque de punteros
+			while(l<(BLOCKSIZE/sizeof(unsigned int)) && i<last){
+				if(buf2[l]!=0){
+					if(bread(buf2[l],buf)<0) return -1;
+					while(k<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
+						if(buf[k]!=0){
+							if(bread(buf[k],buf1)<0) return -1;
+							while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
+								if(buf1[j]!=0){
+									liberar_bloque(buf1[j]); //Liberamos bloque de punteros.
+									in.numBloquesOcupados--;
+									buf1[j]=0;
+								}
+								j++;
+								i++;
+							}
+							if(bwrite(buf[k],buf1)<0) return -1;
+							if(memcmp(buf1,check,BLOCKSIZE)==0){
+								if(buf[k]!=0){
+									liberar_bloque(buf[k]); //Liberar bloque de punteros.
+									buf[k]=0;
+								}
+							}
+						} else {
+							i+=(BLOCKSIZE/sizeof(unsigned int));
+						}
+						j=0;
+						k++;
+					}
+					if(bwrite(buf2[l],buf)<0) return -1;
+					if(memcmp(buf,check,BLOCKSIZE)==0){
+						if(buf2[l]!=0){
+							liberar_bloque(buf2[l]); //Liberamos bloque de punteros.
+							buf2[l]=0;
+						}
+					}
+				} else {
+					i+=(BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int));
+				}
+				l++;
+				k=0;
+			}
+			if(memcmp(buf,check,BLOCKSIZE)==0){
+				liberar_bloque(in.punterosIndirectos[2]); //Liberamos el bloque de punteros
+				in.punterosIndirectos[2]=0;
+			}
+		}
+	}
+	in.tamEnBytesLog=tamfinal; 
+	if(escribir_inodo(in,ninodo)<0) return -1;
+	return 0;
+}
+		/*int liberar_bloques_inodo(unsigned int ninodo, unsigned int nblogico){
 			struct inodo inode;
 			unsigned int bufferAux[BLOCKSIZE/sizeof(unsigned int)];
 			//We assign the different levels of direct and indirect pointers
-			int npunterosDirectos = 12;
-			int npunterosIndirectosL0 = BLOCKSIZE/sizeof(unsigned int);
-			int npunterosIndirectosL1 = npunterosIndirectosL0*npunterosIndirectosL0;
-			int npunterosIndirectosL2 = npunterosIndirectosL0*npunterosIndirectosL0*npunterosIndirectosL0;
+			int (BLOCKSIZE/sizeof(unsigned int))unterosDirectos = 12;
+			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0 = BLOCKSIZE/sizeof(unsigned int);
+			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL1 = (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0;
+			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL2 = (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0;
 			//Auxiliar buffers for the different levels
 			unsigned int bufferNivel1[BLOCKSIZE/sizeof(unsigned int)];
 			unsigned int bufferNivel2[BLOCKSIZE/sizeof(unsigned int)];
@@ -623,7 +783,7 @@
 			memset(bufferAux, 0, BLOCKSIZE);
 			while(nblogico<ultimoBloque){
 				//Check if the block is in the direct blocks
-				if(nblogico<npunterosDirectos){
+				if(nblogico<(BLOCKSIZE/sizeof(unsigned int))unterosDirectos){
 					//We check if the phisical block exists
 					if(inode.punterosDirectos[nblogico]>0){
 						//Free the block
@@ -635,8 +795,8 @@
 						inode.numBloquesOcupados--;
 						inode.ctime = time(NULL);
 			        }
-				}else if (nblogico<npunterosIndirectosL0 + npunterosDirectos){
-					int indice1 = nblogico - npunterosDirectos;
+				}else if (nblogico<(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0 + (BLOCKSIZE/sizeof(unsigned int))unterosDirectos){
+					int indice1 = nblogico - (BLOCKSIZE/sizeof(unsigned int))unterosDirectos;
 					if(inode.punterosIndirectos[0]>0){
 						//Reads the block from level 1
 						if(bread(inode.punterosIndirectos[0],bufferNivel1)==-1){
@@ -667,6 +827,7 @@
 
 			}
 		return 0;
-		}	 
+		}	 */
+
 			
 

@@ -1,7 +1,7 @@
-SOURCES=bloques.c ficheros_basicos.c my_mkfs.c leer_SF.c ficheros.c escribir.c leer.c stat_chmod.c directorios.c
+SOURCES=bloques.c ficheros_basicos.c my_mkfs.c leer_SF.c ficheros.c escribir.c leer.c stat_chmod.c directorios.c test_trunk.c
 LIBRARIES=bloques.o ficheros_basicos.o ficheros.o directorios.o
 INCLUDES=bloques.h ficheros_basicos.h ficheros.h directorios.h
-PROGRAMS=my_mkfs leer_SF escribir leer stat_chmod
+PROGRAMS=my_mkfs leer_SF escribir leer stat_chmod test_trunk
 OBJS=$(SOURCES:.c=.o)
 
 all: $(OBJS) $(PROGRAMS)
@@ -22,7 +22,10 @@ leer: 	leer.o $(LIBRARIES) $(INCLUDES)
 	$(CC) $(LDFLAGS) $(LIBRARIES) $< -o $@
 
 stat_chmod: stat_chmod.o $(LIBRARIES) $(INCLUDES)
-	$(CC) $(LDFLAGS) $(LIBRARIES) $< -o $@			
+	$(CC) $(LDFLAGS) $(LIBRARIES) $< -o $@
+
+test_trunk: test_trunk.o $(LIBRARIES) $(INCLUDES)
+	$(CC) $(LDFLAGS) $(LIBRARIES) $< -o $@						
 
 %.o: %.c $(INCLUDES) 
 	$(CC) $(CFLAGS) -o $@ -c $<

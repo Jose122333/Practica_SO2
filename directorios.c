@@ -17,6 +17,7 @@ int extraer_camino(const char *camino, char *inicial, char *final, unsigned char
 		strcpy(final, sig_camino);
 		*tipo = 'd';
 	}
+	return 0;
 }
 /*
 	Errors:
@@ -60,7 +61,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 	int numEntr = ind.tamEnBytesLog/sizeof(struct entrada);
 	int nentrada = 0; //Num. entrada inicial
 	if(numEntr>0){
-		if((ind.permisos & 4) == 4){
+		if((ind.permisos & 4) != 4){
 		printf("Error in buscar_entrada, file does not have the correct permissions, file directorios.c \n");
 		return -2;			
 		}
@@ -153,9 +154,11 @@ int mi_link(const char *camino1, const char *camino2){
 		printf("Error in mi_link function,");
 		return ret;
 	}
-	if(ind1.tipo!='f'){
-		printf("Error in mi_link function, file does not have the correct permissions or is a directory, file directorios.c \n");
-		return -1;			
+	//Read the correspondent inode
+	ind1 = leer_inodo(p_inodo1);
+	if(ind1.tipo != 'f'){
+		printf("Error in mi_link function, inode is not the correct type");
+		return -1;
 	}
 	reservar=1,permisos=6;
 	//Now we launch the buscar_entrada call for camino2
@@ -180,8 +183,6 @@ int mi_link(const char *camino1, const char *camino2){
 			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
  			return -1;			
 	}
-	//Read the correspondent inode
-	ind1 = leer_inodo(p_inodo1);
 	//Increment the values of the inode
 	ind1.nlinks++;
 	ind1.ctime = (time_t)NULL;
@@ -193,7 +194,56 @@ int mi_link(const char *camino1, const char *camino2){
 	return 0;
 }
 int mi_unlink(const char *camino){
-	//Not implemented yet
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
+	struct inodo ind, ind_dir;
+	char reservar=0,permisos=0;
+	int num_entradas = 0;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_unlink function,");
+		return ret;
+	}
+	ind = leer_inodo(p_inodo);
+	if(ind.tipo == 'd' && ind.tamEnBytesLog>0){
+		printf("Error in mi_ulink function, inode cannot be deleted, file directorios.c\n");
+		return -1;
+	}
+	ind_dir = leer_inodo(p_inodo_dir);
+	//Calculate the number of entrances 
+	num_entradas = ind_dir.tamEnBytesLog/sizeof(struct entrada);
+	if(p_entrada ==num_entradas - 1){
+		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
+			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
+		}
+	}else{
+		struct entrada entr;
+		if(mi_read_f(p_inodo_dir,&entr,ind_dir.tamEnBytesLog-sizeof(struct entrada),sizeof(struct entrada)) < 0){
+			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
+ 			return -1;			
+		}
+		if(mi_write_f(p_inodo_dir,&entr,p_entrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
+			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
+ 			return -1;			
+		}
+		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
+			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
+		}		
+	}
+	ind = leer_inodo(p_inodo);
+	if(ind.nlinks==1){
+		if(liberar_inodo(p_inodo)<0){
+			printf("Error in mi_unlink function while liberating inode, file directorios.c\n");
+			return -1;
+		}
+	}else{
+		ind.nlinks--;
+		ind.ctime = (time_t)NULL;
+		if(escribir_inodo(ind,p_inodo)<0){
+			printf("Error in mi_unlink function while writing inode, file directorios.c\n");
+			return -1;
+		}	
+	}
 	return 0;
 }
 int mi_chmod(const char *camino, unsigned char permisos){

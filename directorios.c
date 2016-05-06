@@ -53,8 +53,6 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 		printf("Error in buscar_entrada while using function extraer_camino, file directorios.c \n");
 		return -1;
 	}
-	printf("%s\n",inicial);
-	printf("%s\n",final);
 	ind = leer_inodo(*p_inodo_dir);
 	entr.nombre[0] = '\0';
 

@@ -232,7 +232,7 @@ int mi_stat_f(unsigned int ninodo, struct STAT *p_stat){
 	ret.tamEnBytesLog = in.tamEnBytesLog;
 	ret.numBloquesOcupados = in.numBloquesOcupados;
 	*p_stat = ret;
-	return 0;
+	return ninodo;
 }
 //Indicates where we begin to write in the first block
 int setBottomLimit(int offset){

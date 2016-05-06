@@ -7,7 +7,14 @@ int main(int argc, char **argv){
 	int descriptor,bytesEscribir,sz;
 	unsigned int offset,ninodo,bytesWritten, bytesEscritos, longitudFichero;
 	FILE *fptr;
-	//if(argc<3) exit(1);
+	if(argc<4){
+		printf("Syntax error, not enough argumentes, file mi_escribir.c\n"
+			"Correct Order:\n"
+			"Argument 1: File System Name\n"
+			"Argument 2: offset\n"
+			"Argument 3: input text to write in file\n");
+		return -1;
+	}
 	descriptor = bmount(argv[1]);
 	bytesEscritos = 0;
 	ninodo=reservar_inodo('f',6);

@@ -6,6 +6,13 @@ int main(int argc, char **argv){
 	unsigned char input[1500];
 	//if(argc<3) exit(1);
 	char string[128];
+	if(argc<3){
+		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
+			"Correct Order:\n"
+			"Argument 1: File System Name\n"
+			"Argument 2: Inode number\n");
+		return -1;
+	}
 	descriptor = bmount(argv[1]);
 	ninodo = atoi(argv[2]);
   	if(descriptor<0) exit(1);

@@ -139,7 +139,37 @@ int mi_create(const char *camino, unsigned char permisos){
 	return 0;	
 }
 int mi_dir(const char *camino, char *buffer){
-	//Not implemented yet
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
+	char reservar=0,permisos=0;
+	struct inodo ind;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_dir function,");
+		return ret;
+	}
+	//Read the correspondant inode
+	ind = leer_inodo(p_inodo);
+	if(ind.tipo != 'd' && ((ind.permisos & 4) == 4)){
+		printf("Error in mi_dir function, entrance is not a directory or does not have the correct permissions, file directorios.h");
+		return ret;
+	}
+	struct entrada entr;
+	//We get the total number of entrances in the directory
+	int numEntradas = ind.tamEnBytesLog/sizeof(struct entrada);
+	int nentrada = 0;
+	//For each entrance, we read the correspondent entrance and we get the name
+	while(nentrada<numEntradas){
+		if(mi_read_f(p_inodo,&entr,nentrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
+				printf("Error in mi_link while reading struct entrada, file directorios.c \n");
+ 				return -1;			
+		}
+		//We only save the name of the entrances in the buffer
+		strcat(buffer,entr.nombre);
+		strcat(buffer,"|");
+		printf("%s\n",buffer);
+		nentrada++;
+	}
 	return 0;
 }
 int mi_link(const char *camino1, const char *camino2){
@@ -257,6 +287,7 @@ int mi_chmod(const char *camino, unsigned char permisos){
 			printf("Error in mi_chmod function, error calling mi_chmod_f function, file directorios.c \n");
 			return -1;	
 	}
+	return 0;
 }
 int mi_stat(const char *camino, struct STAT *p_stat){
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
@@ -272,6 +303,60 @@ int mi_stat(const char *camino, struct STAT *p_stat){
 			printf("Error in mi_chmod function, error calling mi_chmod_f function, file directorios.c \n");
 			return -1;	
 	}
+	return 0;
+}
+
+int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbytes){
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesEscritos;
+	char reservar = 0;
+	char permisos = 0;
+	struct inodo ind;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_read function,");
+		return ret;
+	}
+	//First we have to chek if the file to be written into is indeed a file or a directory
+	ind = leer_inodo(p_inodo);
+	if(ind.tipo != 'f'){
+		printf("Error in mi_read function, entrance not a file, file directorios.c \n");
+		return -1;	
+	}
+	//Now we read the correspondent bytes
+	numBytesEscritos = mi_read_f(p_inodo,buf,offset,nbytes);
+	if(numBytesEscritos<0){
+		printf("Error in mi_read function, error calling mi_write_f function, file directorios.c \n");
+		return -1;	
+	}
+	return numBytesEscritos;	
+}
+
+
+int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned int nbytes){
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesEscritos;
+	char reservar = 0;
+	char permisos = 0;
+	struct inodo ind;
+	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+	int ret = getResponse(BuscarEntradaRS);
+	if(ret<0){
+		printf("Error in mi_write function,");
+		return ret;
+	}
+	//First we have to chek if the file to be written into is indeed a file or a directory
+	ind = leer_inodo(p_inodo);
+	if(ind.tipo != 'f'){
+		printf("Error in mi_write function, entrance not a file, file directorios.c \n");
+		return -1;	
+	}
+	//Now we read the correspondent bytes
+	numBytesEscritos = mi_write_f(p_inodo,buf,offset,nbytes);
+	if(numBytesEscritos<0){
+		printf("Error in mi_write function, error calling mi_write_f function, file directorios.c \n");
+		return -1;	
+	}
+	return numBytesEscritos;
 }
 
 int getResponse(int BuscarEntradaRS){

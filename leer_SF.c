@@ -11,7 +11,12 @@ int main(int argc, char **argv){
 	struct inodo in;
 	unsigned char buf[BLOCKSIZE];
 	int nbloque,i,j,descriptor;
-	if(argc<2) return -1;
+	if(argc<2){
+		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
+			"Correct Order:\n"
+			"Argument 1: File system name\n");
+		return -1;
+	}
 	descriptor = bmount(argv[1]);
 	if(descriptor<0){
 		exit(1);

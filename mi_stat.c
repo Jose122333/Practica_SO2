@@ -2,6 +2,13 @@
 
 int main(int argc, char **argv){
 	int descriptor,ninodo;
+	if(argc<3){
+		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
+			"Correct Order:\n"
+			"Argument 1: File System Name\n"
+			"Argument 2: Path\n");
+		return -1;
+	}
 	char atime[80], mtime[80],cttime[80],*tipo,perm[3];
 	struct tm *ts;
 	struct STAT out;
@@ -20,5 +27,6 @@ int main(int argc, char **argv){
 	tipo=out.tipo=='d'? "Directorio" : "Fichero";
 	printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,out.nlinks,out.tamEnBytesLog,out.numBloquesOcupados);
 	printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,cttime);
+	bumount();
 	return 0;
 }

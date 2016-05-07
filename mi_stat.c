@@ -3,7 +3,7 @@
 int main(int argc, char **argv){
 	int descriptor,ninodo;
 	if(argc<3){
-		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
+		printf("Syntax error, not enough arguments, file mi_stat.c\n"
 			"Correct Order:\n"
 			"Argument 1: File System Name\n"
 			"Argument 2: Path\n");

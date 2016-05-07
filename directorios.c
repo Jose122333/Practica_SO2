@@ -167,7 +167,6 @@ int mi_dir(const char *camino, char *buffer){
 		//We only save the name of the entrances in the buffer
 		strcat(buffer,entr.nombre);
 		strcat(buffer,"|");
-		printf("%s\n",buffer);
 		nentrada++;
 	}
 	return 0;
@@ -307,7 +306,7 @@ int mi_stat(const char *camino, struct STAT *p_stat){
 }
 
 int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbytes){
-	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesEscritos;
+	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesLeidos;
 	char reservar = 0;
 	char permisos = 0;
 	struct inodo ind;
@@ -324,12 +323,12 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 		return -1;	
 	}
 	//Now we read the correspondent bytes
-	numBytesEscritos = mi_read_f(p_inodo,buf,offset,nbytes);
-	if(numBytesEscritos<0){
+	numBytesLeidos = mi_read_f(p_inodo,buf,offset,nbytes);
+	if(numBytesLeidos<0){
 		printf("Error in mi_read function, error calling mi_write_f function, file directorios.c \n");
 		return -1;	
 	}
-	return numBytesEscritos;	
+	return numBytesLeidos;	
 }
 
 

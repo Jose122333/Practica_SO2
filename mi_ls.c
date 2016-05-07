@@ -11,9 +11,9 @@ int main(int argc, char **argv){
 		return -1;
 	}
 	descriptor = bmount(argv[1]);
-	printf("Entramos en el mi_dir\n");
 	if((mi_dir(argv[2],buffer))<0) return -1;
-	//printf("%s\n",buffer);
+	//We show the buffer
+	printf("%s\n",buffer);
 	bumount();
 	return 0;
 }

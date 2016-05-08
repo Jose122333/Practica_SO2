@@ -192,12 +192,16 @@ int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
 	if((in.permisos & 2) == 2){
 		//Now we check if the number of bytes is correct
 		if(in.tamEnBytesLog >= nbytes){
-			nblogico = (nbytes/BLOCKSIZE) + 1;
-			//if() EMPLEAR LA FUNCION DE LIBERAR BLOQUES INODDO(HAY QUE REVISARLO)
-      if(liberar_bloques_inodo(ninodo, nblogico) == -1){
-          printf("Error in mi_truncar_f while releasing inode blocks, line 198, file ficheros.c\n");
-          return -1; 
-      }
+			if(nbytes%BLOCKSIZE == 0){
+				nblogico = nbytes/BLOCKSIZE;
+			}else{
+				nblogico = (nbytes/BLOCKSIZE) + 1;
+			}
+			if(liberar_bloques_inodo(ninodo,nblogico) < 0){
+ 				printf("Error in mi_truncar_f while releasin inode blocks, line 206, file ficheros.c\n");
+	    		return -1; 
+			}
+			in = leer_inodo(ninodo);
 			//We update the required files of the inode
 			in.mtime = time(NULL);
 			in.ctime = time(NULL);

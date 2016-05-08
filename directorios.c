@@ -34,7 +34,6 @@ int extraer_camino(const char *camino, char *inicial, char *final, unsigned char
 */
 int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsigned int *p_inodo, unsigned int *p_entrada, char reservar, unsigned char permisos){
 	struct inodo ind;
-	int numentradas;
 	struct entrada entr;
 	char inicial[64];
   	char final[strlen(camino_parcial)];
@@ -54,8 +53,11 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 		return -1;
 	}
 	ind = leer_inodo(*p_inodo_dir);
+	if(ind.tipo == 'f'){
+		printf("Error in buscar_entrada, you cannot use a file as a directory \n");
+		return -10;
+	}
 	entr.nombre[0] = '\0';
-
 	int numEntr = ind.tamEnBytesLog/sizeof(struct entrada);
 	int nentrada = 0; //Num. entrada inicial
 	if(numEntr>0){
@@ -115,7 +117,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 			}		
 		}
 	if((strcmp(final,"/")==0) || tipo =='f'){
-		if((numEntr<numentradas) && reservar == 1){
+		if((numEntr<nentrada) && reservar == 1){
  			printf("Error in buscar_entrada, the entrance already exists, file directorios.c \n");
  			return -9; 	
 		}
@@ -360,6 +362,9 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 
 int getResponse(int BuscarEntradaRS){
 	switch(BuscarEntradaRS){
+		case -10:
+			printf("You cannot use a file as a directory(returned in buscar_entrada), file directorios.c \n");
+			return -1;
 		case -6: 
 			printf("The intermediate directories do not exist(returned in buscar_entrada), file directorios.c \n");
 			return -1;

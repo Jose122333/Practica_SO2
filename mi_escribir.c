@@ -34,7 +34,7 @@ int main(int argc, char **argv){
 	}
 	printf("The number of bytes written is: %d\n", bytesEscritos);
 	//We close the file system
-	if(bumount()<0){
+	if(bumount(descriptor)<0){
 		printf("Error while closing the file system, file mi_escribir.c\n");
 		return -1;
 	}

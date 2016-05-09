@@ -27,6 +27,6 @@ int main(int argc, char **argv){
 	//  }
 
 	if((mi_link(argv[2],argv[3]))<0) return -1;
-	bumount();
+	bumount(descriptor);
 	return 0;
 }

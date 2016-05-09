@@ -14,6 +14,6 @@ int main(int argc, char **argv){
 	if((mi_dir(argv[2],buffer))<0) return -1;
 	//We show the buffer
 	printf("%s\n",buffer);
-	bumount();
+	bumount(descriptor);
 	return 0;
 }

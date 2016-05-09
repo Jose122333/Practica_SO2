@@ -344,7 +344,7 @@
 				int ninodo;
 				//Read the sb
 				if(bread(posSB,&sb)==-1){
-				        printf("Error in reservar_inodo, while reading SB, line 346, file fichero_basico.c\n");
+				        //printf("Error in reservar_inodo, while reading SB, line 346, file fichero_basico.c\n");
 				        return -1;
 				}
 				if(sb.cantInodosLibres>0){
@@ -447,9 +447,6 @@
 								if (nivel_punteros == 1){
 								// Returns the index of the 1st level of indirect pointers
 								index = (nblogico - punterosIndirectos0) % numPunteros;
-								}else{
-									printf("Error in obtener_indice, the logic block introduced is incorrect, line 447, file fichero_basico.c\n");
-					        		index = -1;
 								}
 							}
 						}else{
@@ -465,16 +462,10 @@
 										if (nivel_punteros == 1){
 											// Returns the index of the 1st level of indirect pointers
                                     		index = ((nblogico - punterosIndirectos1)%(numPunteros*numPunteros))%numPunteros;
-										}else{
-							        		printf("Error in obtener_indice, the logic block introduced is incorrect, line 465, file fichero_basico.c\n");
-					                		index = -1;									
 										}
 									}
 								} 
-							}else{
-							    printf("Error in obtener_indice, the logic block introduced is incorrect, line 456, file fichero_basico.c\n");
-					            index = -1;									
-					        }
+							}
 						}
 					}
 				}
@@ -496,7 +487,7 @@
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar==0){
-							printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), line 498, file ficheros_basicos.c\n");
+							//printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), line 498, file ficheros_basicos.c\n");
 							return -1;
 						}else{
 							salvar_inodo = 1;
@@ -530,19 +521,17 @@
 						return -1;								
 					}
 					index = obtener_indice(nblogico,nivel_punteros);
-					//printf("El bloque logico es: %d\n", nblogico);
 					if(index==-1){
 						printf("Error in traducir_bloque_inodo while getting the index, line 532, file ficheros_basicos.c\n");
 						return -1;									
 					}
 					ptr_ant=ptr;
 					ptr = bufferAux[index];
-					//printf("El final valor de ptr es: %d \n",ptr);
 					nivel_punteros--;                
 			}
 			if(ptr==0){
 				if(reservar == 0){
-						printf("Error in traducir_bloque_inodo while getting the index, line 544, file ficheros_basicos.c\n");
+						//printf("Error in traducir_bloque_inodo while getting the index, line 544, file ficheros_basicos.c\n");
 						return -1;						
 					}else{
 						salvar_inodo = 1;

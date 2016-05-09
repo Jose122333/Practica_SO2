@@ -114,7 +114,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
        ultimoBloque = (offset+nbytes-1)/BLOCKSIZE;
        //If the first and last block to be written into are the same
        if(primerBloque == ultimoBloque){
-       		bf = traducir_bloque_inodo(ninodo,primerBloque,1);
+       		bf = traducir_bloque_inodo(ninodo,primerBloque,0);
             if(bread(bf,buf_aux)==-1){
 				printf("Error in mi_read_f while reading(first=last) the block, line 117, file ficheros.c\n");
 	    		return -1;                	
@@ -127,7 +127,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
        		       		memset(buf_aux,0, sizeof(buf_aux));
 
        	    //Translate the logical value of the block
-       	    bf = traducir_bloque_inodo(ninodo,i,1);
+       	    bf = traducir_bloque_inodo(ninodo,i,0);
        	    if(bf==-1){
 				printf("Error in mi_read_f translating the block into phisical value, line 127, file ficheros.c\n");
 	    		return -1;    			

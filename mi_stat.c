@@ -27,6 +27,6 @@ int main(int argc, char **argv){
 	tipo=out.tipo=='d'? "Directorio" : "Fichero";
 	printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,out.nlinks,out.tamEnBytesLog,out.numBloquesOcupados);
 	printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,cttime);
-	bumount();
+	bumount(descriptor);
 	return 0;
 }

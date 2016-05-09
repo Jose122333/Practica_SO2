@@ -12,6 +12,6 @@ int main(int argc, char **argv){
 	}
 	descriptor = bmount(argv[1]);
 	if((mi_create(argv[3],atoi(argv[2])))<0) return -1;
-	bumount();
+	bumount(descriptor);
 	return 0;
 }

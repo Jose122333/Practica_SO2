@@ -28,7 +28,7 @@ int main(int argc, char **argv){
     }
     sprintf(string,"El número total de bytes leídos es: %d \n", totalBytes);
     write(2,string, strlen(string));
-	if(bumount()<0){
+	if(bumount(descriptor)<0){
 		printf("Error while closing file sistem, file mi_cat.c\n");
 		return -1;		
 	}

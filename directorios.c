@@ -167,8 +167,40 @@ int mi_dir(const char *camino, char *buffer){
  				return -1;			
 		}
 		//We only save the name of the entrances in the buffer
+		strcat(buffer, "Nombre: ");
 		strcat(buffer,entr.nombre);
-		strcat(buffer,"|");
+		//We add the permissions
+		strcat(buffer,"Permisos: ");
+		//We read the correspondent inode
+		ind = leer_inodo(entr.inodo);
+		if(ind.permisos & 4){
+			strcat(buffer,"r");
+		}else{
+			if(ind.permisos & 2){
+				strcat(buffer,"w");
+			}else{
+				if(ind.permisos & 1){
+					strcat(buffer,"x");
+				}else{
+					strcat(buffer,"-");
+				}
+			}
+		}
+		strcat(buffer, "Tipo: ");
+		if(ind.tipo == 'f'){
+			strcat(buffer,"f ");			
+		}else{
+			strcat(buffer, "d ");
+		}
+		//Information about the mtime
+		strcat(buffer, "mtime: ");
+		struct tm *tm;
+		char tmp[100];
+		tm = localtime(&ind.mtime);
+		sprintf(tmp,"%d-%02d-%02d %02d:%02d:%02d\t",tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday,tm->tm_hour,tm->tm_min,tm->tm_sec);
+		strcat(buffer,tmp);
+		strcat(buffer," | ");
+		//We update to the next entrance
 		nentrada++;
 	}
 	return 0;

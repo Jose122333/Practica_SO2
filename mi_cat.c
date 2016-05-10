@@ -3,7 +3,7 @@
 
 int main(int argc, char **argv){
 	int descriptor,offset,bytesLeidos,totalBytes;
-	unsigned char input[BLOCKSIZE];
+	unsigned char input[1500];
 	char string[128];
 	if(argc<3){
 		printf("Syntax error, not enough arguments, file mi_chmod.c\n"

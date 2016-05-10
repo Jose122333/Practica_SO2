@@ -143,6 +143,9 @@ int mi_create(const char *camino, unsigned char permisos){
 int mi_dir(const char *camino, char *buffer){
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
 	char reservar=0,permisos=0;
+	struct tm *tm;
+	char tmp[100];
+	char size[15];
 	struct inodo ind;
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
@@ -193,12 +196,12 @@ int mi_dir(const char *camino, char *buffer){
 		}else{
 			strcat(buffer, "d ");
 		}
-		//strcat(buffer," Tamaño: ");
-		//strcat(buffer, ind.tamEnBytesLog);
+		//Information about inode size
+		strcat(buffer," Tamaño: ");
+		sprintf(size, "%d", ind.tamEnBytesLog);
+		strcat(buffer, size);
 		//Information about the mtime
 		strcat(buffer, " mtime: ");
-		struct tm *tm;
-		char tmp[100];
 		tm = localtime(&ind.mtime);
 		sprintf(tmp,"%d-%02d-%02d %02d:%02d:%02d\t",tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday,tm->tm_hour,tm->tm_min,tm->tm_sec);
 		strcat(buffer,tmp);

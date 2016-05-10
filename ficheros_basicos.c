@@ -488,7 +488,7 @@
 					if (ptr==0){
 						if (reservar==0){
 							//printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), line 498, file ficheros_basicos.c\n");
-							return -1;
+							return -2;
 						}else{
 							salvar_inodo = 1;
 							//Reserve the seleccted block
@@ -532,7 +532,7 @@
 			if(ptr==0){
 				if(reservar == 0){
 						//printf("Error in traducir_bloque_inodo while getting the index, line 544, file ficheros_basicos.c\n");
-						return -1;						
+						return -2;						
 					}else{
 						salvar_inodo = 1;
 					    ptr = reservar_bloque();
@@ -611,9 +611,9 @@
 
 	int liberar_direct(unsigned int last, unsigned int blogico,struct inodo in,unsigned int ninodo){
 	/* 
-	 * En este algoritmo simplemente pasamos por todos los niveles y liberamos los
-	 * bloques de datos, una vez liberados estos, si es uno de los casos de punteros
-	 * indirectos, liberamos los bloques de punteros tambien.
+	 * In this algorithm we run through all the levels and we liberate the data blocks.
+	 * Once all the data blocks have been liberated, if we are in one of the indirect
+	 * levels, we have to release the pointer blocks as well.
 	 */
 	unsigned int buf[BLOCKSIZE/sizeof(unsigned int)],buf1[BLOCKSIZE/sizeof(unsigned int)],buf2[BLOCKSIZE/sizeof(unsigned int)];
 	unsigned char check[BLOCKSIZE];
@@ -622,7 +622,7 @@
 	tamfinal=in.tamEnBytesLog-(last-blogico)*BLOCKSIZE;
 	memset(check,0,BLOCKSIZE);
 	//~ if(last==blogico) return 0;
-	//!Liberamos los bloques de los punteros directos
+	//We free al the blocks in the direct pointers field
 	while(i<12&&i<=last){
 		if(in.punterosDirectos[i]!=0){
 		liberar_bloque(in.punterosDirectos[i]);
@@ -632,14 +632,14 @@
 		i++;
 	}
 	
-	//!Liberamos los bloques de los bloques del primer puntero indirecto
-	if(i<last&&i<(BLOCKSIZE/sizeof(unsigned int))+12){  //Se mira si se ha llegado al ultimo elemento o no antes de leer el bloque de datos.
+	//We free al the blocks in the first indirect pointer field
+	if(i<last&&i<(BLOCKSIZE/sizeof(unsigned int))+12){  //we check if we have reached the last element, before we read the data blocks
 		if(in.punterosIndirectos[0]!=0){
 			if(bread(in.punterosIndirectos[0],buf)<0) return -1;
 			j=(blogico)%(BLOCKSIZE/sizeof(unsigned int));
 			while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
 				if(buf[j]!=0){
-					liberar_bloque(buf[j]);  //Liberamos bloque de datos
+					liberar_bloque(buf[j]);  //Free the data block
 					in.numBloquesOcupados--; 
 					buf[j]=0;
 				}
@@ -647,7 +647,7 @@
 				i++;
 			}
 			if(memcmp(buf,check,BLOCKSIZE)==0){
-				liberar_bloque(in.punterosIndirectos[0]); //Liberar bloque de punteros.
+				liberar_bloque(in.punterosIndirectos[0]); //Free the level 1 indirect block(if there are no more data blocks)
 				in.punterosIndirectos[0]=0;
 			}
 		}else{
@@ -655,7 +655,7 @@
 		}
 	}
 	
-	//!Liberamos los bloques de los bloques del segundo puntero indirecto
+	//We free al the blocks in the second indirect pointer field
 	if(i<last&& i< (BLOCKSIZE/sizeof(unsigned int))*(BLOCKSIZE/sizeof(unsigned int))+(BLOCKSIZE/sizeof(unsigned int))+12){
 		if(in.punterosIndirectos[1]!=0){
 			if(bread(in.punterosIndirectos[1],buf)<0) return -1;
@@ -666,7 +666,7 @@
 					if(bread(buf[k],buf1)<0) return -1;
 					while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
 						if(buf1[j]!=0){
-							liberar_bloque(buf1[j]); //Liberaro bloque de datos.
+							liberar_bloque(buf1[j]); //Free the data block
 							in.numBloquesOcupados--;
 							buf1[j]=0;
 						}
@@ -676,7 +676,7 @@
 					if(bwrite(buf[k],buf1)<0) return -1;
 					if(memcmp(buf1,check,BLOCKSIZE)==0){
 						if(buf[k]!=0){
-							liberar_bloque(buf[k]); //Liberar bloque de punteros.
+							liberar_bloque(buf[k]); //Free the level 2 indirect block(if there are no more data blocks)
 							buf[k]=0;
 						}
 					}
@@ -688,7 +688,7 @@
 			}
 			if(bwrite(in.punterosIndirectos[1],buf)<0) return -1;
 			if(memcmp(buf,check,BLOCKSIZE)==0){
-				liberar_bloque(in.punterosIndirectos[1]); //Libear bloque de punteros.
+				liberar_bloque(in.punterosIndirectos[1]); //Free the level 1 indirect block(if there are no more data blocks)
 				in.punterosIndirectos[1]=0;
 			}
 		} else {
@@ -696,7 +696,7 @@
 		}
 	}
 	
-	//!Liberamos los bloques de los bloques del tercer puntero indirecto
+	//We free al the blocks in the third indirect pointer field
 	if(i<last){
 		if(in.punterosIndirectos[2]!=0){
 			if(bread(in.punterosIndirectos[2],buf2)<0) return -1;
@@ -711,7 +711,7 @@
 							if(bread(buf[k],buf1)<0) return -1;
 							while(j<(BLOCKSIZE/sizeof(unsigned int))&&i<last){
 								if(buf1[j]!=0){
-									liberar_bloque(buf1[j]); //Liberamos bloque de punteros.
+									liberar_bloque(buf1[j]); ///Free the data block
 									in.numBloquesOcupados--;
 									buf1[j]=0;
 								}
@@ -721,7 +721,7 @@
 							if(bwrite(buf[k],buf1)<0) return -1;
 							if(memcmp(buf1,check,BLOCKSIZE)==0){
 								if(buf[k]!=0){
-									liberar_bloque(buf[k]); //Liberar bloque de punteros.
+									liberar_bloque(buf[k]); //Free the level 3 indirect block(if there are no more data blocks)
 									buf[k]=0;
 								}
 							}
@@ -734,7 +734,7 @@
 					if(bwrite(buf2[l],buf)<0) return -1;
 					if(memcmp(buf,check,BLOCKSIZE)==0){
 						if(buf2[l]!=0){
-							liberar_bloque(buf2[l]); //Liberamos bloque de punteros.
+							liberar_bloque(buf2[l]); //Free the level 2 indirect block(if there are no more data blocks)
 							buf2[l]=0;
 						}
 					}
@@ -745,78 +745,15 @@
 				k=0;
 			}
 			if(memcmp(buf,check,BLOCKSIZE)==0){
-				liberar_bloque(in.punterosIndirectos[2]); //Liberamos el bloque de punteros
+				liberar_bloque(in.punterosIndirectos[2]); //Free the level 1 indirect block(if there are no more data blocks)
 				in.punterosIndirectos[2]=0;
 			}
 		}
 	}
+	//We update the final size of the inode and we write it back
 	in.tamEnBytesLog=tamfinal; 
 	if(escribir_inodo(in,ninodo)<0) return -1;
 	return 0;
 }
-		/*int liberar_bloques_inodo(unsigned int ninodo, unsigned int nblogico){
-			struct inodo inode;
-			unsigned int bufferAux[BLOCKSIZE/sizeof(unsigned int)];
-			//We assign the different levels of direct and indirect pointers
-			int (BLOCKSIZE/sizeof(unsigned int))unterosDirectos = 12;
-			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0 = BLOCKSIZE/sizeof(unsigned int);
-			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL1 = (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0;
-			int (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL2 = (BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0*(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0;
-			//Auxiliar buffers for the different levels
-			unsigned int bufferNivel1[BLOCKSIZE/sizeof(unsigned int)];
-			unsigned int bufferNivel2[BLOCKSIZE/sizeof(unsigned int)];
-			unsigned int bufferNivel3[BLOCKSIZE/sizeof(unsigned int)];
-			//We read the selected block
-			inode = leer_inodo(ninodo);
-			int ultimoBloque = inode.tamEnBytesLog/BLOCKSIZE;
-			memset(bufferAux, 0, BLOCKSIZE);
-			while(nblogico<ultimoBloque){
-				//Check if the block is in the direct blocks
-				if(nblogico<(BLOCKSIZE/sizeof(unsigned int))unterosDirectos){
-					//We check if the phisical block exists
-					if(inode.punterosDirectos[nblogico]>0){
-						//Free the block
-						if(liberar_bloque(nblogico)==-1){
-					        printf("Error in liberar_bloques_inodo while freeing the block, file ficheros_basicos.c");
-							return -1;	
-						}
-						inode.punterosDirectos[nblogico] = 0;
-						inode.numBloquesOcupados--;
-						inode.ctime = time(NULL);
-			        }
-				}else if (nblogico<(BLOCKSIZE/sizeof(unsigned int))unterosIndirectosL0 + (BLOCKSIZE/sizeof(unsigned int))unterosDirectos){
-					int indice1 = nblogico - (BLOCKSIZE/sizeof(unsigned int))unterosDirectos;
-					if(inode.punterosIndirectos[0]>0){
-						//Reads the block from level 1
-						if(bread(inode.punterosIndirectos[0],bufferNivel1)==-1){
-                           if(bufferNivel1[indice1] > 0){
-                           	  //NOSE SEGURO SI SE TIENE QUE TRADUCIR bufferNivel1[indice1]
-                           	    int bloqueFisico;
-                           	    if(traducir_bloque_inodo(ninodo,bufferNivel1[indice1],'w')==-1){
-					        		printf("Error in liberar_bloques_inodo while translating logical to physical block file ficheros_basicos.c");
-									return -1;	                					
-                           	    }
-                           		if(liberar_bloque(bloqueFisico)==-1){
-					        		printf("Error in liberar_bloques_inodo while freeing the block, file ficheros_basicos.c");
-									return -1;	
-								}
-								inode.punterosIndirectos[indice1] = 0;
-								inode.numBloquesOcupados--;
-								inode.ctime = time(NULL);
 
-                           	}
-			            }
-
-
-
-					}
-
-				}
-
-
-			}
-		return 0;
-		}	 */
-
-			
 

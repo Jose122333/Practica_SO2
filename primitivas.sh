@@ -2,6 +2,7 @@
 # $1 --> disco.imagen
 
 make
+rm $1
 clear
 #Montamos el disco 
 echo --------------------- Montamos el disco ---------------------

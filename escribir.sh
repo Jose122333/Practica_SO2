@@ -3,6 +3,10 @@
 # $1 --> Disco virtual
 
 #creamos el sistema de ficheros
+
+rm $1
+make
+clear
 echo
 echo MI_MKFS -------------------------------------------
 echo creamos el sistema de ficheros con 100000 bloques

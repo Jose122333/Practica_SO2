@@ -1,7 +1,9 @@
 #script
 #!/bin/bash
 # $1 --> Disco virtual
-
+rm $1
+make
+clear
 #comprobamos que al crear 17 subdirectorios los bloques de datos del padre son 2, y que al eliminar un subdirectorio el directorio padre tiene 1 bloque de datos
 echo
 echo MI_MKDIR -------------------------------------------

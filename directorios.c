@@ -117,7 +117,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 			}		
 		}
 	if((strcmp(final,"/")==0) || tipo =='f'){
-		if((numEntr<nentrada) && reservar == 1){
+		if((nentrada<numEntr) && reservar == 1){
  			printf("Error in buscar_entrada, the entrance already exists, file directorios.c \n");
  			return -9; 	
 		}
@@ -167,10 +167,11 @@ int mi_dir(const char *camino, char *buffer){
  				return -1;			
 		}
 		//We only save the name of the entrances in the buffer
-		strcat(buffer, "Nombre: ");
+		strcat(buffer,"\n-----------------------------------------------------------");
+		strcat(buffer, "\nNombre: ");
 		strcat(buffer,entr.nombre);
 		//We add the permissions
-		strcat(buffer,"Permisos: ");
+		strcat(buffer," Permisos: ");
 		//We read the correspondent inode
 		ind = leer_inodo(entr.inodo);
 		if(ind.permisos & 4){
@@ -186,20 +187,21 @@ int mi_dir(const char *camino, char *buffer){
 				}
 			}
 		}
-		strcat(buffer, "Tipo: ");
+		strcat(buffer, " Tipo: ");
 		if(ind.tipo == 'f'){
 			strcat(buffer,"f ");			
 		}else{
 			strcat(buffer, "d ");
 		}
+		//strcat(buffer," Tamaño: ");
+		//strcat(buffer, ind.tamEnBytesLog);
 		//Information about the mtime
-		strcat(buffer, "mtime: ");
+		strcat(buffer, " mtime: ");
 		struct tm *tm;
 		char tmp[100];
 		tm = localtime(&ind.mtime);
 		sprintf(tmp,"%d-%02d-%02d %02d:%02d:%02d\t",tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday,tm->tm_hour,tm->tm_min,tm->tm_sec);
 		strcat(buffer,tmp);
-		strcat(buffer," | ");
 		//We update to the next entrance
 		nentrada++;
 	}
@@ -221,6 +223,7 @@ int mi_link(const char *camino1, const char *camino2){
 		printf("Error in mi_link function, inode is not the correct type");
 		return -1;
 	}
+
 	reservar=1,permisos=6;
 	//Now we launch the buscar_entrada call for camino2
 	BuscarEntradaRS = buscar_entrada(camino2,&p_inodo_dir2,&p_inodo2,&p_entrada2,reservar,permisos);
@@ -228,6 +231,11 @@ int mi_link(const char *camino1, const char *camino2){
 	if(ret<0){
 		printf("Error in mi_link function,");
 		return ret;
+	}
+	ind2 = leer_inodo(p_inodo2);
+	if(ind2.tipo != 'f'){
+		printf("Error in mi_link function, inode is not the correct type");
+		return -1;
 	}
 	struct entrada entr;
 	//We read the next inode

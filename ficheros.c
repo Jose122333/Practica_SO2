@@ -54,6 +54,7 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
               }
             //If the block to be written into is the last
     		}else if (i==ultimoBloque){
+    			desp2 = setTopLimit(offset,nbytes);
               	if(bread(bf,buf_aux)==-1){
 					printf("Error in mi_write_f while reading(last) the block, line 56, file ficheros.c\n");
 	    			return -1;                	
@@ -141,6 +142,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
             memcpy (buf_original, buf_aux + desp1, BLOCKSIZE - desp1);
             //If the block to be written into is the last
     		}else if (i==ultimoBloque){
+    			desp2 = setTopLimit(offset,nbytes);
               	if(bread(bf,buf_aux)==-1){
 					printf("Error in mi_read_f while reading(last) the block, line 141, file ficheros.c\n");
 	    			return -1;                	

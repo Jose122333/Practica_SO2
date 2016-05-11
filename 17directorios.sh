@@ -4,6 +4,13 @@
 rm $1
 make
 clear
+echo
+echo --------MI_MIKFS-------------
+echo creamos el sistema de ficheros con 100000 bloques
+echo Pulse cualquier tecla para continuar...
+read -n 1 -s
+echo
+./mi_mkfs $1 100000
 #comprobamos que al crear 17 subdirectorios los bloques de datos del padre son 2, y que al eliminar un subdirectorio el directorio padre tiene 1 bloque de datos
 echo
 echo MI_MKDIR -------------------------------------------

@@ -357,9 +357,9 @@
                      inodo.tipo = tipo;
                      inodo.permisos = permisos;
                      //inodo.atime = (time_t)NULL;
-                     inodo.atime = time(&now);
-                     inodo.mtime = (time_t)NULL;
-                     inodo.ctime = (time_t)NULL;
+                     inodo.atime = time(NULL);
+                     inodo.mtime = time(NULL);
+                     inodo.ctime = time(NULL);
                      inodo.nlinks = 1; 
                      inodo.tamEnBytesLog = 0; 
                      inodo.numBloquesOcupados = 0;

@@ -132,12 +132,15 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 int mi_create(const char *camino, unsigned char permisos){
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0;
 	char reservar=1;
+	mi_waitSem();
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
+		mi_signalSem();
 		printf("Error in mi_create function,");
 		return ret;
 	}
+	mi_signalSem();
 	return 0;	
 }
 int mi_dir(const char *camino, char *buffer){
@@ -147,6 +150,7 @@ int mi_dir(const char *camino, char *buffer){
 	char tmp[100];
 	char size[15];
 	struct inodo ind;
+	//We block the critical section when we call the semaphore
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -229,12 +233,15 @@ int mi_link(const char *camino1, const char *camino2){
 
 	reservar=1,permisos=6;
 	//Now we launch the buscar_entrada call for camino2
+	mi_waitSem();
 	BuscarEntradaRS = buscar_entrada(camino2,&p_inodo_dir2,&p_inodo2,&p_entrada2,reservar,permisos);
 	ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
+		mi_signalSem();
 		printf("Error in mi_link function,");
 		return ret;
 	}
+	mi_signalSem();
 	ind2 = leer_inodo(p_inodo2);
 	if(ind2.tipo != 'f'){
 		printf("Error in mi_link function, inode is not the correct type");
@@ -246,23 +253,30 @@ int mi_link(const char *camino1, const char *camino2){
 			printf("Error in mi_link while reading struct entrada, file directorios.c \n");
  			return -1;			
 	}
+	mi_waitSem();
 	if(liberar_inodo(p_inodo2)<0){
+		mi_signalSem();
 			printf("Error in mi_link freeing the inode, file directorios.c \n");
  			return -1;	
 	}
+	mi_signalSem();
 	entr.inodo = p_inodo1;
 	if(mi_write_f(p_inodo_dir2,&entr,p_entrada2*sizeof(struct entrada),sizeof(struct entrada)) < 0){
 			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
  			return -1;			
 	}
+	//We update the inode data, so we put a semaphore
+	mi_waitSem();
 	//Increment the values of the inode
 	ind1.nlinks++;
 	ind1.ctime = (time_t)NULL;
 	//We write the updated inode
 	if(escribir_inodo(ind1,p_inodo1)<0){
+			mi_signalSem();
 			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
  			return -1;		
 	}
+	mi_signalSem();
 	return 0;
 }
 int mi_unlink(const char *camino){
@@ -298,23 +312,32 @@ int mi_unlink(const char *camino){
 			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
  			return -1;			
 		}
+		mi_waitSem();
 		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
+			mi_signalSem();
 			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
-		}		
+		}
+		mi_signalSem();		
 	}
 	ind = leer_inodo(p_inodo);
 	if(ind.nlinks==1){
+		mi_waitSem();
 		if(liberar_inodo(p_inodo)<0){
 			printf("Error in mi_unlink function while liberating inode, file directorios.c\n");
+			mi_signalSem();
 			return -1;
 		}
+		mi_signalSem();	
 	}else{
+		mi_waitSem();
 		ind.nlinks--;
 		ind.ctime = (time_t)NULL;
 		if(escribir_inodo(ind,p_inodo)<0){
+			mi_signalSem();	
 			printf("Error in mi_unlink function while writing inode, file directorios.c\n");
 			return -1;
-		}	
+		}
+		mi_signalSem();	
 	}
 	return 0;
 }
@@ -382,12 +405,15 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 	char reservar = 0;
 	char permisos = 0;
 	struct inodo ind;
+	mi_waitSem();
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
+		mi_signalSem();
 		printf("Error in mi_write function,");
 		return ret;
 	}
+	mi_signalSem();
 	//First we have to chek if the file to be written into is indeed a file or a directory
 	ind = leer_inodo(p_inodo);
 	if(ind.tipo != 'f'){

@@ -77,6 +77,7 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 		printf("Error in mi_read_f, file does not have the correct permissions, line 17, file ficheros.c\n");
 	    return -1;
 	}
+	mi_waitSem();
 	inode = leer_inodo(ninodo);
     if(inode.tamEnBytesLog<offset+nbytes){
        	inode.tamEnBytesLog = offset+nbytes;	
@@ -84,9 +85,11 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
     inode.mtime = time(NULL);
     inode.ctime = time(NULL);
     if(escribir_inodo(inode,ninodo)==-1){
+    	mi_signalSem();
 		printf("Error in mi_read_f while writing updated inode, line 84, file ficheros.c\n");
 	    return -1;
     }
+    mi_signalSem();	
     return nbytes;
 }
 int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsigned int nbytes){
@@ -121,49 +124,52 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
 	    		return -1;                	
             }
             memcpy(buf_original, buf_aux + desp1, nbytes);
-       }else{
-       int i;
-       //loop that checks all the blocks to be written into
-       	for (i=primerBloque;i<=ultimoBloque;i++){
+       	}else{
+       		int i;
+       		//loop that checks all the blocks to be written into
+       		for (i=primerBloque;i<=ultimoBloque;i++){
        		       		memset(buf_aux,0, sizeof(buf_aux));
 
-       	    //Translate the logical value of the block
-       	    bf = traducir_bloque_inodo(ninodo,i,0);
-       	    if(bf==-1){
-				printf("Error in mi_read_f translating the block into phisical value, line 127, file ficheros.c\n");
-	    		return -1;    			
-    		}
-    		//If the block to be written into is the first
-    		if(i==primerBloque){
-              	if(bread(bf,buf_aux)==-1){
-					printf("Error in mi_read_f while reading(first) the block, line 134, file ficheros.c\n");
-	    			return -1;                	
-            	}
-            memcpy (buf_original, buf_aux + desp1, BLOCKSIZE - desp1);
-            //If the block to be written into is the last
-    		}else if (i==ultimoBloque){
-    			desp2 = setTopLimit(offset,nbytes);
-              	if(bread(bf,buf_aux)==-1){
-					printf("Error in mi_read_f while reading(last) the block, line 141, file ficheros.c\n");
-	    			return -1;                	
-                }
-                memcpy (buf_original+(BLOCKSIZE-desp1)+(ultimoBloque-primerBloque-1)*BLOCKSIZE,buf_aux,desp2+1);                 			
-            //If the block to be written is in between
-    		}else{
-				if(bread(bf,buf_aux)==-1){
- 						     printf("Error in mi_read_f while reading(in between) the block, file ficheros.c");
-	    				   return -1;           
-               	}
-                memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE);
-    		}
-       	}       		
-       }
+       	    	//Translate the logical value of the block
+       	    	bf = traducir_bloque_inodo(ninodo,i,0);
+       	    	if(bf==-1){
+					printf("Error in mi_read_f translating the block into phisical value, line 127, file ficheros.c\n");
+	    			return -1;    			
+    			}
+    			//If the block to be written into is the first
+    			if(i==primerBloque){
+              		if(bread(bf,buf_aux)==-1){
+						printf("Error in mi_read_f while reading(first) the block, line 134, file ficheros.c\n");
+	    				return -1;                	
+            		}
+           		memcpy (buf_original, buf_aux + desp1, BLOCKSIZE - desp1);
+            	//If the block to be written into is the last
+    			}else if (i==ultimoBloque){
+    				desp2 = setTopLimit(offset,nbytes);
+              		if(bread(bf,buf_aux)==-1){
+						printf("Error in mi_read_f while reading(last) the block, line 141, file ficheros.c\n");
+	    				return -1;                	
+                	}
+                	memcpy (buf_original+(BLOCKSIZE-desp1)+(ultimoBloque-primerBloque-1)*BLOCKSIZE,buf_aux,desp2+1);                 			
+            	//If the block to be written is in between
+    			}else{
+					if(bread(bf,buf_aux)==-1){
+ 						printf("Error in mi_read_f while reading(in between) the block, file ficheros.c");
+	    				return -1;           
+               		}
+                	memcpy((buf_original + (BLOCKSIZE - desp1) + (i - primerBloque - 1) * BLOCKSIZE),buf_aux,BLOCKSIZE);
+    			}
+       		}       		
+       	}
+       	mi_waitSem();
       	inode = leer_inodo(ninodo);
     	inode.atime = time(NULL);
     	if(escribir_inodo(inode,ninodo)==-1){
+    		mi_signalSem();
 			printf("Error in mi_read_f while writing updated inode, line 157, file ficheros.c\n");
 	    	return -1;
     	}
+    	mi_signalSem();
     	return nbytes;
 		}else{
 			printf("Error in mi_read_f, file does not have the correct permissions, line 104, file ficheros.c\n");
@@ -174,15 +180,18 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
 int mi_chmod_f(unsigned int ninodo, unsigned char permisos){
 	struct inodo in;
 	//first we read the inode
+	mi_waitSem();
 	in = leer_inodo(ninodo);
 	//We update the information required
 	in.permisos = permisos;
 	in.ctime = time(NULL);
 	//Now we write the updated inode
 	if(escribir_inodo(in,ninodo)==-1){
+		mi_signalSem();
  		printf("Error in mi_chmod_f while writing updated inode, line 181, file ficheros.c\n");
 	    return -1; 
 	}
+	mi_signalSem();
 	return 0;
 }
 int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
@@ -203,6 +212,7 @@ int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
  				printf("Error in mi_truncar_f while releasin inode blocks, line 206, file ficheros.c\n");
 	    		return -1; 
 			}
+			mi_waitSem();
 			in = leer_inodo(ninodo);
 			//We update the required files of the inode
 			in.mtime = time(NULL);
@@ -210,9 +220,11 @@ int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
 			in.tamEnBytesLog = nbytes;
 			//Finally we write the update inode
 			if(escribir_inodo(in,ninodo)==-1){
+				mi_signalSem();
  				printf("Error in mi_truncar_f while writing updated inode, line 206, file ficheros.c\n");
 	    		return -1; 
 			}
+			mi_signalSem();
 			return 0;
 		}else{
 			printf("Error in mi_truncar_f, the number of bytes is superior of the file's size, line 190, file ficheros.c\n");

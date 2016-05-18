@@ -65,4 +65,5 @@ void mi_signalSem() {
 	inside_sc--;
 	if (!inside_sc) {
     	signalSem(mutex);
+	}
 }

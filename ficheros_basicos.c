@@ -117,7 +117,6 @@
 			            return -1;
 			        }
 			    }
-
 			    return 0;
 			}
 			void leer_sf(){

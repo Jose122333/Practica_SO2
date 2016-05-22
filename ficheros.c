@@ -128,8 +128,7 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
        		int i;
        		//loop that checks all the blocks to be written into
        		for (i=primerBloque;i<=ultimoBloque;i++){
-       		       		memset(buf_aux,0, sizeof(buf_aux));
-
+       		    memset(buf_aux,0, sizeof(buf_aux));
        	    	//Translate the logical value of the block
        	    	bf = traducir_bloque_inodo(ninodo,i,0);
        	    	if(bf==-1){
@@ -161,15 +160,12 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
     			}
        		}       		
        	}
-       	mi_waitSem();
       	inode = leer_inodo(ninodo);
     	inode.atime = time(NULL);
     	if(escribir_inodo(inode,ninodo)==-1){
-    		mi_signalSem();
 			printf("Error in mi_read_f while writing updated inode, line 157, file ficheros.c\n");
 	    	return -1;
     	}
-    	mi_signalSem();
     	return nbytes;
 		}else{
 			printf("Error in mi_read_f, file does not have the correct permissions, line 104, file ficheros.c\n");

@@ -413,12 +413,15 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 		printf("Error in mi_write function, entrance not a file, file directorios.c \n");
 		return -1;	
 	}
+	mi_waitSem();
 	//Now we read the correspondent bytes
 	numBytesEscritos = mi_write_f(p_inodo,buf,offset,nbytes);
 	if(numBytesEscritos<0){
 		printf("Error in mi_write function, error calling mi_write_f function, file directorios.c \n");
+		mi_signalSem();
 		return -1;	
 	}
+	mi_signalSem();
 	return numBytesEscritos;
 }
 

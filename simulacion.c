@@ -12,7 +12,7 @@ int main(int argc, char **argv){
 	char processID[80];
 	//Check if the syntax is correct
 	if(argc<1){
-		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
+		printf("Syntax error, not enough arguments, file simulacion.c\n"
 			"Correct Order:\n"
 			"Argument 1: File system name\n");
 		return -1;
@@ -20,7 +20,7 @@ int main(int argc, char **argv){
 	//Mount the file system
 	descriptor = bmount(argv[1]);
 	if(descriptor<0){
-		printf("Error while mounting FS for the main process\n");
+		printf("Error while mounting FS for the main process, file simulacion.c\n");
 		return -1;
 	}
 	/* We preapre the date*/
@@ -55,20 +55,20 @@ int main(int argc, char **argv){
 			//Mount the file system
 			descriptor = bmount(argv[1]);
 			if(descriptor<0){
-				printf("Error while mounting FS for the %d child process\n",i);
+				printf("Error while mounting FS for the %d child process, file simulacion.c\n",i);
 				return -1;
 			}
 			strcat(childPathName,pathName);
 			sprintf(processID,"proceso_%d/",getpid());
 			strcat(childPathName,processID);
-			printf("%s\n",childPathName);
+			//printf("%s\n",childPathName);
 			if(mi_create(childPathName,7)<0){
-				printf("Error in while calling mi_create for the %d child process, file simulacion.c\n",i);
+				printf("Error in while calling mi_create for the %d child process path, file simulacion.c\n",i);
 				return -1;
 			}
 			strcat(childPathName,"prueba.dat");
 			if(mi_create(childPathName,7)<0){
-				printf("Error in while calling mi_create for the %d child process, file simulacion.c\n",i);
+				printf("Error in while calling mi_create for the %d child process file, file simulacion.c\n",i);
 				return -1;
 			}
 			j=0;
@@ -81,17 +81,16 @@ int main(int argc, char **argv){
 				srand(time(NULL)+getpid());
 				rgstr.posicion = rand() % posMax;
 				if(mi_write(childPathName,&rgstr,rgstr.posicion*sizeof(struct registro),sizeof(struct registro))<0){
-					printf("Error while write number %d of the child number %d\n",j,i);
+					printf("Error while write number %d of the child number %d, file simulacion.c\n",j,i);
 					return -1;
 				}
-				// We wait 0.5 seconds
-				usleep(50000);
+				// We wait 0.05 seconds before the next write operation
+				usleep(5000);
 				j++;
-				return 0;
 			}
-			i++;
 			memset(childPathName,0, sizeof(childPathName));
 			memset(processID,0,sizeof(processID));
+			return 0;
 		}else{
 			//We give time for the next child process to access
 			usleep(200000);
@@ -101,11 +100,12 @@ int main(int argc, char **argv){
 	}
 	//We wait for all the child process to finish
 	while(acabados<100){
+		printf("%d\n",acabados);
 		pause();
 	}
 	//Un-mount the file system
 	if(bumount(descriptor)<0){
-		printf("Error while unmounting FS for the main process\n");
+		printf("Error while unmounting FS for the main process, file simulacion.c\n");
 		return -1;
 	}
 	return 0;

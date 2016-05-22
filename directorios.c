@@ -377,18 +377,11 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesLeidos;
 	char reservar = 0;
 	char permisos = 0;
-	struct inodo ind;
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
 		printf("Error in mi_read function,");
 		return ret;
-	}
-	//First we have to chek if the file to be written into is indeed a file or a directory
-	ind = leer_inodo(p_inodo);
-	if(ind.tipo != 'f'){
-		printf("Error in mi_read function, entrance not a file, file directorios.c \n");
-		return -1;	
 	}
 	//Now we read the correspondent bytes
 	numBytesLeidos = mi_read_f(p_inodo,buf,offset,nbytes);

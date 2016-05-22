@@ -2,7 +2,7 @@
 
 int main(int argc, char **argv){
 	int descriptor;
-	unsigned char buffer[5000];
+	unsigned char buffer[50000];
 	if(argc<3){
 		printf("Syntax error, not enough arguments, file mi_ls.c\n"
 			"Correct Order:\n"

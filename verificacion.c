@@ -5,7 +5,7 @@
 int main(int argc, char **argv){
 	int descriptor,nEntradas,i=0,j,k;
 	struct STAT fileStatus;
-	char pathName[200];
+	char pathName[200],buf[22];
 	char childPathName[200];
 	char *proceesID;
 	int pid,offset,registros_correctos;
@@ -14,6 +14,8 @@ int main(int argc, char **argv){
 	const char ch = '_';
 	struct entrada entr;
 	int bytesRead;
+	struct tm ts;
+	time_t now;
 	//Check if the syntax is correct
 	if(argc<2){
 		printf("Syntax error, not enough arguments, file verificacion.c\n"
@@ -75,43 +77,69 @@ int main(int argc, char **argv){
 		//Now we have start runnig through all the files
 		offset = 0;
 		registros_correctos = 0;
-		memset(&info,0,BLOCKSIZE/sizeof(struct registro));
-		bytesRead = mi_read(childPathName,&info,offset,BLOCKSIZE);
-		while(bytesRead>0){
-			for(k = 0; k < BLOCKSIZE/sizeof(struct registro);k++){
-				if(leer[k].pid==pid){
-					if(leer[k].nEscritura<info[0].nEscritura){
-						//Check if it is the first register
-						if(leer[k].fecha<=info[0].fecha){
-							info[0]=leer[k];
+		memset(&leer,0,BLOCKSIZE);
+		bytesRead = mi_read(childPathName,&leer,offset,BLOCKSIZE);
+		while(bytesRead>0 || bytesRead == -2){
+			if(bytesRead == -2){
+				//printf("Rocio Aprueba\n");
+				bytesRead = BLOCKSIZE;
+			}else{
+				for(k = 0; k < BLOCKSIZE/sizeof(struct registro);k++){
+					if(leer[k].pid==pid){
+						if(leer[k].nEscritura<info[0].nEscritura){
+							//Check if it is the first register
+							if(leer[k].fecha<=info[0].fecha){
+								info[0]=leer[k];
+							}
+						}						
+						if(info[1].nEscritura<leer[k].nEscritura){
+							//Check if it is the last register
+							if(info[1].fecha<=leer[k].fecha){
+								info[1]=leer[k];
+							}
 						}
-					}						
-					if(info[1].nEscritura<leer[k].nEscritura){
-						//Check if it is the last register
-						if(info[1].fecha<=leer[k].fecha){
-							info[1]=leer[k];
+						//Check is it is the first position	
+						if(info[2].pid==0){
+							info[2]=leer[k];
 						}
+						//Check if it is the last position
+						if(leer[k].posicion>info[3].posicion){
+							info[3]=leer[k];
+						}
+						registros_correctos++;
 					}
-					//Check is it is the first position	
-					if(info[2].pid==0){
-						info[2]=leer[k];
-					}
-					//Check if it is the last position
-					if(leer[k].posicion>info[3].posicion){
-						info[3]=leer[k];
-					}
-					registros_correctos++;
 				}
 			}
 			offset+=bytesRead;
-			memset(&info,0,BLOCKSIZE/sizeof(struct registro));
-			bytesRead = mi_read(childPathName,&info,offset,BLOCKSIZE);
+			memset(&leer,0,BLOCKSIZE);
+			bytesRead = mi_read(childPathName,&leer,offset,BLOCKSIZE);
 		}
 		printf("Registros correctos para proceso %d son: %d\n",pid,registros_correctos);
 		if(mi_write(pathName,&info,i*(sizeof(struct registro)*4),(sizeof(struct registro)*4))<0){
 			printf("Error while writing the results into the informe.txt, file verificacion.c\n");
 			return -1;
 		}
+		printf("\nPID: %d \nCORRECTOS: %d \n",pid,registros_correctos);
+		memset(buf,0,22);
+		now=(time_t) info[0].fecha;
+		ts = *localtime(&now);
+		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+		printf("<Primer registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[0].nEscritura,buf,info[0].posicion);
+		memset(buf,0,22);
+		now=(time_t) info[1].fecha;
+		ts = *localtime(&now);
+		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+		printf("<Ultimo registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[1].nEscritura,buf,info[1].posicion);
+		memset(buf,0,22);
+		now=(time_t) info[2].fecha;
+		ts = *localtime(&now);
+		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+		printf("<Primera posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[2].nEscritura,buf,info[2].posicion);
+		memset(buf,0,22);
+		now=(time_t) info[3].fecha;
+		ts = *localtime(&now);
+		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
+		printf("<Ultima posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[3].nEscritura,buf,info[3].posicion);
 	}
 	//Un-mount the file system
 	if(bumount(descriptor)<0){

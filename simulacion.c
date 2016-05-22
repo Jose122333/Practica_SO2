@@ -78,7 +78,7 @@ int main(int argc, char **argv){
 				rgstr.fecha = time(NULL);
 				rgstr.pid = getpid();
 				rgstr.nEscritura = j+1;
-				srand(time(NULL)+getpid());
+				srand(rgstr.fecha-rgstr.pid+(i+1)*j);
 				rgstr.posicion = rand() % posMax;
 				if(mi_write(childPathName,&rgstr,rgstr.posicion*sizeof(struct registro),sizeof(struct registro))<0){
 					printf("Error while write number %d of the child number %d, file simulacion.c\n",j,i);

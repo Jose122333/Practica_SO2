@@ -385,7 +385,7 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 	}
 	//Now we read the correspondent bytes
 	numBytesLeidos = mi_read_f(p_inodo,buf,offset,nbytes);
-	if(numBytesLeidos<0){
+	if(numBytesLeidos==-1){
 		printf("Error in mi_read function, error calling mi_write_f function, file directorios.c \n");
 		return -1;	
 	}
@@ -402,18 +402,18 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
-		mi_signalSem();
+		//mi_signalSem();
 		printf("Error in mi_write function,");
 		return ret;
 	}
-	mi_signalSem();
+	//mi_signalSem();
 	//First we have to chek if the file to be written into is indeed a file or a directory
 	ind = leer_inodo(p_inodo);
 	if(ind.tipo != 'f'){
 		printf("Error in mi_write function, entrance not a file, file directorios.c \n");
 		return -1;	
 	}
-	mi_waitSem();
+	//mi_waitSem();
 	//Now we read the correspondent bytes
 	numBytesEscritos = mi_write_f(p_inodo,buf,offset,nbytes);
 	if(numBytesEscritos<0){

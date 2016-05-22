@@ -77,7 +77,6 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 		printf("Error in mi_read_f, file does not have the correct permissions, line 17, file ficheros.c\n");
 	    return -1;
 	}
-	mi_waitSem();
 	inode = leer_inodo(ninodo);
     if(inode.tamEnBytesLog<offset+nbytes){
        	inode.tamEnBytesLog = offset+nbytes;	
@@ -85,11 +84,9 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
     inode.mtime = time(NULL);
     inode.ctime = time(NULL);
     if(escribir_inodo(inode,ninodo)==-1){
-    	mi_signalSem();
 		printf("Error in mi_read_f while writing updated inode, line 84, file ficheros.c\n");
 	    return -1;
     }
-    mi_signalSem();	
     return nbytes;
 }
 int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsigned int nbytes){
@@ -122,7 +119,9 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
             if(bread(bf,buf_aux)==-1){
 				printf("Error in mi_read_f while reading(first=last) the block, line 117, file ficheros.c\n");
 	    		return -1;                	
-            }
+            }else if(bf == -2){
+    			return -2;
+    		}
             memcpy(buf_original, buf_aux + desp1, nbytes);
        	}else{
        		int i;
@@ -134,6 +133,8 @@ int mi_read_f(unsigned int ninodo, void *buf_original, unsigned int offset, unsi
        	    	if(bf==-1){
 					printf("Error in mi_read_f translating the block into phisical value, line 127, file ficheros.c\n");
 	    			return -1;    			
+    			}else if(bf == -2){
+    				return -2;
     			}
     			//If the block to be written into is the first
     			if(i==primerBloque){

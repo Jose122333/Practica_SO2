@@ -555,15 +555,12 @@
 					}
 			}
 			if (salvar_inodo==1){
-				mi_waitSem();
 				ind.numBloquesOcupados = bloques_reservados;
 				ind.ctime = time(NULL);
 				if(escribir_inodo(ind,ninodo)==-1){
-						mi_signalSem();
 						printf("Error in traducir_bloque_inodo while getting the index, line 572, file ficheros_basicos.c\n");
 						return -1;						
 				}
-				mi_signalSem();
 			}
 			return ptr;
 		}

@@ -4,10 +4,13 @@
 #include <signal.h>
 #include "directorios.h"
 #include <sys/wait.h>
+#include <stdlib.h>
 
 struct registro {
-	time_t fecha;
-	pid_t pid;
+	int fecha;
+	int pid;
 	int nEscritura;
 	int posicion;
 };
+
+void reaper();

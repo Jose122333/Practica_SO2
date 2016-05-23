@@ -1,5 +1,8 @@
 #include "directorios.h"
 #include <string.h>
+struct ultimaEntrada ultimaEntradaLectura;
+struct ultimaEntrada ultimaEntradaEscritura;
+
 //Function that splits the name and the location
 int extraer_camino(const char *camino, char *inicial, char *final, unsigned char *tipo){
 	int i = 0;
@@ -218,6 +221,8 @@ int mi_link(const char *camino1, const char *camino2){
 	int p_inodo_dir1=0,p_inodo1=0,p_entrada1=0,p_inodo_dir2=0,p_inodo2=0,p_entrada2=0;
 	struct inodo ind1,ind2;
 	char reservar=0,permisos=0;
+		mi_waitSem();
+
 	int BuscarEntradaRS = buscar_entrada(camino1,&p_inodo_dir1,&p_inodo1,&p_entrada1,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -233,7 +238,6 @@ int mi_link(const char *camino1, const char *camino2){
 
 	reservar=1,permisos=6;
 	//Now we launch the buscar_entrada call for camino2
-	mi_waitSem();
 	BuscarEntradaRS = buscar_entrada(camino2,&p_inodo_dir2,&p_inodo2,&p_entrada2,reservar,permisos);
 	ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -284,6 +288,8 @@ int mi_unlink(const char *camino){
 	struct inodo ind, ind_dir;
 	char reservar=0,permisos=0;
 	int num_entradas = 0;
+			mi_waitSem();
+
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -301,6 +307,7 @@ int mi_unlink(const char *camino){
 	if(p_entrada ==num_entradas - 1){
 		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
 			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
+			return -1;
 		}
 	}else{
 		struct entrada entr;
@@ -312,24 +319,20 @@ int mi_unlink(const char *camino){
 			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
  			return -1;			
 		}
-		mi_waitSem();
 		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
 			mi_signalSem();
 			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
+			return -1;
 		}
-		mi_signalSem();		
 	}
 	ind = leer_inodo(p_inodo);
 	if(ind.nlinks==1){
-		mi_waitSem();
 		if(liberar_inodo(p_inodo)<0){
 			printf("Error in mi_unlink function while liberating inode, file directorios.c\n");
 			mi_signalSem();
 			return -1;
 		}
-		mi_signalSem();	
 	}else{
-		mi_waitSem();
 		ind.nlinks--;
 		ind.ctime = (time_t)NULL;
 		if(escribir_inodo(ind,p_inodo)<0){
@@ -337,8 +340,8 @@ int mi_unlink(const char *camino){
 			printf("Error in mi_unlink function while writing inode, file directorios.c\n");
 			return -1;
 		}
-		mi_signalSem();	
 	}
+	mi_signalSem();
 	return 0;
 }
 int mi_chmod(const char *camino, unsigned char permisos){
@@ -377,11 +380,17 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesLeidos;
 	char reservar = 0;
 	char permisos = 0;
-	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
-	int ret = getResponse(BuscarEntradaRS);
-	if(ret<0){
-		printf("Error in mi_read function,");
-		return ret;
+	if(strcmp(camino, ultimaEntradaLectura.camino)==0){
+	 	p_inodo = ultimaEntradaLectura.inodo;
+	}else {
+		int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+		int ret = getResponse(BuscarEntradaRS);
+		if(ret<0){
+			printf("Error in mi_read function,");
+			return ret;
+		}
+		strcpy(ultimaEntradaLectura.camino,camino);
+		ultimaEntradaLectura.inodo = p_inodo;
 	}
 	//Now we read the correspondent bytes
 	numBytesLeidos = mi_read_f(p_inodo,buf,offset,nbytes);
@@ -399,20 +408,28 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 	char permisos = 0;
 	struct inodo ind;
 	mi_waitSem();
-	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
-	int ret = getResponse(BuscarEntradaRS);
-	if(ret<0){
+	if(strcmp(camino,ultimaEntradaEscritura.camino)==0){
+		p_inodo = ultimaEntradaEscritura.inodo;
+	}else {
+		int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
+		int ret = getResponse(BuscarEntradaRS);
+		if(ret<0){
+			//mi_signalSem();
+			printf("Error in mi_write function,");
+			return ret;
+		}
+		strcpy(ultimaEntradaEscritura.camino,camino);
+		ultimaEntradaEscritura.inodo = p_inodo;
+	}
 		//mi_signalSem();
-		printf("Error in mi_write function,");
-		return ret;
-	}
-	//mi_signalSem();
-	//First we have to chek if the file to be written into is indeed a file or a directory
-	ind = leer_inodo(p_inodo);
-	if(ind.tipo != 'f'){
-		printf("Error in mi_write function, entrance not a file, file directorios.c \n");
-		return -1;	
-	}
+		//First we have to chek if the file to be written into is indeed a file or a directory
+		ind = leer_inodo(p_inodo);
+		if(ind.tipo != 'f'){
+			printf("Error in mi_write function, entrance not a file, file directorios.c \n");
+					mi_signalSem();
+			return -1;	
+		}
+
 	//mi_waitSem();
 	//Now we read the correspondent bytes
 	numBytesEscritos = mi_write_f(p_inodo,buf,offset,nbytes);

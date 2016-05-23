@@ -10,7 +10,8 @@ int main(int argc, char **argv){
 	char *proceesID;
 	int pid,offset,registros_correctos;
 	struct registro info[4];//first,last,first pos,last pos
-	struct registro leer[BLOCKSIZE/sizeof(struct registro)];//We will use this array to save
+	struct registro leer;
+	//char leer[BLOCKSIZE];//We will use this array to save
 	const char ch = '_';
 	struct entrada entr;
 	int bytesRead;
@@ -37,11 +38,11 @@ int main(int argc, char **argv){
 	}
 	//Now we calculate the number of entrances(they have to be 100)
 	nEntradas = fileStatus.tamEnBytesLog/sizeof(struct entrada);
-	if(nEntradas != 100){
+	/*if(nEntradas != 100){
 		printf("Error, the number of entrances is not exactly 100\n");
 		printf("Entrances found %d\n",nEntradas);
 		return -1;
-	}
+	}*/
 	//Now we create a new file in the simulation directory
 	memset(pathName,0,sizeof(pathName));
 	strcat(pathName,argv[2]);
@@ -68,7 +69,7 @@ int main(int argc, char **argv){
 		strcat(childPathName,entr.nombre);
 		strcat(childPathName,"/");
 		strcat(childPathName,"prueba.dat");
-		//printf("El nombre del directorio es para el proceso %d es: %s\n", i,childPathName);
+		printf("El nombre del directorio es para el proceso %d es: %s\n", i,childPathName);
 		//We initialize all the information fields
 		info[0]=(struct registro){INT_MAX,INT_MAX,INT_MAX,INT_MAX};
 		info[1]=(struct registro){0,0,0,0};
@@ -77,44 +78,46 @@ int main(int argc, char **argv){
 		//Now we have start runnig through all the files
 		offset = 0;
 		registros_correctos = 0;
-		memset(&leer,0,BLOCKSIZE);
-		bytesRead = mi_read(childPathName,&leer,offset,BLOCKSIZE);
-		while(bytesRead>0 || bytesRead == -2){
+		bytesRead = mi_read(childPathName,&leer,offset,sizeof(struct registro));
+		int cont = 0;
+		while(bytesRead > 0 || bytesRead == -2){
 			if(bytesRead == -2){
 				//printf("Rocio Aprueba\n");
 				bytesRead = BLOCKSIZE;
 			}else{
-				for(k = 0; k < BLOCKSIZE/sizeof(struct registro);k++){
-					if(leer[k].pid==pid){
-						if(leer[k].nEscritura<info[0].nEscritura){
+				//for(k = 0; k < BLOCKSIZE;k++){
+					//memcpy(&comparar,leer+k,sizeof(comparar));
+					if(leer.pid==pid){
+						if(leer.nEscritura<info[0].nEscritura){
 							//Check if it is the first register
-							if(leer[k].fecha<=info[0].fecha){
-								info[0]=leer[k];
+							if(leer.fecha<=info[0].fecha){
+								info[0]=leer;
 							}
 						}						
-						if(info[1].nEscritura<leer[k].nEscritura){
+						if(info[1].nEscritura<leer.nEscritura){
 							//Check if it is the last register
-							if(info[1].fecha<=leer[k].fecha){
-								info[1]=leer[k];
+							if(info[1].fecha<=leer.fecha){
+								info[1]=leer;
 							}
 						}
 						//Check is it is the first position	
 						if(info[2].pid==0){
-							info[2]=leer[k];
+							info[2]=leer;
 						}
 						//Check if it is the last position
-						if(leer[k].posicion>info[3].posicion){
-							info[3]=leer[k];
+						if(leer.posicion>info[3].posicion){
+							info[3]=leer;
 						}
 						registros_correctos++;
 					}
 				}
-			}
+				//printf("-----------------------------------------------------------\n");
+			//}
 			offset+=bytesRead;
-			memset(&leer,0,BLOCKSIZE);
-			bytesRead = mi_read(childPathName,&leer,offset,BLOCKSIZE);
+			//memset(&leer,0,BLOCKSIZE);
+			bytesRead = mi_read(childPathName,&leer,offset,sizeof(struct registro));
 		}
-		printf("Registros correctos para proceso %d son: %d\n",pid,registros_correctos);
+		//printf("Registros correctos para proceso %d son: %d\n",pid,registros_correctos);
 		if(mi_write(pathName,&info,i*(sizeof(struct registro)*4),(sizeof(struct registro)*4))<0){
 			printf("Error while writing the results into the informe.txt, file verificacion.c\n");
 			return -1;
@@ -140,6 +143,7 @@ int main(int argc, char **argv){
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
 		printf("<Ultima posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[3].nEscritura,buf,info[3].posicion);
+		//exit(1);
 	}
 	//Un-mount the file system
 	if(bumount(descriptor)<0){

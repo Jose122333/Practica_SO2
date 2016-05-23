@@ -5,7 +5,7 @@
 int main(int argc, char **argv){
 	int descriptor,nEntradas,i=0,j,k;
 	struct STAT fileStatus;
-	char pathName[200],buf[22];
+	char pathName[200],buf[22], informe[200];
 	char childPathName[200];
 	char *proceesID;
 	int pid,offset,registros_correctos;
@@ -69,7 +69,6 @@ int main(int argc, char **argv){
 		strcat(childPathName,entr.nombre);
 		strcat(childPathName,"/");
 		strcat(childPathName,"prueba.dat");
-		printf("El nombre del directorio es para el proceso %d es: %s\n", i,childPathName);
 		//We initialize all the information fields
 		info[0]=(struct registro){INT_MAX,INT_MAX,INT_MAX,INT_MAX};
 		info[1]=(struct registro){0,0,0,0};
@@ -111,39 +110,39 @@ int main(int argc, char **argv){
 						registros_correctos++;
 					}
 				}
-				//printf("-----------------------------------------------------------\n");
 			//}
 			offset+=bytesRead;
 			//memset(&leer,0,BLOCKSIZE);
 			bytesRead = mi_read(childPathName,&leer,offset,sizeof(struct registro));
 		}
 		//printf("Registros correctos para proceso %d son: %d\n",pid,registros_correctos);
-		if(mi_write(pathName,&info,i*(sizeof(struct registro)*4),(sizeof(struct registro)*4))<0){
-			printf("Error while writing the results into the informe.txt, file verificacion.c\n");
-			return -1;
-		}
-		printf("\nPID: %d \nCORRECTOS: %d \n",pid,registros_correctos);
+		sprintf(informe,"\nPID: %d \nCORRECTOS: %d \n",pid,registros_correctos);
 		memset(buf,0,22);
 		now=(time_t) info[0].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
-		printf("<Primer registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[0].nEscritura,buf,info[0].posicion);
+		sprintf(informe,"<Primer registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[0].nEscritura,buf,info[0].posicion);
 		memset(buf,0,22);
 		now=(time_t) info[1].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
-		printf("<Ultimo registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[1].nEscritura,buf,info[1].posicion);
+		sprintf(informe,"<Ultimo registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[1].nEscritura,buf,info[1].posicion);
 		memset(buf,0,22);
 		now=(time_t) info[2].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
-		printf("<Primera posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[2].nEscritura,buf,info[2].posicion);
+		sprintf(informe,"<Primera posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[2].nEscritura,buf,info[2].posicion);
 		memset(buf,0,22);
 		now=(time_t) info[3].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
-		printf("<Ultima posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[3].nEscritura,buf,info[3].posicion);
-		//exit(1);
+		sprintf(informe,"<Ultima posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[3].nEscritura,buf,info[3].posicion);
+
+		if(mi_write(pathName,informe,i*strlen(informe),strlen(informe))<0){
+			printf("Error while writing the results into the informe.txt, file verificacion.c\n");
+			return -1;
+		}
+		puts(informe);		
 	}
 	//Un-mount the file system
 	if(bumount(descriptor)<0){

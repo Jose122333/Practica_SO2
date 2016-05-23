@@ -73,8 +73,7 @@ int main(int argc, char **argv){
 			j=0;
 			struct registro rgstr;
 			//Now we write 50 times in the new file created
-							srand(time(NULL) + getpid());
-
+			srand(time(NULL) + getpid());
 			while(j<50){
 				rgstr.fecha = time(NULL);
 				rgstr.pid = getpid();

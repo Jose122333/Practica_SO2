@@ -5,7 +5,7 @@
 int main(int argc, char **argv){
 	int descriptor,nEntradas,i=0,j,k;
 	struct STAT fileStatus;
-	char pathName[200],buf[22], informe[200];
+	char pathName[200],buf[22], informe[200], informeGlobal[50000];
 	char childPathName[200];
 	char *proceesID;
 	int pid,offset,registros_correctos;
@@ -115,35 +115,45 @@ int main(int argc, char **argv){
 			//memset(&leer,0,BLOCKSIZE);
 			bytesRead = mi_read(childPathName,&leer,offset,sizeof(struct registro));
 		}
-		//printf("Registros correctos para proceso %d son: %d\n",pid,registros_correctos);
+		//memset(informeGlobal,0,sizeof(informeGlobal));
+		//General process info
 		sprintf(informe,"\nPID: %d \nCORRECTOS: %d \n",pid,registros_correctos);
+		strcat(informeGlobal,informe);
+		//First register info
 		memset(buf,0,22);
 		now=(time_t) info[0].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
 		sprintf(informe,"<Primer registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[0].nEscritura,buf,info[0].posicion);
+		strcat(informeGlobal,informe);
+		//Last register info
 		memset(buf,0,22);
 		now=(time_t) info[1].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
 		sprintf(informe,"<Ultimo registro:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[1].nEscritura,buf,info[1].posicion);
+		strcat(informeGlobal,informe);
+		//First position register		
 		memset(buf,0,22);
 		now=(time_t) info[2].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
 		sprintf(informe,"<Primera posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[2].nEscritura,buf,info[2].posicion);
+		strcat(informeGlobal,informe);
+		//Last postion register		
 		memset(buf,0,22);
 		now=(time_t) info[3].fecha;
 		ts = *localtime(&now);
 		strftime(buf, sizeof(buf), "%Y-%m-%d %H:%M:%S", &ts);
 		sprintf(informe,"<Ultima posicion:\tNum Escritura: %d | Fecha: %s | Posicion: %d \n",info[3].nEscritura,buf,info[3].posicion);
-
-		if(mi_write(pathName,informe,i*strlen(informe),strlen(informe))<0){
-			printf("Error while writing the results into the informe.txt, file verificacion.c\n");
-			return -1;
-		}
-		puts(informe);		
+		strcat(informeGlobal,informe);		
 	}
+	//Now we write all the process info in the file informe.txt		
+	if(mi_write(pathName,informeGlobal,0,strlen(informeGlobal))<0){
+		printf("Error while writing the results into the informe.txt, file verificacion.c\n");
+		return -1;
+	}
+	write(1,informeGlobal,strlen(informeGlobal));
 	//Un-mount the file system
 	if(bumount(descriptor)<0){
 		printf("Error while unmounting FS for the main process\n");

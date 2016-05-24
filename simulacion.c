@@ -88,7 +88,6 @@ int main(int argc, char **argv){
 				// We wait 0.05 seconds before the next write operation
 				usleep(5000);
 				j++;
-				printf("Proceso %s ha escrito el registro %d  en la posiciion %d \n",childPathName,j,rgstr.posicion);	
 			}
 			memset(childPathName,0, sizeof(childPathName));
 			memset(processID,0,sizeof(processID));

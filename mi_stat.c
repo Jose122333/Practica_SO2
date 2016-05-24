@@ -25,7 +25,7 @@ int main(int argc, char **argv){
 	perm[1]=((unsigned char)out.permisos&(unsigned char)2)==0?'-':'W';
 	perm[2]=((unsigned char)out.permisos&(unsigned char)4)==0?'-':'R';
 	tipo=out.tipo=='d'? "Directorio" : "Fichero";
-	printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,out.nlinks,out.tamEnBytesLog,out.numBloquesOcupados);
+	printf("#ID: %d TIPO: %s PERMISOS: %c%c%c NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm[0],perm[1], perm[2], out.nlinks,out.tamEnBytesLog,out.numBloquesOcupados);
 	printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,cttime);
 	bumount(descriptor);
 	return 0;

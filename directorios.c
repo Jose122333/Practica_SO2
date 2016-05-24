@@ -221,7 +221,7 @@ int mi_link(const char *camino1, const char *camino2){
 	int p_inodo_dir1=0,p_inodo1=0,p_entrada1=0,p_inodo_dir2=0,p_inodo2=0,p_entrada2=0;
 	struct inodo ind1,ind2;
 	char reservar=0,permisos=0;
-		mi_waitSem();
+	mi_waitSem();
 
 	int BuscarEntradaRS = buscar_entrada(camino1,&p_inodo_dir1,&p_inodo1,&p_entrada1,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
@@ -245,7 +245,6 @@ int mi_link(const char *camino1, const char *camino2){
 		printf("Error in mi_link function,");
 		return ret;
 	}
-	mi_signalSem();
 	ind2 = leer_inodo(p_inodo2);
 	if(ind2.tipo != 'f'){
 		printf("Error in mi_link function, inode is not the correct type");
@@ -257,20 +256,18 @@ int mi_link(const char *camino1, const char *camino2){
 			printf("Error in mi_link while reading struct entrada, file directorios.c \n");
  			return -1;			
 	}
-	mi_waitSem();
 	if(liberar_inodo(p_inodo2)<0){
 		mi_signalSem();
 			printf("Error in mi_link freeing the inode, file directorios.c \n");
  			return -1;	
 	}
-	mi_signalSem();
 	entr.inodo = p_inodo1;
 	if(mi_write_f(p_inodo_dir2,&entr,p_entrada2*sizeof(struct entrada),sizeof(struct entrada)) < 0){
 			printf("Error in mi_link while writing struct entrada, file directorios.c \n");
+			mi_signalSem();
  			return -1;			
 	}
 	//We update the inode data, so we put a semaphore
-	mi_waitSem();
 	//Increment the values of the inode
 	ind1.nlinks++;
 	ind1.ctime = (time_t)NULL;
@@ -294,11 +291,14 @@ int mi_unlink(const char *camino){
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
 		printf("Error in mi_unlink function,");
+		mi_signalSem();
 		return ret;
 	}
 	ind = leer_inodo(p_inodo);
 	if(ind.tipo == 'd' && ind.tamEnBytesLog>0){
 		printf("Error in mi_ulink function, inode cannot be deleted, file directorios.c\n");
+				mi_signalSem();
+
 		return -1;
 	}
 	ind_dir = leer_inodo(p_inodo_dir);
@@ -307,16 +307,22 @@ int mi_unlink(const char *camino){
 	if(p_entrada ==num_entradas - 1){
 		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
 			printf("Error in mi_unlink function during my_truncar_f, file directorios.c\n");
+					mi_signalSem();
+
 			return -1;
 		}
 	}else{
 		struct entrada entr;
 		if(mi_read_f(p_inodo_dir,&entr,ind_dir.tamEnBytesLog-sizeof(struct entrada),sizeof(struct entrada)) < 0){
 			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
+					mi_signalSem();
+
  			return -1;			
 		}
 		if(mi_write_f(p_inodo_dir,&entr,p_entrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
 			printf("Error in mi_unlink while reading struct entrada, file directorios.c \n");
+					mi_signalSem();
+
  			return -1;			
 		}
 		if(mi_truncar_f(p_inodo_dir,ind_dir.tamEnBytesLog-sizeof(struct entrada))<0){
@@ -414,23 +420,21 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 		int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 		int ret = getResponse(BuscarEntradaRS);
 		if(ret<0){
-			//mi_signalSem();
+			mi_signalSem();
 			printf("Error in mi_write function,");
 			return ret;
 		}
 		strcpy(ultimaEntradaEscritura.camino,camino);
 		ultimaEntradaEscritura.inodo = p_inodo;
 	}
-		//mi_signalSem();
 		//First we have to chek if the file to be written into is indeed a file or a directory
 		ind = leer_inodo(p_inodo);
 		if(ind.tipo != 'f'){
 			printf("Error in mi_write function, entrance not a file, file directorios.c \n");
-					mi_signalSem();
+			mi_signalSem();
 			return -1;	
 		}
 
-	//mi_waitSem();
 	//Now we read the correspondent bytes
 	numBytesEscritos = mi_write_f(p_inodo,buf,offset,nbytes);
 	if(numBytesEscritos<0){

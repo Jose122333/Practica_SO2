@@ -71,7 +71,7 @@ void mostrarIA(struct superbloque SB){
 			perm[1]=((unsigned char)in.permisos&(unsigned char)2)==0?'-':'W';
 			perm[2]=((unsigned char)in.permisos&(unsigned char)4)==0?'-':'R';
 			tipo=in.tipo=='d'? "Directorio" : "Fichero";
-			printf("#ID: %d TIPO: %s PERMISOS: %s NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm,in.nlinks,in.tamEnBytesLog,in.numBloquesOcupados);
+			printf("#ID: %d TIPO: %s PERMISOS: %c%c%c NLINKS: %d TAMAÑO: %d BLOQUES OCUPADOS: %d \n",ninodo,tipo,perm[0], perm[1], perm[2], in.nlinks,in.tamEnBytesLog,in.numBloquesOcupados);
 			printf(" ATIME: %s MTIME: %s CTIME: %s\n\n",atime,mtime,cttime);
 		}
 	}

@@ -1,0 +1,700 @@
+
+PID: 4243 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:23 | Posicion: 48159 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:23 | Posicion: 122440 
+<Primera posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:23 | Posicion: 926 
+<Ultima posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:23 | Posicion: 456387 
+
+PID: 4244 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:23 | Posicion: 209068 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 100823 
+<Primera posicion:	Num Escritura: 6 | Fecha: 2016-05-24 15:19:23 | Posicion: 11020 
+<Ultima posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:24 | Posicion: 491733 
+
+PID: 4245 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:23 | Posicion: 194115 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 229981 
+<Primera posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:23 | Posicion: 11177 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:24 | Posicion: 495297 
+
+PID: 4246 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 415920 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 467305 
+<Primera posicion:	Num Escritura: 19 | Fecha: 2016-05-24 15:19:24 | Posicion: 28466 
+<Ultima posicion:	Num Escritura: 38 | Fecha: 2016-05-24 15:19:24 | Posicion: 488354 
+
+PID: 4247 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 149899 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 189846 
+<Primera posicion:	Num Escritura: 22 | Fecha: 2016-05-24 15:19:24 | Posicion: 1402 
+<Ultima posicion:	Num Escritura: 28 | Fecha: 2016-05-24 15:19:24 | Posicion: 495637 
+
+PID: 4248 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 246304 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 344725 
+<Primera posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:24 | Posicion: 8337 
+<Ultima posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:24 | Posicion: 497203 
+
+PID: 4249 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 464436 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:24 | Posicion: 59992 
+<Primera posicion:	Num Escritura: 8 | Fecha: 2016-05-24 15:19:24 | Posicion: 4929 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:24 | Posicion: 497662 
+
+PID: 4250 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 355027 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 253969 
+<Primera posicion:	Num Escritura: 17 | Fecha: 2016-05-24 15:19:24 | Posicion: 22598 
+<Ultima posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:24 | Posicion: 494801 
+
+PID: 4251 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:24 | Posicion: 438422 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 90877 
+<Primera posicion:	Num Escritura: 27 | Fecha: 2016-05-24 15:19:24 | Posicion: 8408 
+<Ultima posicion:	Num Escritura: 45 | Fecha: 2016-05-24 15:19:25 | Posicion: 495477 
+
+PID: 4252 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 241844 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 377298 
+<Primera posicion:	Num Escritura: 10 | Fecha: 2016-05-24 15:19:25 | Posicion: 4966 
+<Ultima posicion:	Num Escritura: 18 | Fecha: 2016-05-24 15:19:25 | Posicion: 494618 
+
+PID: 4253 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 476111 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 255360 
+<Primera posicion:	Num Escritura: 35 | Fecha: 2016-05-24 15:19:25 | Posicion: 2838 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:25 | Posicion: 495817 
+
+PID: 4254 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 296933 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 486945 
+<Primera posicion:	Num Escritura: 38 | Fecha: 2016-05-24 15:19:25 | Posicion: 1542 
+<Ultima posicion:	Num Escritura: 7 | Fecha: 2016-05-24 15:19:25 | Posicion: 496747 
+
+PID: 4255 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 174179 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 59813 
+<Primera posicion:	Num Escritura: 37 | Fecha: 2016-05-24 15:19:25 | Posicion: 11528 
+<Ultima posicion:	Num Escritura: 10 | Fecha: 2016-05-24 15:19:25 | Posicion: 465189 
+
+PID: 4256 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 60113 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 377206 
+<Primera posicion:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 60113 
+<Ultima posicion:	Num Escritura: 45 | Fecha: 2016-05-24 15:19:25 | Posicion: 491593 
+
+PID: 4257 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 337238 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 436196 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:25 | Posicion: 17495 
+<Ultima posicion:	Num Escritura: 28 | Fecha: 2016-05-24 15:19:25 | Posicion: 492809 
+
+PID: 4258 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 289744 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 141984 
+<Primera posicion:	Num Escritura: 3 | Fecha: 2016-05-24 15:19:25 | Posicion: 4833 
+<Ultima posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:25 | Posicion: 485408 
+
+PID: 4259 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 366477 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 111439 
+<Primera posicion:	Num Escritura: 8 | Fecha: 2016-05-24 15:19:25 | Posicion: 10990 
+<Ultima posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:25 | Posicion: 499568 
+
+PID: 4260 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 191925 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:25 | Posicion: 367857 
+<Primera posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:25 | Posicion: 9156 
+<Ultima posicion:	Num Escritura: 30 | Fecha: 2016-05-24 15:19:25 | Posicion: 491386 
+
+PID: 4261 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 186793 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 190353 
+<Primera posicion:	Num Escritura: 31 | Fecha: 2016-05-24 15:19:26 | Posicion: 2762 
+<Ultima posicion:	Num Escritura: 41 | Fecha: 2016-05-24 15:19:26 | Posicion: 490594 
+
+PID: 4262 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 188187 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 496208 
+<Primera posicion:	Num Escritura: 11 | Fecha: 2016-05-24 15:19:25 | Posicion: 9946 
+<Ultima posicion:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 496208 
+
+PID: 4263 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:25 | Posicion: 459189 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 267409 
+<Primera posicion:	Num Escritura: 10 | Fecha: 2016-05-24 15:19:26 | Posicion: 19888 
+<Ultima posicion:	Num Escritura: 42 | Fecha: 2016-05-24 15:19:26 | Posicion: 499402 
+
+PID: 4264 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 197183 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 485039 
+<Primera posicion:	Num Escritura: 15 | Fecha: 2016-05-24 15:19:26 | Posicion: 1758 
+<Ultima posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:26 | Posicion: 499077 
+
+PID: 4265 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 93144 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 387183 
+<Primera posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:26 | Posicion: 6584 
+<Ultima posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:26 | Posicion: 484625 
+
+PID: 4266 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 101336 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 484231 
+<Primera posicion:	Num Escritura: 15 | Fecha: 2016-05-24 15:19:26 | Posicion: 1873 
+<Ultima posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:26 | Posicion: 499684 
+
+PID: 4267 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 79416 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 402672 
+<Primera posicion:	Num Escritura: 37 | Fecha: 2016-05-24 15:19:26 | Posicion: 6699 
+<Ultima posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:26 | Posicion: 494684 
+
+PID: 4268 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 437584 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 296794 
+<Primera posicion:	Num Escritura: 46 | Fecha: 2016-05-24 15:19:26 | Posicion: 9289 
+<Ultima posicion:	Num Escritura: 14 | Fecha: 2016-05-24 15:19:26 | Posicion: 495370 
+
+PID: 4269 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 33419 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 263867 
+<Primera posicion:	Num Escritura: 29 | Fecha: 2016-05-24 15:19:26 | Posicion: 7924 
+<Ultima posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:26 | Posicion: 493775 
+
+PID: 4270 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 234801 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 245346 
+<Primera posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:26 | Posicion: 5470 
+<Ultima posicion:	Num Escritura: 46 | Fecha: 2016-05-24 15:19:26 | Posicion: 497575 
+
+PID: 4271 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 96657 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 26625 
+<Primera posicion:	Num Escritura: 8 | Fecha: 2016-05-24 15:19:26 | Posicion: 11060 
+<Ultima posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:26 | Posicion: 474096 
+
+PID: 4272 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 147338 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 72023 
+<Primera posicion:	Num Escritura: 9 | Fecha: 2016-05-24 15:19:26 | Posicion: 19473 
+<Ultima posicion:	Num Escritura: 14 | Fecha: 2016-05-24 15:19:26 | Posicion: 496799 
+
+PID: 4273 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 112992 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:26 | Posicion: 292817 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:26 | Posicion: 795 
+<Ultima posicion:	Num Escritura: 4 | Fecha: 2016-05-24 15:19:26 | Posicion: 490513 
+
+PID: 4274 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 432161 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 79029 
+<Primera posicion:	Num Escritura: 34 | Fecha: 2016-05-24 15:19:26 | Posicion: 883 
+<Ultima posicion:	Num Escritura: 21 | Fecha: 2016-05-24 15:19:26 | Posicion: 484800 
+
+PID: 4275 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:26 | Posicion: 426813 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 140587 
+<Primera posicion:	Num Escritura: 15 | Fecha: 2016-05-24 15:19:26 | Posicion: 8089 
+<Ultima posicion:	Num Escritura: 6 | Fecha: 2016-05-24 15:19:26 | Posicion: 478722 
+
+PID: 4276 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 318912 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 75053 
+<Primera posicion:	Num Escritura: 42 | Fecha: 2016-05-24 15:19:27 | Posicion: 3186 
+<Ultima posicion:	Num Escritura: 45 | Fecha: 2016-05-24 15:19:27 | Posicion: 492502 
+
+PID: 4277 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 38689 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 54026 
+<Primera posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:27 | Posicion: 10251 
+<Ultima posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:27 | Posicion: 498355 
+
+PID: 4278 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 393923 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 258688 
+<Primera posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:27 | Posicion: 21651 
+<Ultima posicion:	Num Escritura: 35 | Fecha: 2016-05-24 15:19:27 | Posicion: 493338 
+
+PID: 4279 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 310558 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 498725 
+<Primera posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:27 | Posicion: 632 
+<Ultima posicion:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 498725 
+
+PID: 4280 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 107584 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 299830 
+<Primera posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:27 | Posicion: 8669 
+<Ultima posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:27 | Posicion: 479313 
+
+PID: 4281 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 189554 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 9964 
+<Primera posicion:	Num Escritura: 44 | Fecha: 2016-05-24 15:19:27 | Posicion: 828 
+<Ultima posicion:	Num Escritura: 27 | Fecha: 2016-05-24 15:19:27 | Posicion: 472311 
+
+PID: 4282 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 42205 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 445533 
+<Primera posicion:	Num Escritura: 46 | Fecha: 2016-05-24 15:19:27 | Posicion: 17605 
+<Ultima posicion:	Num Escritura: 28 | Fecha: 2016-05-24 15:19:27 | Posicion: 495194 
+
+PID: 4283 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 467994 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 22975 
+<Primera posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:27 | Posicion: 1223 
+<Ultima posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:27 | Posicion: 488907 
+
+PID: 4284 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 87112 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 264431 
+<Primera posicion:	Num Escritura: 41 | Fecha: 2016-05-24 15:19:27 | Posicion: 142 
+<Ultima posicion:	Num Escritura: 22 | Fecha: 2016-05-24 15:19:27 | Posicion: 488095 
+
+PID: 4285 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 49662 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 258960 
+<Primera posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:27 | Posicion: 40087 
+<Ultima posicion:	Num Escritura: 5 | Fecha: 2016-05-24 15:19:27 | Posicion: 491792 
+
+PID: 4286 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 140513 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 245599 
+<Primera posicion:	Num Escritura: 22 | Fecha: 2016-05-24 15:19:27 | Posicion: 5418 
+<Ultima posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:27 | Posicion: 498692 
+
+PID: 4287 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 28312 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:27 | Posicion: 357705 
+<Primera posicion:	Num Escritura: 45 | Fecha: 2016-05-24 15:19:27 | Posicion: 1352 
+<Ultima posicion:	Num Escritura: 12 | Fecha: 2016-05-24 15:19:27 | Posicion: 493461 
+
+PID: 4288 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 296210 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 140992 
+<Primera posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:28 | Posicion: 13976 
+<Ultima posicion:	Num Escritura: 38 | Fecha: 2016-05-24 15:19:28 | Posicion: 495765 
+
+PID: 4289 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 226500 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 107072 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:28 | Posicion: 1655 
+<Ultima posicion:	Num Escritura: 4 | Fecha: 2016-05-24 15:19:27 | Posicion: 495375 
+
+PID: 4290 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 262350 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 255380 
+<Primera posicion:	Num Escritura: 22 | Fecha: 2016-05-24 15:19:27 | Posicion: 19350 
+<Ultima posicion:	Num Escritura: 6 | Fecha: 2016-05-24 15:19:27 | Posicion: 499348 
+
+PID: 4291 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:27 | Posicion: 395828 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 241938 
+<Primera posicion:	Num Escritura: 36 | Fecha: 2016-05-24 15:19:28 | Posicion: 4424 
+<Ultima posicion:	Num Escritura: 42 | Fecha: 2016-05-24 15:19:28 | Posicion: 482537 
+
+PID: 4292 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 420330 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 433634 
+<Primera posicion:	Num Escritura: 19 | Fecha: 2016-05-24 15:19:28 | Posicion: 2292 
+<Ultima posicion:	Num Escritura: 44 | Fecha: 2016-05-24 15:19:28 | Posicion: 477616 
+
+PID: 4293 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 327502 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 273166 
+<Primera posicion:	Num Escritura: 28 | Fecha: 2016-05-24 15:19:28 | Posicion: 409 
+<Ultima posicion:	Num Escritura: 25 | Fecha: 2016-05-24 15:19:28 | Posicion: 493175 
+
+PID: 4294 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 139880 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 19516 
+<Primera posicion:	Num Escritura: 31 | Fecha: 2016-05-24 15:19:28 | Posicion: 7608 
+<Ultima posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:28 | Posicion: 488077 
+
+PID: 4295 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 376442 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 6689 
+<Primera posicion:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 6689 
+<Ultima posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:28 | Posicion: 497074 
+
+PID: 4296 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 228594 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 182988 
+<Primera posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:28 | Posicion: 15378 
+<Ultima posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:28 | Posicion: 492388 
+
+PID: 4297 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 429965 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 283645 
+<Primera posicion:	Num Escritura: 34 | Fecha: 2016-05-24 15:19:28 | Posicion: 20448 
+<Ultima posicion:	Num Escritura: 3 | Fecha: 2016-05-24 15:19:28 | Posicion: 475966 
+
+PID: 4298 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 152515 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 453304 
+<Primera posicion:	Num Escritura: 36 | Fecha: 2016-05-24 15:19:28 | Posicion: 17542 
+<Ultima posicion:	Num Escritura: 7 | Fecha: 2016-05-24 15:19:28 | Posicion: 481798 
+
+PID: 4299 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 97712 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 52774 
+<Primera posicion:	Num Escritura: 8 | Fecha: 2016-05-24 15:19:28 | Posicion: 1794 
+<Ultima posicion:	Num Escritura: 24 | Fecha: 2016-05-24 15:19:28 | Posicion: 487304 
+
+PID: 4300 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 226454 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:28 | Posicion: 414270 
+<Primera posicion:	Num Escritura: 29 | Fecha: 2016-05-24 15:19:28 | Posicion: 3929 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:28 | Posicion: 498331 
+
+PID: 4302 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 237711 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 200763 
+<Primera posicion:	Num Escritura: 4 | Fecha: 2016-05-24 15:19:28 | Posicion: 2291 
+<Ultima posicion:	Num Escritura: 12 | Fecha: 2016-05-24 15:19:28 | Posicion: 485652 
+
+PID: 4301 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 209664 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 197037 
+<Primera posicion:	Num Escritura: 14 | Fecha: 2016-05-24 15:19:28 | Posicion: 1197 
+<Ultima posicion:	Num Escritura: 20 | Fecha: 2016-05-24 15:19:28 | Posicion: 478762 
+
+PID: 4303 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 166794 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 100650 
+<Primera posicion:	Num Escritura: 24 | Fecha: 2016-05-24 15:19:28 | Posicion: 6325 
+<Ultima posicion:	Num Escritura: 11 | Fecha: 2016-05-24 15:19:28 | Posicion: 499168 
+
+PID: 4304 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 310544 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 350037 
+<Primera posicion:	Num Escritura: 10 | Fecha: 2016-05-24 15:19:28 | Posicion: 19365 
+<Ultima posicion:	Num Escritura: 19 | Fecha: 2016-05-24 15:19:28 | Posicion: 494803 
+
+PID: 4305 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:28 | Posicion: 309922 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 490497 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:29 | Posicion: 425 
+<Ultima posicion:	Num Escritura: 42 | Fecha: 2016-05-24 15:19:29 | Posicion: 496229 
+
+PID: 4306 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 366594 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 193722 
+<Primera posicion:	Num Escritura: 20 | Fecha: 2016-05-24 15:19:29 | Posicion: 6733 
+<Ultima posicion:	Num Escritura: 4 | Fecha: 2016-05-24 15:19:29 | Posicion: 497241 
+
+PID: 4307 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 144437 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 311269 
+<Primera posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:29 | Posicion: 21281 
+<Ultima posicion:	Num Escritura: 20 | Fecha: 2016-05-24 15:19:29 | Posicion: 493477 
+
+PID: 4308 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 439751 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 61676 
+<Primera posicion:	Num Escritura: 31 | Fecha: 2016-05-24 15:19:29 | Posicion: 2035 
+<Ultima posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:29 | Posicion: 481503 
+
+PID: 4309 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 202183 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 401677 
+<Primera posicion:	Num Escritura: 21 | Fecha: 2016-05-24 15:19:29 | Posicion: 3151 
+<Ultima posicion:	Num Escritura: 20 | Fecha: 2016-05-24 15:19:29 | Posicion: 495157 
+
+PID: 4310 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 308571 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 482660 
+<Primera posicion:	Num Escritura: 41 | Fecha: 2016-05-24 15:19:29 | Posicion: 26214 
+<Ultima posicion:	Num Escritura: 9 | Fecha: 2016-05-24 15:19:29 | Posicion: 491220 
+
+PID: 4311 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 53424 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 412510 
+<Primera posicion:	Num Escritura: 34 | Fecha: 2016-05-24 15:19:29 | Posicion: 1529 
+<Ultima posicion:	Num Escritura: 18 | Fecha: 2016-05-24 15:19:29 | Posicion: 499880 
+
+PID: 4312 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 262497 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 266313 
+<Primera posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:29 | Posicion: 9029 
+<Ultima posicion:	Num Escritura: 41 | Fecha: 2016-05-24 15:19:29 | Posicion: 497061 
+
+PID: 4313 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 130397 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 122873 
+<Primera posicion:	Num Escritura: 43 | Fecha: 2016-05-24 15:19:29 | Posicion: 25264 
+<Ultima posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:29 | Posicion: 480447 
+
+PID: 4314 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 230812 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 326313 
+<Primera posicion:	Num Escritura: 34 | Fecha: 2016-05-24 15:19:29 | Posicion: 12865 
+<Ultima posicion:	Num Escritura: 17 | Fecha: 2016-05-24 15:19:29 | Posicion: 499275 
+
+PID: 4315 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 222805 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 215961 
+<Primera posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:29 | Posicion: 1513 
+<Ultima posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:29 | Posicion: 496148 
+
+PID: 4316 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 347234 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 42134 
+<Primera posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:29 | Posicion: 12714 
+<Ultima posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:29 | Posicion: 489378 
+
+PID: 4317 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 408223 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 222325 
+<Primera posicion:	Num Escritura: 21 | Fecha: 2016-05-24 15:19:29 | Posicion: 24749 
+<Ultima posicion:	Num Escritura: 36 | Fecha: 2016-05-24 15:19:29 | Posicion: 478488 
+
+PID: 4318 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 15710 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 300372 
+<Primera posicion:	Num Escritura: 3 | Fecha: 2016-05-24 15:19:29 | Posicion: 6693 
+<Ultima posicion:	Num Escritura: 5 | Fecha: 2016-05-24 15:19:29 | Posicion: 499748 
+
+PID: 4319 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 358263 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:29 | Posicion: 64849 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:29 | Posicion: 46443 
+<Ultima posicion:	Num Escritura: 46 | Fecha: 2016-05-24 15:19:29 | Posicion: 484513 
+
+PID: 4320 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 156622 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 346165 
+<Primera posicion:	Num Escritura: 19 | Fecha: 2016-05-24 15:19:29 | Posicion: 164 
+<Ultima posicion:	Num Escritura: 37 | Fecha: 2016-05-24 15:19:30 | Posicion: 495065 
+
+PID: 4321 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 47516 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 481580 
+<Primera posicion:	Num Escritura: 20 | Fecha: 2016-05-24 15:19:29 | Posicion: 3768 
+<Ultima posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:30 | Posicion: 488160 
+
+PID: 4322 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 371574 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 331858 
+<Primera posicion:	Num Escritura: 38 | Fecha: 2016-05-24 15:19:30 | Posicion: 28005 
+<Ultima posicion:	Num Escritura: 5 | Fecha: 2016-05-24 15:19:29 | Posicion: 498544 
+
+PID: 4323 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:29 | Posicion: 151379 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 364527 
+<Primera posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:30 | Posicion: 5083 
+<Ultima posicion:	Num Escritura: 48 | Fecha: 2016-05-24 15:19:30 | Posicion: 490410 
+
+PID: 4324 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 145002 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 153965 
+<Primera posicion:	Num Escritura: 10 | Fecha: 2016-05-24 15:19:30 | Posicion: 15212 
+<Ultima posicion:	Num Escritura: 44 | Fecha: 2016-05-24 15:19:30 | Posicion: 475635 
+
+PID: 4325 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 388550 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 409966 
+<Primera posicion:	Num Escritura: 44 | Fecha: 2016-05-24 15:19:30 | Posicion: 5081 
+<Ultima posicion:	Num Escritura: 11 | Fecha: 2016-05-24 15:19:30 | Posicion: 482779 
+
+PID: 4326 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 391002 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 404261 
+<Primera posicion:	Num Escritura: 4 | Fecha: 2016-05-24 15:19:30 | Posicion: 4747 
+<Ultima posicion:	Num Escritura: 38 | Fecha: 2016-05-24 15:19:30 | Posicion: 487684 
+
+PID: 4327 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 370854 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 22104 
+<Primera posicion:	Num Escritura: 41 | Fecha: 2016-05-24 15:19:30 | Posicion: 21007 
+<Ultima posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:30 | Posicion: 493048 
+
+PID: 4328 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 418200 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 174071 
+<Primera posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:30 | Posicion: 9640 
+<Ultima posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:30 | Posicion: 490381 
+
+PID: 4329 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 27383 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 5189 
+<Primera posicion:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 5189 
+<Ultima posicion:	Num Escritura: 29 | Fecha: 2016-05-24 15:19:30 | Posicion: 490302 
+
+PID: 4330 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 144443 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 128815 
+<Primera posicion:	Num Escritura: 3 | Fecha: 2016-05-24 15:19:30 | Posicion: 9093 
+<Ultima posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:30 | Posicion: 458623 
+
+PID: 4331 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 3507 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 205920 
+<Primera posicion:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 3507 
+<Ultima posicion:	Num Escritura: 34 | Fecha: 2016-05-24 15:19:30 | Posicion: 496421 
+
+PID: 4332 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 161453 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 244217 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:30 | Posicion: 5598 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:30 | Posicion: 487425 
+
+PID: 4333 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 426110 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 165374 
+<Primera posicion:	Num Escritura: 24 | Fecha: 2016-05-24 15:19:30 | Posicion: 2292 
+<Ultima posicion:	Num Escritura: 32 | Fecha: 2016-05-24 15:19:30 | Posicion: 496080 
+
+PID: 4334 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 31741 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:30 | Posicion: 353220 
+<Primera posicion:	Num Escritura: 3 | Fecha: 2016-05-24 15:19:30 | Posicion: 6767 
+<Ultima posicion:	Num Escritura: 47 | Fecha: 2016-05-24 15:19:30 | Posicion: 494735 
+
+PID: 4335 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 417868 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 69631 
+<Primera posicion:	Num Escritura: 12 | Fecha: 2016-05-24 15:19:30 | Posicion: 2727 
+<Ultima posicion:	Num Escritura: 25 | Fecha: 2016-05-24 15:19:30 | Posicion: 491464 
+
+PID: 4336 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 469519 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 430896 
+<Primera posicion:	Num Escritura: 40 | Fecha: 2016-05-24 15:19:31 | Posicion: 35213 
+<Ultima posicion:	Num Escritura: 49 | Fecha: 2016-05-24 15:19:31 | Posicion: 492376 
+
+PID: 4337 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 176580 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 487188 
+<Primera posicion:	Num Escritura: 37 | Fecha: 2016-05-24 15:19:31 | Posicion: 8836 
+<Ultima posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:31 | Posicion: 493291 
+
+PID: 4338 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:30 | Posicion: 379886 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 252896 
+<Primera posicion:	Num Escritura: 16 | Fecha: 2016-05-24 15:19:31 | Posicion: 4033 
+<Ultima posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:30 | Posicion: 499372 
+
+PID: 4339 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:31 | Posicion: 45271 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 431681 
+<Primera posicion:	Num Escritura: 27 | Fecha: 2016-05-24 15:19:31 | Posicion: 1239 
+<Ultima posicion:	Num Escritura: 23 | Fecha: 2016-05-24 15:19:31 | Posicion: 493257 
+
+PID: 4340 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:31 | Posicion: 390331 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 234097 
+<Primera posicion:	Num Escritura: 15 | Fecha: 2016-05-24 15:19:31 | Posicion: 17552 
+<Ultima posicion:	Num Escritura: 44 | Fecha: 2016-05-24 15:19:31 | Posicion: 494290 
+
+PID: 4341 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:31 | Posicion: 430723 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 237194 
+<Primera posicion:	Num Escritura: 2 | Fecha: 2016-05-24 15:19:31 | Posicion: 5823 
+<Ultima posicion:	Num Escritura: 27 | Fecha: 2016-05-24 15:19:31 | Posicion: 497798 
+
+PID: 4342 
+CORRECTOS: 50 
+<Primer registro:	Num Escritura: 1 | Fecha: 2016-05-24 15:19:31 | Posicion: 152335 
+<Ultimo registro:	Num Escritura: 50 | Fecha: 2016-05-24 15:19:31 | Posicion: 295798 
+<Primera posicion:	Num Escritura: 39 | Fecha: 2016-05-24 15:19:31 | Posicion: 17673 
+<Ultima posicion:	Num Escritura: 33 | Fecha: 2016-05-24 15:19:31 | Posicion: 477338 

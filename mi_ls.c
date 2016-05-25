@@ -1,5 +1,10 @@
 #include "directorios.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	int descriptor;
 	unsigned char buffer[50000];
@@ -11,7 +16,10 @@ int main(int argc, char **argv){
 		return -1;
 	}
 	descriptor = bmount(argv[1]);
-	if((mi_dir(argv[2],buffer))<0) return -1;
+	if((mi_dir(argv[2],buffer))<0) {
+		printf("Error in mi_ls.c, while calling mi_dir\n");
+		return -1;
+	}
 	//We show the buffer
 	printf("%s\n",buffer);
 	bumount(descriptor);

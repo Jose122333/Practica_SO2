@@ -2,6 +2,11 @@
 #include "bloques.h"
 #include "ficheros.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offset, unsigned int nbytes){
 	struct inodo inode;
 	unsigned char buf_aux[BLOCKSIZE];
@@ -77,6 +82,7 @@ int mi_write_f(unsigned int ninodo, const void *buf_original, unsigned int offse
 		printf("Error in mi_read_f, file does not have the correct permissions, line 17, file ficheros.c\n");
 	    return -1;
 	}
+	//We write the inode and update it's related info
 	inode = leer_inodo(ninodo);
     if(inode.tamEnBytesLog<offset+nbytes){
        	inode.tamEnBytesLog = offset+nbytes;	
@@ -194,7 +200,7 @@ int mi_chmod_f(unsigned int ninodo, unsigned char permisos){
 int mi_truncar_f(unsigned int ninodo, unsigned int nbytes){
 	struct inodo in;
 	int nblogico;
-	//first we read the inode
+	//First we read the inode
 	in = leer_inodo(ninodo);
 	//Now we have to check if the inode has the correct permissions
 	if((in.permisos & 2) == 2){

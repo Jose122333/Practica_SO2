@@ -3,6 +3,11 @@
 struct ultimaEntrada ultimaEntradaLectura;
 struct ultimaEntrada ultimaEntradaEscritura;
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 //Function that splits the name and the location
 int extraer_camino(const char *camino, char *inicial, char *final, unsigned char *tipo){
 	int i = 0;
@@ -25,15 +30,14 @@ int extraer_camino(const char *camino, char *inicial, char *final, unsigned char
 /*
 	Errors:
 		-1 := Error EC (Extraer Camino)
-		-2 := Error NO_PERMISOS_LECTURA
-		-3 := Error LECTURA
-		-4 := Error ERROR_NO_EXISTE_ENTRADA_CONSULTA
-		-5 := Error RESERVAR_INODO
-		-6 := Error NO_DIRECTORIO_INTERMEDIO
-		-7 := Error LIBERAR_INODO
-		-8 := Error ESCRITURA
-	    -9 := Error YA_EXISTE_ENTRADA
-
+		-2 := Error NO_READING_PERMISSIONS
+		-3 := Error READING
+		-4 := Error THERE_IS_NO_CONSULTING_ENTRANCE
+		-5 := Error BOOKING_INODE
+		-6 := Error NO_INTERMEDIATE_DIRECTORY
+		-7 := Error FREEING_INODE
+		-8 := Error WRITING
+	    -9 := Error ENTRANCE_ALREADY_EXISTS
 */
 int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsigned int *p_inodo, unsigned int *p_entrada, char reservar, unsigned char permisos){
 	struct inodo ind;
@@ -50,7 +54,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
   	//We initialize the values of both strings
   	memset(inicial,0,60);
 	memset(final,0,strlen(camino_parcial));
-	//Now we extract the different way
+	//Now we extract the different path
 	if(extraer_camino(camino_parcial,inicial,final,&tipo)<0){
 		printf("Error in buscar_entrada while using function extraer_camino, file directorios.c \n");
 		return -1;
@@ -62,7 +66,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 	}
 	entr.nombre[0] = '\0';
 	int numEntr = ind.tamEnBytesLog/sizeof(struct entrada);
-	int nentrada = 0; //Num. entrada inicial
+	int nentrada = 0; //Innitial entrance number
 	if(numEntr>0){
 		if((ind.permisos & 4) != 4){
 		printf("Error in buscar_entrada, file does not have the correct permissions, file directorios.c \n");
@@ -81,6 +85,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
 		}
 	}
 	if(nentrada == numEntr){
+		//We check the value of reservar
 		switch(reservar) {
 		 	case 0:
 		 		printf("Error in buscar_entrada, not the correct mode, file directorios.c \n");
@@ -106,6 +111,7 @@ int buscar_entrada(const char *camino_parcial, unsigned int *p_inodo_dir, unsign
  						return -5;
  					}
  				}
+ 				//Finally we write the entrance in the specific directory inode
  				if(mi_write_f(*p_inodo_dir,&entr,nentrada*sizeof(struct entrada),sizeof(struct entrada)) < 0){
  					if(entr.inodo!=-1){
  						if(liberar_inodo(entr.inodo)<0){
@@ -153,7 +159,6 @@ int mi_dir(const char *camino, char *buffer){
 	char tmp[100];
 	char size[15];
 	struct inodo ind;
-	//We block the critical section when we call the semaphore
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -176,7 +181,7 @@ int mi_dir(const char *camino, char *buffer){
 				printf("Error in mi_link while reading struct entrada, file directorios.c \n");
  				return -1;			
 		}
-		//We only save the name of the entrances in the buffer
+		//We save all the data of the inode, starting with the entrance name
 		strcat(buffer,"\n-----------------------------------------------------------");
 		strcat(buffer, "\nNombre: ");
 		strcat(buffer,entr.nombre);
@@ -212,7 +217,7 @@ int mi_dir(const char *camino, char *buffer){
 		tm = localtime(&ind.mtime);
 		sprintf(tmp,"%d-%02d-%02d %02d:%02d:%02d\t",tm->tm_year+1900,tm->tm_mon+1,tm->tm_mday,tm->tm_hour,tm->tm_min,tm->tm_sec);
 		strcat(buffer,tmp);
-		//We update to the next entrance
+		//We move to the next entrance
 		nentrada++;
 	}
 	return 0;
@@ -221,8 +226,8 @@ int mi_link(const char *camino1, const char *camino2){
 	int p_inodo_dir1=0,p_inodo1=0,p_entrada1=0,p_inodo_dir2=0,p_inodo2=0,p_entrada2=0;
 	struct inodo ind1,ind2;
 	char reservar=0,permisos=0;
+	//Semaphore to control if buscar_entrada updates the values of the inodes involved in the call
 	mi_waitSem();
-
 	int BuscarEntradaRS = buscar_entrada(camino1,&p_inodo_dir1,&p_inodo1,&p_entrada1,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -235,7 +240,6 @@ int mi_link(const char *camino1, const char *camino2){
 		printf("Error in mi_link function, inode is not the correct type");
 		return -1;
 	}
-
 	reservar=1,permisos=6;
 	//Now we launch the buscar_entrada call for camino2
 	BuscarEntradaRS = buscar_entrada(camino2,&p_inodo_dir2,&p_inodo2,&p_entrada2,reservar,permisos);
@@ -267,7 +271,6 @@ int mi_link(const char *camino1, const char *camino2){
 			mi_signalSem();
  			return -1;			
 	}
-	//We update the inode data, so we put a semaphore
 	//Increment the values of the inode
 	ind1.nlinks++;
 	ind1.ctime = (time_t)NULL;
@@ -285,8 +288,8 @@ int mi_unlink(const char *camino){
 	struct inodo ind, ind_dir;
 	char reservar=0,permisos=0;
 	int num_entradas = 0;
-			mi_waitSem();
-
+	//Semaphore to control if buscar_entrada updates the values of the inodes involved in the call
+	mi_waitSem();
 	int BuscarEntradaRS = buscar_entrada(camino,&p_inodo_dir,&p_inodo,&p_entrada,reservar,permisos);
 	int ret = getResponse(BuscarEntradaRS);
 	if(ret<0){
@@ -386,6 +389,7 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 	int p_inodo_dir=0,p_inodo=0,p_entrada=0,numBytesLeidos;
 	char reservar = 0;
 	char permisos = 0;
+	mi_waitSem();
 	if(strcmp(camino, ultimaEntradaLectura.camino)==0){
 	 	p_inodo = ultimaEntradaLectura.inodo;
 	}else {
@@ -393,6 +397,7 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 		int ret = getResponse(BuscarEntradaRS);
 		if(ret<0){
 			printf("Error in mi_read function,");
+			mi_signalSem();
 			return ret;
 		}
 		strcpy(ultimaEntradaLectura.camino,camino);
@@ -401,9 +406,11 @@ int mi_read(const char *camino,void *buf, unsigned int offset, unsigned int nbyt
 	//Now we read the correspondent bytes
 	numBytesLeidos = mi_read_f(p_inodo,buf,offset,nbytes);
 	if(numBytesLeidos==-1){
+		mi_signalSem();
 		printf("Error in mi_read function, error calling mi_write_f function, file directorios.c \n");
 		return -1;	
 	}
+	mi_signalSem();
 	return numBytesLeidos;	
 }
 
@@ -445,7 +452,7 @@ int mi_write(const char *camino, const void *buf, unsigned int offset, unsigned 
 	mi_signalSem();
 	return numBytesEscritos;
 }
-
+//Generic function that clasifies the error we have received
 int getResponse(int BuscarEntradaRS){
 	switch(BuscarEntradaRS){
 		case -10:

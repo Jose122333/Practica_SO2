@@ -4,10 +4,17 @@
 #include <sys/stat.h>
 #include "ficheros_basicos.h"
 #include "ficheros.h"
+
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 struct entrada {
 	char nombre[60]; //En el sistema de ficheros ext2 la longitud del nombre es 255
 	unsigned int inodo;
 };
+//Struct we use to make de entrance cache
 struct ultimaEntrada
 {
 	char camino[512];

@@ -1,10 +1,14 @@
 #include "ficheros.h"
 #include "ficheros_basicos.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	int descriptor,ninodo,offset,bytesLeidos,totalBytes;
 	unsigned char input[1500];
-	//if(argc<3) exit(1);
 	char string[128];
 	if(argc<3){
 		printf("Syntax error, not enough arguments, file mi_chmod.c\n"
@@ -30,4 +34,4 @@ int main(int argc, char **argv){
 	if(bumount(descriptor)<0) exit(1);
 	return 0;
 }
-// Nota: Primer Argumento es el nombreDelFichero, Segundo es el nombre del inodo, Tercero es el offset
+

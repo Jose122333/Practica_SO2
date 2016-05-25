@@ -2,6 +2,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	unsigned int a, descriptor, b;
 		descriptor = bmount(argv[1]);

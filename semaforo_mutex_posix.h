@@ -4,6 +4,10 @@
 #define SEM_NAME "/mymutex" /* Usamos este nombre para el semáforo mutex */
 #define SEM_INIT_VALUE 1 /* Valor inicial de los mutex */
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
 
 sem_t *initSem();
 void deleteSem();

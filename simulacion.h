@@ -6,6 +6,11 @@
 #include <sys/wait.h>
 #include <stdlib.h>
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 struct registro {
 	int fecha;
 	int pid;

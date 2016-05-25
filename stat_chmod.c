@@ -1,13 +1,17 @@
 #include "ficheros.h"
 #include "ficheros_basicos.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 void showStats(struct STAT status, int ninodo);
 
 int main(int argc, char **argv){
 	int descriptor,ninodo,offset,bytesLeidos,totalBytes;
     struct STAT status;
 	unsigned char input[1500];
-	//if(argc<3) exit(1);
 	char string[128];
 	descriptor = bmount(argv[1]);
 	ninodo = atoi(argv[2]);

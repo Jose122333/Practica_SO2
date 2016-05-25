@@ -10,7 +10,6 @@
    read -n 1 -s
    echo
    ./mi_ls $1 /
-
      #cambiamos permisos al directorio de la simulacion
    echo
    echo MI_CHMOD -------------------------------------------
@@ -19,8 +18,6 @@
    echo
    ./mi_chmod $1 1 $2
      #volvemos a listar para ver los permisos del directorio de simulacion
-
-
    echo
    echo MI_LS -------------------------------------------
    echo Volvemos a listar para ver los permisos del directorio de la simulacion
@@ -51,14 +48,6 @@
    echo
    ./mi_ls $1 $2
 
-     #hacemos un mi_cat de informe.txt que ha generado el verificador de la simulacion
-   echo
-   echo MI_CAT -------------------------------------------
-   echo Hacemos un mi_cat del informe.txt al fichero output.txt para ver que coinciden los tamaños
-   read -n 1 -s
-   echo
-   ./mi_cat $1 ${2}informe.txt > output.txt
-
      #creamos un enlace dentro del directorio raiz que apunta al informe.txt
    echo
    echo MI_LN -------------------------------------------
@@ -73,7 +62,7 @@
    echo Hacemos un mi_stat del informe.txt para ver como nlinks vale 2
    read -n 1 -s
    echo 
-./mi_stat $1 ${2}informe.txt
+   ./mi_stat $1 ${2}informe.txt
  
 #listamos la raiz para ver el enlace creado
 echo

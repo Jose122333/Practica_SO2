@@ -4,6 +4,11 @@ static int descriptor=0;
 static sem_t *mutex;
 static unsigned int inside_sc = 0;
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 
 //This function is used to open the file requested
 int bmount(const char *camino){

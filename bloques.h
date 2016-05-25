@@ -7,6 +7,11 @@
 #include "semaforo_mutex_posix.h"
 #define BLOCKSIZE 1024 //bytes
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int bmount(const char *camino);
 int bumount();
 int bwrite(unsigned int nbloque, const void *buf);

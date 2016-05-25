@@ -1,5 +1,10 @@
 #include "simulacion.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 static int acabados = 0;
 int main(int argc, char **argv){
 	int descriptor,cid,i=0,j,posMax=500000;
@@ -60,7 +65,6 @@ int main(int argc, char **argv){
 			strcat(childPathName,pathName);
 			sprintf(processID,"proceso_%d/",getpid());
 			strcat(childPathName,processID);
-			//printf("Ruta: %s\n",childPathName);
 			if(mi_create(childPathName,7)<0){
 				printf("Error in while calling mi_create for the %d child process path, file simulacion.c\n",i);
 				return -1;
@@ -77,10 +81,8 @@ int main(int argc, char **argv){
 			while(j<50){
 				rgstr.fecha = time(NULL);
 				rgstr.pid = getpid();
-				//printf("El pid del registro es: %d\n",rgstr.pid);
 				rgstr.nEscritura = j+1;
 				rgstr.posicion = rand() % posMax;
-				//printf("%d\n",rgstr.posicion);
 				if(mi_write(childPathName,&rgstr,rgstr.posicion*sizeof(struct registro),sizeof(struct registro))<0){
 					printf("Error while write number %d of the child number %d, file simulacion.c\n",j,i);
 					return -1;

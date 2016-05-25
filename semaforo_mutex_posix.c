@@ -3,10 +3,12 @@
 #include <semaphore.h>
 #include "semaforo_mutex_posix.h"
 
-/* Ejemplo de creación e inicialización de semáforos POSIX para MUTEX con "semáforos con nombre" (named) */
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
 
 sem_t *initSem() {
-	/* name debe ser un nombre de caracteres ascii que comienze con "/", p.e. "/mimutex" */
 	sem_t *sem;
 
 	sem = sem_open(SEM_NAME, O_CREAT, S_IRWXU, SEM_INIT_VALUE);

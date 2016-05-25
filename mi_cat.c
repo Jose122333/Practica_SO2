@@ -1,6 +1,11 @@
 #include "directorios.h"
 #include "string.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	int descriptor,offset,bytesLeidos,totalBytes;
 	unsigned char input[BLOCKSIZE];

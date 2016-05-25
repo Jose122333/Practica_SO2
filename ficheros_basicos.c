@@ -1,6 +1,10 @@
 			#include "ficheros_basicos.h"
 			#include "bloques.h"
 
+			/* 
+			* Simeon Yordanov Grancharov
+			* Jose Antonio Vela Martín
+			*/
 
 			//Returns the value(in blocks) of the bit map
 			int tamMB(unsigned int nbloques){
@@ -118,9 +122,6 @@
 			        }
 			    }
 			    return 0;
-			}
-			void leer_sf(){
-			    printf("El primer bloque del MB es: \n");
 			}
 			//Function in charge of writing a specific value of a certain bit in the BM
 			int escribir_bit(unsigned int nbloque, unsigned int bit){
@@ -355,7 +356,6 @@
 					 //Initialize the inode, with all the requiered variables
                      inodo.tipo = tipo;
                      inodo.permisos = permisos;
-                     //inodo.atime = (time_t)NULL;
                      inodo.atime = time(NULL);
                      inodo.mtime = time(NULL);
                      inodo.ctime = time(NULL);
@@ -486,7 +486,6 @@
 				while(nivel_punteros>0){
 					if (ptr==0){
 						if (reservar==0){
-							//printf("Error in traducir_bloque_inodo, reserve byte is incorrect(while), line 498, file ficheros_basicos.c\n");
 							return -2;
 						}else{
 							salvar_inodo = 1;
@@ -530,12 +529,10 @@
 			}
 			if(ptr==0){
 				if(reservar == 0){
-						//printf("Error in traducir_bloque_inodo while getting the index, line 544, file ficheros_basicos.c\n");
 						return -2;						
 					}else{
 						salvar_inodo = 1;
 					    ptr = reservar_bloque();
-					    //printf("El bloque para reservar datos es: %d\n", ptr);
 					    bloques_reservados++;
 					    if (rangoBL==0){
 					    	ind.punterosDirectos[nblogico] = ptr;
@@ -545,7 +542,6 @@
 							    return -1;								
 							}
                             bufferAux[index]=ptr;
-					    	//printf("El buffer para reservar datos es: %d\n", bufferAux[index]);                            
 							if(bwrite(ptr_ant,bufferAux)==-1){
 							    printf("Error in traducir_bloque_inodo while writing a block(ptr==0), line 561, file ficheros_basicos.c\n");
 							    return -1;	

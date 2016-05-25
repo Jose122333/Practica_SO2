@@ -5,6 +5,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 //Struct to show the meta information of the inodes
 struct STAT{ 
 unsigned char tipo; //Type (libre, directorio o fichero)

@@ -2,8 +2,14 @@
 #include <stdio.h>
 #include "simulacion.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	int descriptor,nEntradas,i=0,j,k;
+	int NUM_PROCESOS = 100;
 	struct STAT fileStatus;
 	char pathName[200],buf[22], informe[200], informeGlobal[50000];
 	char childPathName[200];
@@ -38,7 +44,7 @@ int main(int argc, char **argv){
 	}
 	//Now we calculate the number of entrances(they have to be 100)
 	nEntradas = fileStatus.tamEnBytesLog/sizeof(struct entrada);
-	if(nEntradas != 100){
+	if(nEntradas < 100){
 		printf("Error, the number of entrances is not exactly 100\n");
 		printf("Entrances found %d\n",nEntradas);
 		return -1;
@@ -52,7 +58,7 @@ int main(int argc, char **argv){
 		return -1;
 	}
 	//For each process
-	for(i=0;i<nEntradas;i++){
+	for(i=0;i<NUM_PROCESOS;i++){
 		//First we read the entrance
 		if(mi_read(argv[2],&entr,i*sizeof(struct entrada),sizeof(struct entrada))<0){
 			printf("Error while reading process details for process number %d\n",i);
@@ -81,7 +87,6 @@ int main(int argc, char **argv){
 			if(bytesRead == -2){
 				bytesRead = BLOCKSIZE;
 			}else{
-				//for(k = 0; k < BLOCKSIZE;k++){
 					if(leer.pid==pid){
 						if(leer.nEscritura<info[0].nEscritura){
 							//Check if it is the first register
@@ -106,12 +111,9 @@ int main(int argc, char **argv){
 						registros_correctos++;
 					}
 				}
-			//}
 			offset+=bytesRead;
-			//memset(&leer,0,BLOCKSIZE);
 			bytesRead = mi_read(childPathName,&leer,offset,sizeof(struct registro));
 		}
-		//memset(informeGlobal,0,sizeof(informeGlobal));
 		//General process info
 		sprintf(informe,"\nPID: %d \nCORRECTOS: %d \n",pid,registros_correctos);
 		strcat(informeGlobal,informe);
@@ -149,7 +151,7 @@ int main(int argc, char **argv){
 		printf("Error while writing the results into the informe.txt, file verificacion.c\n");
 		return -1;
 	}
-	//write(1,informeGlobal,strlen(informeGlobal));
+	write(1,informeGlobal,strlen(informeGlobal));
 	//Un-mount the file system
 	if(bumount(descriptor)<0){
 		printf("Error while unmounting FS for the main process\n");

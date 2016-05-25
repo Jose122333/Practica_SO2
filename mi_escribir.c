@@ -3,6 +3,11 @@
 #include "bloques.h"
 #include "directorios.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 	//We declare all the necessary variables
 	int descriptor,bytesEscritos,offset,size;

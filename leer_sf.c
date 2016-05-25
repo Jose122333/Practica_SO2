@@ -1,6 +1,11 @@
 #include "bloques.h"
 #include "ficheros_basicos.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 void mostrarSB(struct superbloque SB);
 void mostrarBM(struct superbloque SB);
 void mostrarIA(struct superbloque SB);

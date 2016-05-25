@@ -2,6 +2,11 @@
 #include <string.h>
 #include "ficheros_basicos.h"
 
+/* 
+* Simeon Yordanov Grancharov
+* Jose Antonio Vela Martín
+*/
+
 int main(int argc, char **argv){
 if(argc<3){
 		printf("Syntax error, not enough arguments, file my_mkfs.c\n"
